@@ -1,15 +1,9 @@
-# Table of contents
-
-- [Recon](#recon)
-  - [TCP/80 - HTTP](#tcp80---http)
-    - [FFUF](#ffuf)
-- [Initial Foothold](#initial-foothold)
-  - [TCP/80 - HTTP - Cewl + Joomla Bruteforce + Shell Upload](#tcp80---http---cewl--joomla-bruteforce--shell-upload)
-- [Privilege Escalation](#privilege-escalation)
-  - [Rob - Via SQL Creds Found](#rob---via-sql-creds-found)
-  - [Abner - Via Ciphertext](#abner---via-ciphertext)
-  - [Penguin - Via Creds Found + Cracking Zip file](#penguin---via-creds-found--cracking-zip-file)
-  - [Root - Via Cronjob](#root---via-cronjob)
+---
+title: Glasglow Smile 1.1
+img_path: /Writeups/Vulnhub/Linux/Glasglow Smile 1.1
+categories: [Writeups, Vulnhub, Linux]
+tags: [tcp/80-http/cms/joomla,tcp/80-http/rce,linux-priv-esc/linux-creds-found,linux-priv-esc/cronjob,cryptography]
+---
 
 # Recon
 ## TCP/80 - HTTP
@@ -631,7 +625,4 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	- We can see that cronjob is executing `.trash_old` every minute
 	
 	
----
-Tags: #tcp/80-http/cms/joomla #tcp/80-http/rce #linux-priv-esc/linux-creds-found #linux-priv-esc/cronjob #cryptography 
 
----
