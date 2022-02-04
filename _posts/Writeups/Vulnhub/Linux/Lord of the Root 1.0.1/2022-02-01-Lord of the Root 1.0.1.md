@@ -1,22 +1,14 @@
-# Table of contents
+---
+title: Lord of the Root 1.0.1
+categories: [Writeups, Vulnhub, Linux]
+tags: [port-knocking,exploit/sqli/database-enum,linux-priv-esc/mysql,linux-priv-esc/kernel-exploit ]
+img_path: /Writeups/Vulnhub/Linux/Lord of the Root 1.0.1
+---
 
-- [Recon](#recon)
-  - [TCP/22 - SSH](#tcp22---ssh)
-    - [Port Knocking](#port-knocking)
-    - [NMAP](#nmap)
-  - [TCP/1337 - HTTP](#tcp1337---http)
-    - [NMAP](#nmap)
-    - [FFUF](#ffuf)
-- [Initial Foothold](#initial-foothold)
-  - [TCP/80 - HTTP - SQLi (Blind) Database Enumeration](#tcp80---http---sqli-blind-database-enumeration)
-  - [TCP/22 - SSH - Bruteforce](#tcp22---ssh---bruteforce)
-- [Privilege Escalation](#privilege-escalation)
-  - [Root - Via MySQL running as Root](#root---via-mysql-running-as-root)
-  - [Root - Via Kernel Exploit](#root---via-kernel-exploit)
-  - [Root - Via BufferOverflow](#root---via-bufferoverflow)
 
 # Recon
 - Only TCP/22 - SSH is up
+- Requires Port Knocking to open up ports
 
 ## TCP/22 - SSH 
 ### Port Knocking
@@ -386,8 +378,5 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	```
 
 	
----
-Tags: #port-knocking #exploit/sqli/database-enum #linux-priv-esc/mysql #linux-priv-esc/kernel-exploit 
 
----
 

@@ -1,22 +1,105 @@
-# Table of contents
-
-- [Recon](#recon)
-  - [TCP/80 - HTTP](#tcp80---http)
-    - [FFUF](#ffuf)
-  - [TCP/139,445 - SMB](#tcp139445---smb)
-    - [Enum4linux](#enum4linux)
-    - [Crackmapexec](#crackmapexec)
-    - [SMBMap](#smbmap)
-  - [TCP/8000 - HTTP](#tcp8000---http)
-    - [FFUF](#ffuf)
-- [Initial Foothold](#initial-foothold)
-  - [TCP/80 - HTTP - No Exploit](#tcp80---http---no-exploit)
-  - [TCP/139,445 - SMB](#tcp139445---smb)
-  - [TCP/8000 - HTTP - Koken CMS File Upload](#tcp8000---http---koken-cms-file-upload)
-- [Privilege Escalation](#privilege-escalation)
-  - [Root - Via](#root---via)
+---
+title: Photographer 1
+categories: [Writeups, Vulnhub, Linux]
+tags: [tcp/139-445-smb/file-share,tcp/80-http/web-app-cms-exploit,tcp/80-http/rce,linux-priv-esc/suid/gtfo-bin]
+img_path: /Writeups/Vulnhub/Linux/Photographer 1
+---
 
 # Recon
+## NMAP Complete Scan
+```
+# Nmap 7.92 scan initiated Thu Feb  3 15:41:03 2022 as: nmap -vv --reason -Pn -T4 -sV -sC --version-all -A --osscan-guess -p- -oN /root/vulnHub/Photographer-1/192.168.110.10/scans/_full_tcp_nmap.txt -oX /root/vulnHub/Photographer-1/192.168.110.10/scans/xml/_full_tcp_nmap.xml 192.168.110.10
+Nmap scan report for 192.168.110.10
+Host is up, received arp-response (0.0029s latency).
+Scanned at 2022-02-03 15:41:04 +08 for 23s
+Not shown: 65531 closed tcp ports (reset)
+PORT     STATE SERVICE     REASON         VERSION
+80/tcp   open  http        syn-ack ttl 64 Apache httpd 2.4.18 ((Ubuntu))
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-title: Photographer by v1n1v131r4
+139/tcp  open  netbios-ssn syn-ack ttl 64 Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp  open  netbios-ssn syn-ack ttl 64 Samba smbd 4.3.11-Ubuntu (workgroup: WORKGROUP)
+8000/tcp open  http        syn-ack ttl 64 Apache httpd 2.4.18 ((Ubuntu))
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+|_http-open-proxy: Proxy might be redirecting requests
+|_http-generator: Koken 0.22.24
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-title: daisa ahomi
+|_http-trane-info: Problem with XML parsing of /evox/about
+MAC Address: 08:00:27:3D:3C:F1 (Oracle VirtualBox virtual NIC)
+Device type: general purpose
+Running: Linux 3.X|4.X
+OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
+OS details: Linux 3.2 - 4.9
+TCP/IP fingerprint:
+OS:SCAN(V=7.92%E=4%D=2/3%OT=80%CT=1%CU=%PV=Y%DS=1%DC=D%G=N%M=080027%TM=61FB
+OS:8727%P=x86_64-pc-linux-gnu)SEQ(SP=FD%GCD=1%ISR=110%TI=Z%CI=I%II=I%TS=A)O
+OS:PS(O1=M5B4ST11NW7%O2=M5B4ST11NW7%O3=M5B4NNT11NW7%O4=M5B4ST11NW7%O5=M5B4S
+OS:T11NW7%O6=M5B4ST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)E
+OS:CN(R=Y%DF=Y%TG=40%W=7210%O=M5B4NNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%TG=40%S=O%A=S+
+OS:%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%TG=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=
+OS:)T5(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%TG=40%W=0%S=
+OS:A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R
+OS:=N)IE(R=Y%DFI=N%TG=40%CD=S)
+
+Uptime guess: 38.446 days (since Mon Dec 27 04:58:46 2021)
+Network Distance: 1 hop
+TCP Sequence Prediction: Difficulty=253 (Good luck!)
+IP ID Sequence Generation: All zeros
+Service Info: Host: PHOTOGRAPHER
+
+Host script results:
+|_clock-skew: mean: 1h39m57s, deviation: 2h53m12s, median: -2s
+| p2p-conficker: 
+|   Checking for Conficker.C or higher...
+|   Check 1 (port 41522/tcp): CLEAN (Couldn't connect)
+|   Check 2 (port 61616/tcp): CLEAN (Couldn't connect)
+|   Check 3 (port 34750/udp): CLEAN (Failed to receive data)
+|   Check 4 (port 36043/udp): CLEAN (Timeout)
+|_  0/4 checks are positive: Host is CLEAN or ports are blocked
+| smb-os-discovery: 
+|   OS: Windows 6.1 (Samba 4.3.11-Ubuntu)
+|   Computer name: photographer
+|   NetBIOS computer name: PHOTOGRAPHER\x00
+|   Domain name: \x00
+|   FQDN: photographer
+|_  System time: 2022-02-03T02:41:20-05:00
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb2-time: 
+|   date: 2022-02-03T07:41:20
+|_  start_date: N/A
+| nbstat: NetBIOS name: PHOTOGRAPHER, NetBIOS user: <unknown>, NetBIOS MAC: <unknown> (unknown)
+| Names:
+|   PHOTOGRAPHER<00>     Flags: <unique><active>
+|   PHOTOGRAPHER<03>     Flags: <unique><active>
+|   PHOTOGRAPHER<20>     Flags: <unique><active>
+|   \x01\x02__MSBROWSE__\x02<01>  Flags: <group><active>
+|   WORKGROUP<00>        Flags: <group><active>
+|   WORKGROUP<1d>        Flags: <unique><active>
+|   WORKGROUP<1e>        Flags: <group><active>
+| Statistics:
+|   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+|   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+|_  00 00 00 00 00 00 00 00 00 00 00 00 00 00
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   2.94 ms 192.168.110.10
+
+Read data files from: /usr/bin/../share/nmap
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Thu Feb  3 15:41:27 2022 -- 1 IP address (1 host up) scanned in 24.42 seconds
+```
 ## TCP/80 - HTTP
 ### FFUF
 ```
@@ -290,7 +373,3 @@ SMB         192.168.110.10  445    PHOTOGRAPHER     IPC$                        
 	```
 
 
----
-Tags: #tcp/139-445-smb/file-share  #tcp/80-http/web-app-cms-exploit #tcp/80-http/rce #linux-priv-esc/suid/gtfo-bin 
-
----

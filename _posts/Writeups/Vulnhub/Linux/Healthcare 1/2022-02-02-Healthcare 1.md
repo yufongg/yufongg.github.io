@@ -1,21 +1,72 @@
-# Table of contents
-
-- [Recon](#recon)
-  - [TCP/21 - FTP](#tcp21---ftp)
-  - [TCP/80 - HTTP](#tcp80---http)
-    - [Ferox](#ferox)
-    - [Nikto](#nikto)
-- [Initial Foothold](#initial-foothold)
-  - [TCP/80 - HTTP - OpenEMR SQLi](#tcp80---http---openemr-sqli)
-  - [TCP/80 - OpenEMR RCE](#tcp80---openemr-rce)
-- [Initial Foothold 2](#initial-foothold-2)
-  - [TCP/21 - FTP - Upload Reverse Shell](#tcp21---ftp---upload-reverse-shell)
-- [Privilege Escalation](#privilege-escalation)
-  - [Medical - Via Creds Found](#medical---via-creds-found)
-  - [Root - Via SUID Binary (Path Hijacking)](#root---via-suid-binary-path-hijacking)
-
+---
+title: Healthcare 1 
+categories: [Writeups, Vulnhub, Linux]
+tags: [tcp/80-http/web-app-cms-exploit,tcp/80-http/rce,linux-priv-esc/suid/path-hijacking]
+img_path: /Writeups/Vulnhub/Linux/Healthcare 1
+---
 
 # Recon
+## NMAP Complete Scan
+```
+# Nmap 7.92 scan initiated Wed Feb  2 03:04:26 2022 as: nmap -vv --reason -Pn -T4 -sV -sC --version-all -A --osscan-guess -p- -oN /root/vulnHub/Healthcare/192.168.110.8/scans/_full_tcp_nmap.txt -oX /root/vulnHub/Healthcare/192.168.110.8/scans/xml/_full_tcp_nmap.xml 192.168.110.8
+adjust_timeouts2: packet supposedly had rtt of -531134 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -531134 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -176308 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -176308 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -760169 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -760169 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -760035 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -760035 microseconds.  Ignoring time.
+Nmap scan report for 192.168.110.8
+Host is up, received arp-response (0.00053s latency).
+Scanned at 2022-02-02 03:04:27 +08 for 17s
+Not shown: 65533 closed tcp ports (reset)
+PORT   STATE SERVICE REASON         VERSION
+21/tcp open  ftp     syn-ack ttl 64 ProFTPD 1.3.3d
+80/tcp open  http    syn-ack ttl 64 Apache httpd 2.2.17 ((PCLinuxOS 2011/PREFORK-1pclos2011))
+| http-robots.txt: 8 disallowed entries 
+| /manual/ /manual-2.2/ /addon-modules/ /doc/ /images/ 
+|_/all_our_e-mail_addresses /admin/ /
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-title: Coming Soon 2
+|_http-favicon: Unknown favicon MD5: 7D4140C76BF7648531683BFA4F7F8C22
+|_http-server-header: Apache/2.2.17 (PCLinuxOS 2011/PREFORK-1pclos2011)
+MAC Address: 08:00:27:CA:51:55 (Oracle VirtualBox virtual NIC)
+OS fingerprint not ideal because: Didn't receive UDP response. Please try again with -sSU
+Aggressive OS guesses: Linux 2.6.38 (99%), Linux 2.6.32 - 3.5 (98%), Linux 2.6.38 - 3.0 (96%), Linux 2.6.9 - 2.6.30 (95%), Linux 2.6.32 - 3.10 (94%), Linux 2.6.37 (94%), Osmosys DMS DVR (93%), Linux 2.6.18 - 2.6.32 (93%), OpenWrt (Linux 2.4.32) (93%), Linux 2.6.22 (Fedora Core 6) (93%)
+No exact OS matches for host (test conditions non-ideal).
+TCP/IP fingerprint:
+SCAN(V=7.92%E=4%D=2/2%OT=21%CT=1%CU=%PV=Y%DS=1%DC=D%G=N%M=080027%TM=61F9844C%P=x86_64-pc-linux-gnu)
+SEQ(SP=C3%GCD=1%ISR=C6%TI=Z%CI=Z%II=I%TS=A)
+OPS(O1=M5B4ST11NW6%O2=M5B4ST11NW6%O3=M5B4NNT11NW6%O4=M5B4ST11NW6%O5=M5B4ST11NW6%O6=M5B4ST11)
+WIN(W1=3890%W2=3890%W3=3890%W4=3890%W5=3890%W6=3890)
+ECN(R=Y%DF=Y%TG=40%W=3908%O=M5B4NNSNW6%CC=N%Q=)
+T1(R=Y%DF=Y%TG=40%S=O%A=S+%F=AS%RD=0%Q=)
+T2(R=N)
+T3(R=Y%DF=Y%TG=40%W=3890%S=O%A=S+%F=AS%O=M5B4ST11NW6%RD=0%Q=)
+T4(R=Y%DF=Y%TG=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)
+T5(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)
+T6(R=Y%DF=Y%TG=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)
+T7(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)
+U1(R=N)
+IE(R=Y%DFI=N%TG=40%CD=S)
+
+Uptime guess: 0.002 days (since Wed Feb  2 03:01:45 2022)
+Network Distance: 1 hop
+TCP Sequence Prediction: Difficulty=197 (Good luck!)
+IP ID Sequence Generation: All zeros
+Service Info: OS: Unix
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   0.53 ms 192.168.110.8
+
+Read data files from: /usr/bin/../share/nmap
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Wed Feb  2 03:04:44 2022 -- 1 IP address (1 host up) scanned in 18.18 seconds
+
+```
 ## TCP/21 - FTP
 - Anonymous access denied
 
@@ -455,7 +506,3 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 	root hash: eaff25eaa9ffc8b62e3dfebf70e83a7b
 	```
 
----
-Tags: #tcp/80-http/web-app-cms-exploit #tcp/80-http/rce  #linux-priv-esc/suid/path-hijacking 
-
----
