@@ -5,4 +5,6 @@ order: 4
 ---
 
 
-> **Note**: Add Markdown syntax content to file `_tabs/about.md` and it will show up on this page.
+Hi there, I am yufong a 19year old student. Currently trying to obtain OSCP. This blog contains all my writeups from various platforms, TryHackMe,
+HackTheBox, etc.
+<script src="https://tryhackme.com/badge/663816"></script>
