@@ -41,31 +41,19 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 - `joomla`
 # Initial Foothold
 ## TCP/80 - HTTP - Cewl + Joomla Bruteforce + Shell Upload
+
 1. View to enumerated directories
 	- `index.html`
+
 		![](images/Pasted%20image%2020220125235608.png)
 	- `joomla`
 		![](images/Pasted%20image%2020220125235712.png)
+		
 2. Enumerate joomla
 	```
 	┌──(root💀kali)-[~/vulnHub/Glasglow-Smile-1.1/192.168.1.1]
 	└─# joomscan --url http://$ip/joomla -ec
-		____  _____  _____  __  __  ___   ___    __    _  _ 
-	   (_  _)(  _  )(  _  )(  \/  )/ __) / __)  /__\  ( \( )
-	  .-_)(   )(_)(  )(_)(  )    ( \__ \( (__  /(__)\  )  ( 
-	  \____) (_____)(_____)(_/\/\_)(___/ \___)(__)(__)(_)\_)
-				(1337.today)
-
-		--=[OWASP JoomScan
-		+---++---==[Version : 0.0.7
-		+---++---==[Update Date : [2018/09/23]
-		+---++---==[Authors : Mohammad Reza Espargham , Ali Razmjoo
-		--=[Code name : Self Challenge
-		@OWASP_JoomScan , @rezesp , @Ali_Razmjo0 , @OWASP
-
-	Processing http://192.168.1.1/joomla ...
-
-
+	
 
 	[+] FireWall Detector
 	[++] Firewall not detected
