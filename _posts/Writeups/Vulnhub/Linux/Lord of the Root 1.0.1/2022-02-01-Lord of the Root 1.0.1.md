@@ -1,7 +1,7 @@
 ---
 title: Lord of the Root 1.0.1
 categories: [Writeups, Vulnhub, Linux]
-tags: [port-knocking,exploit/sqli/database-enum,linux-priv-esc/mysql,linux-priv-esc/kernel-exploit ]
+tags: [port-knocking,exploit/sqli/database-enum,linux-priv-esc/mysql,linux-priv-esc/kernel-exploit,bof/linux-bof]
 img_path: /Writeups/Vulnhub/Linux/Lord of the Root 1.0.1
 pin: true
 image:
@@ -28,6 +28,7 @@ image:
 	hitting tcp 192.168.236.10:3
 	```
 ### NMAP  
+
 - Check for newly opened ports
 	```
 	┌──(root💀kali)-[~/vulnHub/Lord-of-the-root-1.0.1/192.168.236.10/exploit]
@@ -47,28 +48,30 @@ image:
 
 
 ## TCP/1337 - HTTP
-### NMAP 
-- Do a complete scan on `TCP/1337`
-	```
-	┌──(root💀kali)-[~/vulnHub/Lord-of-the-root-1.0.1/192.168.236.10/exploit]
-	└─# nmap -sV -sC -A $ip -p 1337 
-	Starting Nmap 7.92 ( https://nmap.org ) at 2022-01-25 01:23 +08
-	Nmap scan report for 192.168.236.10
-	Host is up (0.00047s latency).
 
-	PORT     STATE SERVICE VERSION
-	1337/tcp open  http    Apache httpd 2.4.7 ((Ubuntu))
-	|_http-title: Site doesn't have a title (text/html).
-	|_http-server-header: Apache/2.4.7 (Ubuntu)
-	MAC Address: 08:00:27:FF:4B:98 (Oracle VirtualBox virtual NIC)
-	Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-	Device type: general purpose
-	Running: Linux 3.X|4.X
-	OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
-	OS details: Linux 3.10 - 4.11, Linux 3.16 - 4.6, Linux 3.2 - 4.9, Linux 4.4
-	Network Distance: 1 hop
-	```
-	- `HTTP`
+### NMAP Complete Scan
+
+```
+┌──(root💀kali)-[~/vulnHub/Lord-of-the-root-1.0.1/192.168.236.10/exploit]
+└─# nmap -sV -sC -A $ip -p 1337 
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-01-25 01:23 +08
+Nmap scan report for 192.168.236.10
+Host is up (0.00047s latency).
+
+PORT     STATE SERVICE VERSION
+1337/tcp open  http    Apache httpd 2.4.7 ((Ubuntu))
+|_http-title: Site doesn't have a title (text/html).
+|_http-server-header: Apache/2.4.7 (Ubuntu)
+MAC Address: 08:00:27:FF:4B:98 (Oracle VirtualBox virtual NIC)
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Device type: general purpose
+Running: Linux 3.X|4.X
+OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
+OS details: Linux 3.10 - 4.11, Linux 3.16 - 4.6, Linux 3.2 - 4.9, Linux 4.4
+Network Distance: 1 hop
+```
+- `TCP/1337 - HTTP`
+
 ### FFUF 
 ```
 ┌──(root💀kali)-[~/vulnHub/Lord-of-the-root-1.0.1/192.168.236.10/exploit]
@@ -106,7 +109,9 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 - `404.html`
 - `images`
 - `index.html`
+
 # Initial Foothold
+
 ## TCP/80 - HTTP - SQLi (Blind) Database Enumeration
 1. View enumerated directories
 	- `index.html`
@@ -312,6 +317,7 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	```
 
 ## Root - Via Kernel Exploit
+
 1. Linpeas
 	![](images/Pasted%20image%2020220125174639.png)
 	- `3.19.0-25-generic`
@@ -329,6 +335,7 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	
 ## Root - Via BufferOverflow
 - [Video Demo](https://youtu.be/qPBUKSKk5g4)
+
 1. Determine Buffer Size till EIP overflows with A
 	- Via fuzzing
 	- Buffer Size: 200
