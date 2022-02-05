@@ -5,7 +5,7 @@ tags: [tcp/80-http/rce,tcp/80-http/web-app-cms-exploit,linux-priv-esc/sudo/misco
 img_path: /Writeups/Vulnhub/Linux/Hack Me Please 1
 pin: true
 image:
-  src: images/Hack Me Please 1
+  src: images/Hack Me Please 1.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---

@@ -5,7 +5,7 @@ tags: [port-knocking,exploit/sqli/database-enum,linux-priv-esc/mysql,linux-priv-
 img_path: /Writeups/Vulnhub/Linux/Lord of the Root 1.0.1
 pin: true
 image:
-  src: images/Lord of the Root 1.0.1
+  src: images/Lord of the Root 1.0.1.jpg
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
