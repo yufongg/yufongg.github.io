@@ -5,6 +5,5 @@ order: 4
 ---
 
 
-Hi there, I am yufong a 19year old student. Currently trying to obtain OSCP. This blog contains all my writeups from various platforms, TryHackMe,
-HackTheBox, etc.
+Hi there, I am yufong a 19 year old student who is passionate about cyber security. This blog contains all my writeups from various platforms, TryHackMe, Vulnhub, HackTheBox, etc.
 <script src="https://tryhackme.com/badge/663816"></script>
