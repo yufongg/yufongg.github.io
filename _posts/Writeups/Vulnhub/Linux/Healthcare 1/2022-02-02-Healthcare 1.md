@@ -286,8 +286,10 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 		![](images/Pasted%20image%2020220202160954.png)
 
 # Initial Foothold 2
+
 ## TCP/21 - FTP - Upload Reverse Shell
 - Instead of inserting reverse shell @ OpenEMR, we upload a reverse shell through FTP
+
 1. Able to access FTP w/ medical:medical
 	```
 	┌──(root💀kali)-[~/vulnHub/Healthcare/192.168.110.8/loot/ftp]
