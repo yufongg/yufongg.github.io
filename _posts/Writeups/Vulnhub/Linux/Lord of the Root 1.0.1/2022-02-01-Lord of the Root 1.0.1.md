@@ -27,9 +27,7 @@ image:
 	hitting tcp 192.168.236.10:2
 	hitting tcp 192.168.236.10:3
 	```
-
-### NMAP  
-- Check for newly opened ports
+3. Check for newly opened ports
 	```
 	┌──(root💀kali)-[~/vulnHub/Lord-of-the-root-1.0.1/192.168.236.10/exploit]
 	└─# nmap $ip -p-
