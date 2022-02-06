@@ -324,8 +324,8 @@ PORT      STATE SERVICE VERSION
 	| tblAttributeDefinitions      |
 	| tblCategory                  |
 	| tblDocumentApproveLog        |
-	| ...			       |	
-	| tblUsers		       |
+	| ...			      		   |	
+	| tblUsers		       		   |
 	| tblWorkflows                 |
 	| users                        |
 	+------------------------------+
@@ -476,6 +476,7 @@ PORT      STATE SERVICE VERSION
 4. Upload Reverse shell
 
 # Privilege Escalation
+
 ## Saket - Via Creds Found
 1. Earlier, we obtained Saket's credentials
 2. Switch to saket w/ saket:`Saket@#$1337`
