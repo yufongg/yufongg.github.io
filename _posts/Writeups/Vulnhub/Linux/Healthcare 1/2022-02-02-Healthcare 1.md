@@ -67,10 +67,10 @@ OS and Service detection performed. Please report any incorrect results at https
 # Nmap done at Wed Feb  2 03:04:44 2022 -- 1 IP address (1 host up) scanned in 18.18 seconds
 
 ```
-## TCP/21 - FTP
+## TCP/21 (FTP)
 - Anonymous access denied
 
-## TCP/80 - HTTP
+## TCP/80 (HTTP)
 ### Ferox
 ```		
 ┌──(root💀kali)-[~/vulnHub/Healthcare]
@@ -152,7 +152,7 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 
 
 # Initial Foothold
-## TCP/80 - HTTP - OpenEMR SQLi
+## TCP/80 (HTTP) - OpenEMR SQLi
 1. View enumerated directories
 	- `openemr`
 		![](images/Pasted%20image%2020220202142722.png)
@@ -287,7 +287,7 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 
 # Initial Foothold 2
 
-## TCP/21 - FTP - Upload Reverse Shell
+## TCP/21 (FTP) - Upload Reverse Shell
 - Instead of inserting reverse shell @ OpenEMR, we upload a reverse shell through FTP
 
 1. Able to access FTP w/ medical:medical

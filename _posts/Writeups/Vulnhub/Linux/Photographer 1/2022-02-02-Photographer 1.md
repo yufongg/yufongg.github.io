@@ -100,7 +100,7 @@ Read data files from: /usr/bin/../share/nmap
 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 # Nmap done at Thu Feb  3 15:41:27 2022 -- 1 IP address (1 host up) scanned in 24.42 seconds
 ```
-## TCP/80 - HTTP
+## TCP/80 (HTTP)
 ### FFUF
 ```
 ┌──(root💀kali)-[~/vulnHub/Photographer-1]
@@ -185,13 +185,13 @@ SMB         192.168.110.10  445    PHOTOGRAPHER     IPC$                        
 - `sambashare`, READ
 
 
-## TCP/8000 - HTTP
+## TCP/8000 (HTTP)
 ### FFUF
 - No directories enumerated
 
 
 # Initial Foothold
-## TCP/80 - HTTP - No Exploit
+## TCP/80 (HTTP) - No Exploit
 1. Prcoeed to `index.html`
 	 ![](images/Pasted%20image%2020220203163611.png)
 	 - Could not find any vulnerabilities
@@ -235,7 +235,7 @@ SMB         192.168.110.10  445    PHOTOGRAPHER     IPC$                        
 	- Passwords
 		- Variants of `babygirl`
 
-## TCP/8000 - HTTP - Koken CMS File Upload
+## TCP/8000 (HTTP) - Koken CMS File Upload
 1. Proceed to `http://192.168.110.10`
 	 ![](images/Pasted%20image%2020220203164057.png)
 	 - `Koken 0.22.24`

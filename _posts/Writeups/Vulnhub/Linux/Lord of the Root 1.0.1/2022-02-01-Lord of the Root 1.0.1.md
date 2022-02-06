@@ -11,10 +11,10 @@ image:
 ---
 
 # Recon
-- Only TCP/22 - SSH is up
+- Only TCP/22 (SSH) is up
 - Requires Port Knocking to open up ports
 
-## TCP/22 - SSH 
+## TCP/22 (SSH) 
 ### Port Knocking
 1. Connect to SSH
 	![](images/Pasted%20image%2020220125010651.png)
@@ -45,7 +45,7 @@ image:
 	- `TCP/1337`
 
 
-## TCP/1337 - HTTP
+## TCP/1337 (HTTP)
 
 ### NMAP Complete Scan
 
@@ -68,7 +68,7 @@ OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
 OS details: Linux 3.10 - 4.11, Linux 3.16 - 4.6, Linux 3.2 - 4.9, Linux 4.4
 Network Distance: 1 hop
 ```
-- `TCP/1337 - HTTP`
+- `TCP/1337 (HTTP)`
 
 ### FFUF 
 ```
@@ -110,7 +110,7 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 
 # Initial Foothold
 
-## TCP/80 - HTTP - SQLi (Blind) Database Enumeration
+## TCP/80 (HTTP) - SQLi (Blind) Database Enumeration
 1. View enumerated directories
 	- `index.html`
 		![](images/Pasted%20image%2020220125013623.png)
@@ -194,7 +194,7 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	AndMyBow
 	```
 	
-## TCP/22 - SSH - Bruteforce
+## TCP/22 (SSH) - Bruteforce
 
 1.  Bruteforce SSH
 	```

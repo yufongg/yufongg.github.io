@@ -92,7 +92,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 # Nmap done at Tue Jan 25 18:30:34 2022 -- 1 IP address (1 host up) scanned in 18.68 seconds
 
 ```
-## TCP/80 - HTTP
+## TCP/80 (HTTP)
 ### FFUF
 ```
 ┌──(root💀kali)-[~/vulnHub/GoldenEye-1]
@@ -126,7 +126,7 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 ```
 - `joomla`
 # Initial Foothold
-## TCP/80 - HTTP - Cewl + Joomla Bruteforce + Shell Upload
+## TCP/80 (HTTP) - Cewl + Joomla Bruteforce + Shell Upload
 
 1. View to enumerated directories
 	- `index.html`

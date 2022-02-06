@@ -177,7 +177,7 @@ OS and Service detection performed. Please report any incorrect results at https
 # Nmap done at Mon Jan 31 23:56:31 2022 -- 1 IP address (1 host up) scanned in 76.70 seconds
 
 ```
-## TCP/80 - HTTP
+## TCP/80 (HTTP)
 ### FFUF
 ```
 ┌──(root💀kali)-[~/vulnHub/HackMePlease]
@@ -238,7 +238,7 @@ PORT      STATE SERVICE VERSION
 
 
 # Initial Foothold
-## TCP/80 - HTTP - SeedDMS Misconfiguration 
+## TCP/80 (HTTP) - SeedDMS Misconfiguration 
 1. Proceed to `http://192.168.110.7`
 	![](images/Pasted%20image%2020220201004026.png)
 2. Proceed to `Contact`
@@ -398,7 +398,7 @@ PORT      STATE SERVICE VERSION
 3. Login w/ admin:password
 	![](images/Pasted%20image%2020220201021053.png)
 
-## Back to TCP/80 - HTTP - SeedDMS RCE
+## Back to TCP/80 (HTTP) - SeedDMS RCE
 1. Search exploits for `seeddms-5.1.22`
 
 	| Exploit Title                                                   | Path                  |
