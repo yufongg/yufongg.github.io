@@ -481,6 +481,7 @@ PORT      STATE SERVICE VERSION
 1. Earlier, we obtained Saket's credentials
 2. Switch to saket w/ saket:`Saket@#$1337`
 	![](images/Pasted%20image%2020220201024743.png)
+
 ## Root - Via Sudo
 1. After browsing through saket's home directory, there are firefox files
 2. Obtain firefox files to extract password from it
