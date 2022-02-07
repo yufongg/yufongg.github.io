@@ -8,7 +8,7 @@ img_path: /Writeups/Vulnhub/Linux/Digitalworld.local (MERCY v2)/images/
 image:
   src: Pasted%20image%2020220208040124.png
   width: 1000   # in pixels
-  height: 400   # in pixels
+  height: 200   # in pixels
 ---
 
 # Recon
