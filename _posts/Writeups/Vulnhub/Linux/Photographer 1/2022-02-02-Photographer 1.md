@@ -1,7 +1,7 @@
 ---
 title: Photographer 1
 categories: [Writeups, Vulnhub, Linux]
-tags: [tcp/139-445-smb/file-share,tcp/80-http/web-app-cms-exploit,tcp/80-http/rce,linux-priv-esc/suid/gtfo-bin]
+tags: [tcp/139-445-smb/fileshare,tcp/80-http/web-app-cms-exploit,tcp/80-http/rce,linux-priv-esc/suid/gtfo-bin]
 img_path: /Writeups/Vulnhub/Linux/Photographer 1
 ---
 
@@ -139,7 +139,7 @@ index.html              [Status: 200, Size: 5711, Words: 296, Lines: 190]
 ```
 
 
-## TCP/139,445 - SMB
+## TCP/139,445 (SMB)
 ### Enum4linux
 ```
 ---------------------------------------------------------------------------
@@ -196,7 +196,7 @@ SMB         192.168.110.10  445    PHOTOGRAPHER     IPC$                        
 	 ![](images/Pasted%20image%2020220203163611.png)
 	 - Could not find any vulnerabilities
 
-## TCP/139,445 - SMB 
+## TCP/139,445 (SMB) 
 1. Access `sambashare`
 	```
 	┌──(root💀kali)-[~/vulnHub/Photographer-1/192.168.110.10/loot/smb]
