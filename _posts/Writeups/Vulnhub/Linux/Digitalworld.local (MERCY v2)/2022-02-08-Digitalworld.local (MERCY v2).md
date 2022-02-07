@@ -13,6 +13,239 @@ image:
 
 # Recon
 
+## NMAP Complete Scan
+```
+# Nmap 7.92 scan initiated Mon Feb  7 19:15:36 2022 as: nmap -vv --reason -Pn -T4 -sV -sC --version-all -A --osscan-guess -p- -oN /root/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/scans/_full_tcp_nmap.txt -oX /root/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/scans/xml/_full_tcp_nmap.xml 192.168.110.19
+Nmap scan report for 192.168.110.19
+Host is up, received arp-response (0.00053s latency).
+Scanned at 2022-02-07 19:15:50 +08 for 31s
+Not shown: 65525 closed tcp ports (reset)
+PORT     STATE    SERVICE     REASON         VERSION
+22/tcp   filtered ssh         no-response
+53/tcp   open     domain      syn-ack ttl 64 ISC BIND 9.9.5-3ubuntu0.17 (Ubuntu Linux)
+| dns-nsid: 
+|_  bind.version: 9.9.5-3ubuntu0.17-Ubuntu
+80/tcp   filtered http        no-response
+110/tcp  open     pop3        syn-ack ttl 64 Dovecot pop3d
+| ssl-cert: Subject: commonName=localhost/organizationName=Dovecot mail server/emailAddress=root@localhost/organizationalUnitName=localhost
+| Issuer: commonName=localhost/organizationName=Dovecot mail server/emailAddress=root@localhost/organizationalUnitName=localhost
+| Public Key type: rsa
+| Public Key bits: 2048
+| Signature Algorithm: sha256WithRSAEncryption
+| Not valid before: 2018-08-24T13:22:55
+| Not valid after:  2028-08-23T13:22:55
+| MD5:   5114 fd64 1d28 7465 e1c8 8fde af46 c767
+| SHA-1: b1d2 b496 ab16 ed59 df4e 396e 6aa4 94df e59f c991
+| -----BEGIN CERTIFICATE-----
+| MIIDnTCCAoWgAwIBAgIJAJSmN2X0v1fgMA0GCSqGSIb3DQEBCwUAMGUxHDAaBgNV
+| BAoME0RvdmVjb3QgbWFpbCBzZXJ2ZXIxEjAQBgNVBAsMCWxvY2FsaG9zdDESMBAG
+| A1UEAwwJbG9jYWxob3N0MR0wGwYJKoZIhvcNAQkBFg5yb290QGxvY2FsaG9zdDAe
+| Fw0xODA4MjQxMzIyNTVaFw0yODA4MjMxMzIyNTVaMGUxHDAaBgNVBAoME0RvdmVj
+| b3QgbWFpbCBzZXJ2ZXIxEjAQBgNVBAsMCWxvY2FsaG9zdDESMBAGA1UEAwwJbG9j
+| YWxob3N0MR0wGwYJKoZIhvcNAQkBFg5yb290QGxvY2FsaG9zdDCCASIwDQYJKoZI
+| hvcNAQEBBQADggEPADCCAQoCggEBAKu55qkWb82oRinbXM7yriNhM89K8G7qeuYC
+| xvpaeScaIhX4T8+KDbA5+ekrkKba8Zw/8EYKD5zovZqjL9DbwE0dmDVR/zVUkV79
+| 9kyqOejKzIPFj8yr2OgNhDSpIrX76aEMgxY4H4TffGX5AiT2F4gVsaAh24pEvN8T
+| YMJpusrcslfkxvKCl1SV0BXkfLIbQW93SxYH3pgABMpcjLsunCXgzOY0mc+eAfKO
+| Js/JwKQZvblphTQJTT0QBRGjXoKf/v4Ka6dLcNPZHV1ej/b6RxGNhqd7ZBtoqVMb
+| TdCKz40EnBaOsyIZnlM0bs+coxok1N5x12WHBpzbf2yKIKdDHzUCAwEAAaNQME4w
+| HQYDVR0OBBYEFHM5ygJg0U68O2+1Yzkmwy7p65/LMB8GA1UdIwQYMBaAFHM5ygJg
+| 0U68O2+1Yzkmwy7p65/LMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEB
+| AGPDeUWsmdzhE9pXcmmdQVs763g7iUHpFS12m+Vvj5wQWJxMYqvXV1HvDljZL/sY
+| EapBfXl+U/vDswW+KUUqjAbC4z2tVIGU4Yqd48R/8S4pEQ/98DIyIlcS1RsBXlJd
+| ELgFQ3CAG6XWvX3zgkkj8JYYBifUBNPuCtME2YFVHfs4D1M4KsDzW7i1iBtLaVPj
+| zVy+MgJU1UZ11szaw6/C8HT+A/gf0zqIKXTECaHUENSaB0GMGqoh1HjL8sSHLGBH
+| SgZqcBuJhD9VQ2IjbinG0eZErgTbG58xM2a+Eyq3nQ7CuAGq/+I3yxYGh6OSCr9Z
+| z+3Va0s54XjQ2xICsn7tKrg=
+|_-----END CERTIFICATE-----
+|_ssl-date: TLS randomness does not represent time
+|_pop3-capabilities: RESP-CODES AUTH-RESP-CODE PIPELINING STLS SASL UIDL CAPA TOP
+139/tcp  open     netbios-ssn syn-ack ttl 64 Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+143/tcp  open     imap        syn-ack ttl 64 Dovecot imapd (Ubuntu)
+|_ssl-date: TLS randomness does not represent time
+|_imap-capabilities: more IMAP4rev1 IDLE capabilities have SASL-IR OK ID STARTTLS LITERAL+ listed LOGIN-REFERRALS LOGINDISABLEDA0001 Pre-login post-login ENABLE
+| ssl-cert: Subject: commonName=localhost/organizationName=Dovecot mail server/emailAddress=root@localhost/organizationalUnitName=localhost
+| Issuer: commonName=localhost/organizationName=Dovecot mail server/emailAddress=root@localhost/organizationalUnitName=localhost
+| Public Key type: rsa
+| Public Key bits: 2048
+| Signature Algorithm: sha256WithRSAEncryption
+| Not valid before: 2018-08-24T13:22:55
+| Not valid after:  2028-08-23T13:22:55
+| MD5:   5114 fd64 1d28 7465 e1c8 8fde af46 c767
+| SHA-1: b1d2 b496 ab16 ed59 df4e 396e 6aa4 94df e59f c991
+| -----BEGIN CERTIFICATE-----
+| MIIDnTCCAoWgAwIBAgIJAJSmN2X0v1fgMA0GCSqGSIb3DQEBCwUAMGUxHDAaBgNV
+| BAoME0RvdmVjb3QgbWFpbCBzZXJ2ZXIxEjAQBgNVBAsMCWxvY2FsaG9zdDESMBAG
+| A1UEAwwJbG9jYWxob3N0MR0wGwYJKoZIhvcNAQkBFg5yb290QGxvY2FsaG9zdDAe
+| Fw0xODA4MjQxMzIyNTVaFw0yODA4MjMxMzIyNTVaMGUxHDAaBgNVBAoME0RvdmVj
+| b3QgbWFpbCBzZXJ2ZXIxEjAQBgNVBAsMCWxvY2FsaG9zdDESMBAGA1UEAwwJbG9j
+| YWxob3N0MR0wGwYJKoZIhvcNAQkBFg5yb290QGxvY2FsaG9zdDCCASIwDQYJKoZI
+| hvcNAQEBBQADggEPADCCAQoCggEBAKu55qkWb82oRinbXM7yriNhM89K8G7qeuYC
+| xvpaeScaIhX4T8+KDbA5+ekrkKba8Zw/8EYKD5zovZqjL9DbwE0dmDVR/zVUkV79
+| 9kyqOejKzIPFj8yr2OgNhDSpIrX76aEMgxY4H4TffGX5AiT2F4gVsaAh24pEvN8T
+| YMJpusrcslfkxvKCl1SV0BXkfLIbQW93SxYH3pgABMpcjLsunCXgzOY0mc+eAfKO
+| Js/JwKQZvblphTQJTT0QBRGjXoKf/v4Ka6dLcNPZHV1ej/b6RxGNhqd7ZBtoqVMb
+| TdCKz40EnBaOsyIZnlM0bs+coxok1N5x12WHBpzbf2yKIKdDHzUCAwEAAaNQME4w
+| HQYDVR0OBBYEFHM5ygJg0U68O2+1Yzkmwy7p65/LMB8GA1UdIwQYMBaAFHM5ygJg
+| 0U68O2+1Yzkmwy7p65/LMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEB
+| AGPDeUWsmdzhE9pXcmmdQVs763g7iUHpFS12m+Vvj5wQWJxMYqvXV1HvDljZL/sY
+| EapBfXl+U/vDswW+KUUqjAbC4z2tVIGU4Yqd48R/8S4pEQ/98DIyIlcS1RsBXlJd
+| ELgFQ3CAG6XWvX3zgkkj8JYYBifUBNPuCtME2YFVHfs4D1M4KsDzW7i1iBtLaVPj
+| zVy+MgJU1UZ11szaw6/C8HT+A/gf0zqIKXTECaHUENSaB0GMGqoh1HjL8sSHLGBH
+| SgZqcBuJhD9VQ2IjbinG0eZErgTbG58xM2a+Eyq3nQ7CuAGq/+I3yxYGh6OSCr9Z
+| z+3Va0s54XjQ2xICsn7tKrg=
+|_-----END CERTIFICATE-----
+445/tcp  open     netbios-ssn syn-ack ttl 64 Samba smbd 4.3.11-Ubuntu (workgroup: WORKGROUP)
+993/tcp  open     ssl/imap    syn-ack ttl 64 Dovecot imapd (Ubuntu)
+| ssl-cert: Subject: commonName=localhost/organizationName=Dovecot mail server/emailAddress=root@localhost/organizationalUnitName=localhost
+| Issuer: commonName=localhost/organizationName=Dovecot mail server/emailAddress=root@localhost/organizationalUnitName=localhost
+| Public Key type: rsa
+| Public Key bits: 2048
+| Signature Algorithm: sha256WithRSAEncryption
+| Not valid before: 2018-08-24T13:22:55
+| Not valid after:  2028-08-23T13:22:55
+| MD5:   5114 fd64 1d28 7465 e1c8 8fde af46 c767
+| SHA-1: b1d2 b496 ab16 ed59 df4e 396e 6aa4 94df e59f c991
+| -----BEGIN CERTIFICATE-----
+| MIIDnTCCAoWgAwIBAgIJAJSmN2X0v1fgMA0GCSqGSIb3DQEBCwUAMGUxHDAaBgNV
+| BAoME0RvdmVjb3QgbWFpbCBzZXJ2ZXIxEjAQBgNVBAsMCWxvY2FsaG9zdDESMBAG
+| A1UEAwwJbG9jYWxob3N0MR0wGwYJKoZIhvcNAQkBFg5yb290QGxvY2FsaG9zdDAe
+| Fw0xODA4MjQxMzIyNTVaFw0yODA4MjMxMzIyNTVaMGUxHDAaBgNVBAoME0RvdmVj
+| b3QgbWFpbCBzZXJ2ZXIxEjAQBgNVBAsMCWxvY2FsaG9zdDESMBAGA1UEAwwJbG9j
+| YWxob3N0MR0wGwYJKoZIhvcNAQkBFg5yb290QGxvY2FsaG9zdDCCASIwDQYJKoZI
+| hvcNAQEBBQADggEPADCCAQoCggEBAKu55qkWb82oRinbXM7yriNhM89K8G7qeuYC
+| xvpaeScaIhX4T8+KDbA5+ekrkKba8Zw/8EYKD5zovZqjL9DbwE0dmDVR/zVUkV79
+| 9kyqOejKzIPFj8yr2OgNhDSpIrX76aEMgxY4H4TffGX5AiT2F4gVsaAh24pEvN8T
+| YMJpusrcslfkxvKCl1SV0BXkfLIbQW93SxYH3pgABMpcjLsunCXgzOY0mc+eAfKO
+| Js/JwKQZvblphTQJTT0QBRGjXoKf/v4Ka6dLcNPZHV1ej/b6RxGNhqd7ZBtoqVMb
+| TdCKz40EnBaOsyIZnlM0bs+coxok1N5x12WHBpzbf2yKIKdDHzUCAwEAAaNQME4w
+| HQYDVR0OBBYEFHM5ygJg0U68O2+1Yzkmwy7p65/LMB8GA1UdIwQYMBaAFHM5ygJg
+| 0U68O2+1Yzkmwy7p65/LMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEB
+| AGPDeUWsmdzhE9pXcmmdQVs763g7iUHpFS12m+Vvj5wQWJxMYqvXV1HvDljZL/sY
+| EapBfXl+U/vDswW+KUUqjAbC4z2tVIGU4Yqd48R/8S4pEQ/98DIyIlcS1RsBXlJd
+| ELgFQ3CAG6XWvX3zgkkj8JYYBifUBNPuCtME2YFVHfs4D1M4KsDzW7i1iBtLaVPj
+| zVy+MgJU1UZ11szaw6/C8HT+A/gf0zqIKXTECaHUENSaB0GMGqoh1HjL8sSHLGBH
+| SgZqcBuJhD9VQ2IjbinG0eZErgTbG58xM2a+Eyq3nQ7CuAGq/+I3yxYGh6OSCr9Z
+| z+3Va0s54XjQ2xICsn7tKrg=
+|_-----END CERTIFICATE-----
+|_ssl-date: TLS randomness does not represent time
+|_imap-capabilities: IMAP4rev1 IDLE capabilities more SASL-IR OK ID have LITERAL+ AUTH=PLAINA0001 LOGIN-REFERRALS listed Pre-login post-login ENABLE
+995/tcp  open     ssl/pop3    syn-ack ttl 64 Dovecot pop3d
+| ssl-cert: Subject: commonName=localhost/organizationName=Dovecot mail server/emailAddress=root@localhost/organizationalUnitName=localhost
+| Issuer: commonName=localhost/organizationName=Dovecot mail server/emailAddress=root@localhost/organizationalUnitName=localhost
+| Public Key type: rsa
+| Public Key bits: 2048
+| Signature Algorithm: sha256WithRSAEncryption
+| Not valid before: 2018-08-24T13:22:55
+| Not valid after:  2028-08-23T13:22:55
+| MD5:   5114 fd64 1d28 7465 e1c8 8fde af46 c767
+| SHA-1: b1d2 b496 ab16 ed59 df4e 396e 6aa4 94df e59f c991
+| -----BEGIN CERTIFICATE-----
+| MIIDnTCCAoWgAwIBAgIJAJSmN2X0v1fgMA0GCSqGSIb3DQEBCwUAMGUxHDAaBgNV
+| BAoME0RvdmVjb3QgbWFpbCBzZXJ2ZXIxEjAQBgNVBAsMCWxvY2FsaG9zdDESMBAG
+| A1UEAwwJbG9jYWxob3N0MR0wGwYJKoZIhvcNAQkBFg5yb290QGxvY2FsaG9zdDAe
+| Fw0xODA4MjQxMzIyNTVaFw0yODA4MjMxMzIyNTVaMGUxHDAaBgNVBAoME0RvdmVj
+| b3QgbWFpbCBzZXJ2ZXIxEjAQBgNVBAsMCWxvY2FsaG9zdDESMBAGA1UEAwwJbG9j
+| YWxob3N0MR0wGwYJKoZIhvcNAQkBFg5yb290QGxvY2FsaG9zdDCCASIwDQYJKoZI
+| hvcNAQEBBQADggEPADCCAQoCggEBAKu55qkWb82oRinbXM7yriNhM89K8G7qeuYC
+| xvpaeScaIhX4T8+KDbA5+ekrkKba8Zw/8EYKD5zovZqjL9DbwE0dmDVR/zVUkV79
+| 9kyqOejKzIPFj8yr2OgNhDSpIrX76aEMgxY4H4TffGX5AiT2F4gVsaAh24pEvN8T
+| YMJpusrcslfkxvKCl1SV0BXkfLIbQW93SxYH3pgABMpcjLsunCXgzOY0mc+eAfKO
+| Js/JwKQZvblphTQJTT0QBRGjXoKf/v4Ka6dLcNPZHV1ej/b6RxGNhqd7ZBtoqVMb
+| TdCKz40EnBaOsyIZnlM0bs+coxok1N5x12WHBpzbf2yKIKdDHzUCAwEAAaNQME4w
+| HQYDVR0OBBYEFHM5ygJg0U68O2+1Yzkmwy7p65/LMB8GA1UdIwQYMBaAFHM5ygJg
+| 0U68O2+1Yzkmwy7p65/LMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEB
+| AGPDeUWsmdzhE9pXcmmdQVs763g7iUHpFS12m+Vvj5wQWJxMYqvXV1HvDljZL/sY
+| EapBfXl+U/vDswW+KUUqjAbC4z2tVIGU4Yqd48R/8S4pEQ/98DIyIlcS1RsBXlJd
+| ELgFQ3CAG6XWvX3zgkkj8JYYBifUBNPuCtME2YFVHfs4D1M4KsDzW7i1iBtLaVPj
+| zVy+MgJU1UZ11szaw6/C8HT+A/gf0zqIKXTECaHUENSaB0GMGqoh1HjL8sSHLGBH
+| SgZqcBuJhD9VQ2IjbinG0eZErgTbG58xM2a+Eyq3nQ7CuAGq/+I3yxYGh6OSCr9Z
+| z+3Va0s54XjQ2xICsn7tKrg=
+|_-----END CERTIFICATE-----
+|_pop3-capabilities: RESP-CODES AUTH-RESP-CODE PIPELINING USER SASL(PLAIN) UIDL CAPA TOP
+|_ssl-date: TLS randomness does not represent time
+8080/tcp open     http        syn-ack ttl 64 Apache Tomcat/Coyote JSP engine 1.1
+|_http-server-header: Apache-Coyote/1.1
+| http-methods: 
+|   Supported Methods: GET HEAD POST PUT DELETE OPTIONS
+|_  Potentially risky methods: PUT DELETE
+|_http-open-proxy: Proxy might be redirecting requests
+|_http-title: Apache Tomcat
+| http-robots.txt: 1 disallowed entry 
+|_/tryharder/tryharder
+MAC Address: 08:00:27:CC:62:BC (Oracle VirtualBox virtual NIC)
+Device type: general purpose
+Running: Linux 3.X|4.X
+OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
+OS details: Linux 3.2 - 4.9
+TCP/IP fingerprint:
+OS:SCAN(V=7.92%E=4%D=2/7%OT=53%CT=1%CU=43153%PV=Y%DS=1%DC=D%G=Y%M=080027%TM
+OS:=6200FF85%P=x86_64-pc-linux-gnu)SEQ(SP=104%GCD=1%ISR=10C%TI=Z%CI=I%II=I%
+OS:TS=8)OPS(O1=M5B4ST11NW7%O2=M5B4ST11NW7%O3=M5B4NNT11NW7%O4=M5B4ST11NW7%O5
+OS:=M5B4ST11NW7%O6=M5B4ST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=
+OS:7120)ECN(R=Y%DF=Y%T=40%W=7210%O=M5B4NNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%
+OS:A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0
+OS:%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S
+OS:=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R
+OS:=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N
+OS:%T=40%CD=S)
+
+Uptime guess: 0.005 days (since Mon Feb  7 19:09:23 2022)
+Network Distance: 1 hop
+TCP Sequence Prediction: Difficulty=260 (Good luck!)
+IP ID Sequence Generation: All zeros
+Service Info: Host: MERCY; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Host script results:
+|_clock-skew: mean: 5h19m58s, deviation: 4h37m07s, median: 7h59m57s
+| p2p-conficker: 
+|   Checking for Conficker.C or higher...
+|   Check 1 (port 20630/tcp): CLEAN (Couldn't connect)
+|   Check 2 (port 22633/tcp): CLEAN (Couldn't connect)
+|   Check 3 (port 41049/udp): CLEAN (Timeout)
+|   Check 4 (port 56145/udp): CLEAN (Timeout)
+|_  0/4 checks are positive: Host is CLEAN or ports are blocked
+| smb2-time: 
+|   date: 2022-02-07T19:16:08
+|_  start_date: N/A
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+| nbstat: NetBIOS name: MERCY, NetBIOS user: <unknown>, NetBIOS MAC: <unknown> (unknown)
+| Names:
+|   MERCY<00>            Flags: <unique><active>
+|   MERCY<03>            Flags: <unique><active>
+|   MERCY<20>            Flags: <unique><active>
+|   \x01\x02__MSBROWSE__\x02<01>  Flags: <group><active>
+|   WORKGROUP<00>        Flags: <group><active>
+|   WORKGROUP<1d>        Flags: <unique><active>
+|   WORKGROUP<1e>        Flags: <group><active>
+| Statistics:
+|   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+|   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+|_  00 00 00 00 00 00 00 00 00 00 00 00 00 00
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb-os-discovery: 
+|   OS: Windows 6.1 (Samba 4.3.11-Ubuntu)
+|   Computer name: mercy
+|   NetBIOS computer name: MERCY\x00
+|   Domain name: \x00
+|   FQDN: mercy
+|_  System time: 2022-02-08T03:16:08+08:00
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   0.53 ms 192.168.110.19
+
+Read data files from: /usr/bin/../share/nmap
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Feb  7 19:16:21 2022 -- 1 IP address (1 host up) scanned in 45.90 seconds
+```
+
 ## TCP/8080 (HTTP)
 ### FFUF - common.txt
 ```
