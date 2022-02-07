@@ -3,6 +3,7 @@ title: Digitalworld.local (MERCY v2)
 categories: [Writeups, Vulnhub, Linux]
 date: 2022-02-08
 tags: [tcp/139-445-smb/fileshare,port-knocking,tcp/80-http/web-app-cms-exploit,tcp/80-http/cms/tomcat,linux-priv-esc/cronjob ]
+pin: true
 img_path: /Writeups/Vulnhub/Linux/Digitalworld.local (MERCY v2)/images/
 image:
   src: Pasted%20image%2020220208040124.png
