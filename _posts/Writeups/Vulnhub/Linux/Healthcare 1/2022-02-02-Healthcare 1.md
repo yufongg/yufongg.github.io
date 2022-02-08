@@ -1,6 +1,6 @@
 ---
 title: Healthcare 1 
-categories: [Writeups, Vulnhub, Linux]
+categories: [Vulnhub, Linux]
 tags: [tcp/80-http/web-app-cms-exploit,tcp/80-http/rce,linux-priv-esc/suid/path-hijacking]
 img_path: /Writeups/Vulnhub/Linux/Healthcare 1
 ---
