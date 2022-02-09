@@ -227,7 +227,7 @@ PORT     STATE SERVICE REASON         VERSION
 6. Include files that can lead to RCE
 	1. Enumerate files that can lead to RCE
 		- Did not find any log files we can poison
-	2. Earlier, during [reconaissance phase](#FFUF%20-%20common%20txt), we enumerated `config.php`, `config.php` contains SQL credentials where we could access mysql at `TCP/3306` to obtain user credentials.
+	2. Earlier, during reconaissance phase, we enumerated `config.php`, `config.php` contains SQL credentials where we could access mysql at `TCP/3306` to obtain user credentials.
 		- [`config.php` details](https://docs.cmsmadesimple.org/configuration/config-file)
 	3. View source code of `config.php` using `PHP Wrapper, php://filter`
 	4. Check if `php://filter` works, by including files that we know exists
