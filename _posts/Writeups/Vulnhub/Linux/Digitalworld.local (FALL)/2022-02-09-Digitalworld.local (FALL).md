@@ -5,7 +5,7 @@ date: 2022-02-09
 tags: [ exploit/file-inclusion/lfi, linux-priv-esc/linux-creds-found ]
 img_path: /Writeups/Vulnhub/Linux/Digitalworld.local (FALL)/images/
 image: 
-  src: Pasted%20image%2020220208232657.png
+  src: fall.jpg
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
