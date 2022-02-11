@@ -5,7 +5,7 @@ date: 2022-02-11
 tags: [tcp/22-ftp/exploit, tcp/80-http/rce, linux-priv-esc/linux-creds-found, linux-priv-esc/sudo/unknown-exec]
 img_path: /Writeups/Vulnhub/Linux/Digitalworld.local (JOY)/images/
 image:
-  src: Pasted%20image%2020220208232657.png
+  src: Pasted%20image%2020220208040124.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
