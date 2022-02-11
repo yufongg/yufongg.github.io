@@ -534,7 +534,7 @@ SNIP
 		![](Pasted%20image%2020220211190947.png)
 		- This is patrick's home directory, while enumerating snmp earlier, we found out `TCP/36969 (TFTP)` is also sharing/hosting patrick's home directory
 		- Therefore, we can download all the files & view it.
-	- Compiled `project*`, `reminder`
+	- Compiled the remaining files
 		![](Pasted%20image%2020220211191126.png)
 		- Could be used as a password list
 5. Check for if ProFTPD is vulnerable to `CVE-2015-3306`
@@ -549,11 +549,14 @@ SNIP
 	```
 	- It is vulnerable
 	- Most likely, we have to exploit this vulnerability to obtain RCE, possible ways to gain initial access
-		1. We can upload a web shell via FTP (we have write access) & use the exploit to copy it into the web directory
-		2. We can copy patrick's private key & ssh into it
+		1. We can upload a web shell via FTP (we have write access) & use the exploit to copy it into the web directory?
+		2. We can copy some sensitive file to read?
+	- Boxes that also exploits `ProFTPD 1.3.5`
+		- TryHackMe: Kenobi
+		- Vulnhub: [Symfonos2](https://yufongg.github.io/posts/Symfonos-2/#tcp21-ftp---proftpd-135-file-copy) 
 
 ## TCP/36969 (TFTP)
-1. Extract filename from `directory`
+1. Extract filenames from `directory`
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-JOY/192.168.110.26/loot/ftp/192.168.110.26/upload]
 	└─# cat directory | awk '{print $9}' > files.txt
@@ -647,9 +650,9 @@ SNIP
 	cat: script: Is a directory
 	```
 	![](Pasted%20image%2020220211193011.png)
-	- `ProFTPd 1.3.5`
-	- `/var/www/tryingharderisjoy`
-	- We are able to insert a webshell into `/var/www/tryingharderisjoy` 
+		- `ProFTPd 1.3.5`
+		- `/var/www/tryingharderisjoy`
+		- We are able to insert a webshell into `/var/www/tryingharderisjoy` 
 
 ## TCP/21 (FTP) - ProFTPD 1.3.5 Exploit
 1. Search exploits for `ProFTPd 1.3.5`
