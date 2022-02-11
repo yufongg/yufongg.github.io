@@ -97,6 +97,7 @@ GEM
     wdm (0.1.1)
     webrick (1.7.0)
     yell (2.2.2)
+    jekyll-sitemap
 
 PLATFORMS
   x64-mingw32
