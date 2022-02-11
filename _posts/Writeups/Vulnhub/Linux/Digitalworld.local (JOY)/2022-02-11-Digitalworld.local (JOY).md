@@ -748,7 +748,9 @@ SNIP
 	patrick@JOY:~/script$ /tmp/rootbash -p
 	```
 	![](Pasted%20image%2020220211203950.png)
+	
 6. Root Flag
+
 ```
 rootbash-4.4# cat proof.txt 
 Never grant sudo permissions on scripts that perform system functions!
