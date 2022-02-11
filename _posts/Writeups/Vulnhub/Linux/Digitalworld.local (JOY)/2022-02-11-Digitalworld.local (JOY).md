@@ -533,7 +533,7 @@ SNIP
 	- `directory`
 		![](Pasted%20image%2020220211190947.png)
 		- This is patrick's home directory, while enumerating snmp earlier, we found out `TCP/36969 (TFTP)` is also hosting files in patrick's home directory
-		- Therefore, we can download all the files & view it.
+		- Therefore, we can access tftp & download all the files in patrick's home directory
 	- Compiled the remaining files
 		![](Pasted%20image%2020220211191126.png)
 		- Could be used as a password list
