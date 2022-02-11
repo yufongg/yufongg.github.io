@@ -748,33 +748,33 @@ SNIP
 	patrick@JOY:~/script$ /tmp/rootbash -p
 	```
 	![](Pasted%20image%2020220211203950.png)
-	
+
 6. Root Flag
 
-```
-rootbash-4.4# cat proof.txt 
-Never grant sudo permissions on scripts that perform system functions!
-rootbash-4.4# 
+	```
+	rootbash-4.4# cat proof.txt 
+	Never grant sudo permissions on scripts that perform system functions!
+	rootbash-4.4# 
 
-Thanks for joining us!
+	Thanks for joining us!
 
-If you have not rooted MERCY, DEVELOPMENT, BRAVERY, TORMENT, please root them too!
+	If you have not rooted MERCY, DEVELOPMENT, BRAVERY, TORMENT, please root them too!
 
-This will conclude the series of five boxes on Vulnhub for pentesting practice, and once again, these were built while thinking about OffSec in mind. :-)
+	This will conclude the series of five boxes on Vulnhub for pentesting practice, and once again, these were built while thinking about OffSec in mind. :-)
 
-For those who have helped made videos on rooting these boxes, I am more than grateful for your support. This means a lot for the box creator and those who have helped test these boxes. A shoutout to the kind folk from Wizard Labs, Zajt, as well as friends in the local security community which I belong to.
+	For those who have helped made videos on rooting these boxes, I am more than grateful for your support. This means a lot for the box creator and those who have helped test these boxes. A shoutout to the kind folk from Wizard Labs, Zajt, as well as friends in the local security community which I belong to.
 
-If you found the boxes a good learning experience, feel free to share them with your friends.
+	If you found the boxes a good learning experience, feel free to share them with your friends.
 
-As of the time of writing, I will be working on (building) some boxes on Wizard-Labs, in a similar flavour to these boxes. If you enjoyed these, consider pinging them and their project. I think their lab is slowly being built into a nice lab with a variety of machines with good learning value.
+	As of the time of writing, I will be working on (building) some boxes on Wizard-Labs, in a similar flavour to these boxes. If you enjoyed these, consider pinging them and their project. I think their lab is slowly being built into a nice lab with a variety of machines with good learning value.
 
-I was rather glad someone found me on Linkedin after breaking into these boxes. If you would like to contact the author, you can find some of the author's contact points on his website (https://donavan.sg).
+	I was rather glad someone found me on Linkedin after breaking into these boxes. If you would like to contact the author, you can find some of the author's contact points on his website (https://donavan.sg).
 
-May the r00t be with you.
+	May the r00t be with you.
 
-P.S. Someone asked me, also, about "shesmileslikeabrightsmiley". Yes, indeed, she smiles like a bright smiley. She makes me smile like a bright smiley too? :-)
-rootbash-4.4# 
-```
+	P.S. Someone asked me, also, about "shesmileslikeabrightsmiley". Yes, indeed, she smiles like a bright smiley. She makes me smile like a bright smiley too? :-)
+	rootbash-4.4# 
+	```
 
 
 
