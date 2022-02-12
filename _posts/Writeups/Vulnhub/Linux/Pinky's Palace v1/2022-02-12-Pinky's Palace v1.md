@@ -6,8 +6,8 @@ tags: [pivot, exploit/sqli/database-enum, linux-priv-esc/linux-creds-found, bof/
 img_path: /Writeups/Vulnhub/Linux/Pinky's Palace v1/images/
 image:
   src: Pasted%20image%2020220212222737.png
-  width: 1000   # in pixels
-  height: 400   # in pixels
+  width: 900   # in pixels
+  height: 50   # in pixels
 ---
 
 # Recon
