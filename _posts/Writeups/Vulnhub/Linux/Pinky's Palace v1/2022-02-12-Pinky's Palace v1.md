@@ -301,8 +301,7 @@ image:
 	0
 	```
 5. Transfer `adminhelper` to kali
-6. Determine Buffer Size till EIP overflows with A
-	- Via fuzzing
+6. Determine buffer size to crash `adminhelper`
 	- Buffer Size: 100
 	![](Pasted%20image%2020220212212236.png)
 7.  Create pattern
