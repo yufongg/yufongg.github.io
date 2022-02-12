@@ -326,7 +326,7 @@ image:
 	```
 	![](Pasted%20image%2020220212215638.png)
 7. Since ASLR is disabled, we can store our shellcode into an environment variable.
-8. Use [`getenvaddr.c`](https://gist.githubusercontent.com/superkojiman/6a6e44db390d6dfc329a/raw/892300db69d14f08af5205e35dede43391d56c70/getenvaddr) to determine the environment variable address
+8. After storing shellcode into an environment variable, we can use [`getenvaddr.c`](https://gist.githubusercontent.com/superkojiman/6a6e44db390d6dfc329a/raw/892300db69d14f08af5205e35dede43391d56c70/getenvaddr) to determine the environment variable address
 9. Continue exploit on target 
 10. Store our [shellcode](http://shell-storm.org/shellcode/files/shellcode-806.php) into an environment variable
 	```
