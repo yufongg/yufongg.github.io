@@ -356,5 +356,23 @@ image:
 	```
 	![](vmware_NqYOGoXLyM.gif)
 
+12. Root Flag
+	``` 
+	root
+	# cd /root
+	# ls
+	root.txt
+	# cat root.txt	
+	===========[!!!CONGRATS!!!]===========
+
+	[+] You r00ted Pinky's Palace Intermediate!
+	[+] I hope you enjoyed this box!
+	[+] Cheers to VulnHub!
+	[+] Twitter: @Pink_P4nther
+
+	Flag: 99975cfc5e2eb4c199d38d4a2b2c03ce
+	# 
+	```
+
 
 
