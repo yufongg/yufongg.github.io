@@ -11,6 +11,149 @@ image:
 ---
 
 # Recon
+## NMAP Complete Scan
+```
+# Nmap 7.92 scan initiated Tue Feb  8 17:14:08 2022 as: nmap -vv --reason -Pn -T4 -sV -sC --version-all -A --osscan-guess -p- -oN /root/vulnHub/Digitalworld.local-FALL/192.168.110.20/scans/_full_tcp_nmap.txt -oX /root/vulnHub/Digitalworld.local-FALL/192.168.110.20/scans/xml/_full_tcp_nmap.xml 192.168.110.20
+Nmap scan report for 192.168.110.20
+Host is up, received arp-response (0.0010s latency).
+Scanned at 2022-02-08 17:14:09 +08 for 246s
+Not shown: 65367 filtered tcp ports (no-response), 155 filtered tcp ports (host-prohibited)
+PORT      STATE  SERVICE     REASON         VERSION
+22/tcp    open   ssh         syn-ack ttl 64 OpenSSH 7.8 (protocol 2.0)
+| ssh-hostkey: 
+|   2048 c5:86:f9:64:27:a4:38:5b:8a:11:f9:44:4b:2a:ff:65 (RSA)
+| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBezJ/KDio6Fwya44wrK4/39Vd93TBRE3CC7En4GJYCcT89paKDGhozzWU7pAFV5FqWbBZ5Z9pJIGhVNvmIIYR1YoyTbkF3qbf41XBGCmI87nLqYxFXQys3iycBYah3qMxkr24N4SvU+OIOWItFQZSNCK3BzYlCnxFNVNh4JLqrI/Og40EP5Ck7REorRRIraefdROKDqZHPeugwV1UHbISjyDsKChbpobQxVl80RT1dszhuUU1BvhJl1sy/opLQWdRjsl97L1c0lc87AFcd6PgsGf6UFURN+1RaVngnZBFWWnYUb/HfCbKJGseTgATk+Fk5+IBOrlXJ4fQ9/SkagXL
+|   256 e1:00:0b:cc:59:21:69:6c:1a:c1:77:22:39:5a:35:4f (ECDSA)
+| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBAFLZltNl1U6p8d7Su4gH+FQmIRRpZlAuOHrQYHYdGeWADfzBXlPSDkCrItb9doE6+ACyru5Fm023LgiTNg8yGU=
+|   256 1d:4e:14:6d:20:f4:56:da:65:83:6f:7d:33:9d:f0:ed (ED25519)
+|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEeQTBvJOPKDtUv+nJyQJ9rKdAmrC577XXaTjRI+2n3c
+80/tcp    open   http        syn-ack ttl 64 Apache httpd 2.4.39 ((Fedora) OpenSSL/1.1.0i-fips mod_perl/2.0.10 Perl/v5.26.3)
+|_http-favicon: Unknown favicon MD5: EBF500D206705BDA0CB79021C15DA98A
+| http-methods: 
+|_  Supported Methods: HEAD POST OPTIONS
+|_http-server-header: Apache/2.4.39 (Fedora) OpenSSL/1.1.0i-fips mod_perl/2.0.10 Perl/v5.26.3
+| http-robots.txt: 1 disallowed entry 
+|_/
+111/tcp   closed rpcbind     reset ttl 64
+139/tcp   open   netbios-ssn syn-ack ttl 64 Samba smbd 3.X - 4.X (workgroup: SAMBA)
+443/tcp   open   ssl/http    syn-ack ttl 64 Apache httpd 2.4.39 ((Fedora) OpenSSL/1.1.0i-fips mod_perl/2.0.10 Perl/v5.26.3)
+|_ssl-date: TLS randomness does not represent time
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+| ssl-cert: Subject: commonName=localhost.localdomain/organizationName=Unspecified/countryName=US/emailAddress=root@localhost.localdomain
+| Subject Alternative Name: DNS:localhost.localdomain
+| Issuer: commonName=localhost.localdomain/organizationName=Unspecified/countryName=US/emailAddress=root@localhost.localdomain/organizationalUnitName=ca-2683772458131447713
+| Public Key type: rsa
+| Public Key bits: 2048
+| Signature Algorithm: sha256WithRSAEncryption
+| Not valid before: 2019-08-15T03:51:33
+| Not valid after:  2020-08-19T05:31:33
+| MD5:   ac51 22da 893a 4d95 07ba 3e82 5780 bf24
+| SHA-1: 8821 fdc6 7f1b ac6a 2c7b 6a32 194d ed44 b553 2cf4
+| -----BEGIN CERTIFICATE-----
+| MIIE4DCCAsigAwIBAgIIV5TaF3XKfxowDQYJKoZIhvcNAQELBQAwgY8xCzAJBgNV
+| BAYTAlVTMRQwEgYDVQQKDAtVbnNwZWNpZmllZDEfMB0GA1UECwwWY2EtMjY4Mzc3
+| MjQ1ODEzMTQ0NzcxMzEeMBwGA1UEAwwVbG9jYWxob3N0LmxvY2FsZG9tYWluMSkw
+| JwYJKoZIhvcNAQkBFhpyb290QGxvY2FsaG9zdC5sb2NhbGRvbWFpbjAeFw0xOTA4
+| MTUwMzUxMzNaFw0yMDA4MTkwNTMxMzNaMG4xCzAJBgNVBAYTAlVTMRQwEgYDVQQK
+| DAtVbnNwZWNpZmllZDEeMBwGA1UEAwwVbG9jYWxob3N0LmxvY2FsZG9tYWluMSkw
+| JwYJKoZIhvcNAQkBFhpyb290QGxvY2FsaG9zdC5sb2NhbGRvbWFpbjCCASIwDQYJ
+| KoZIhvcNAQEBBQADggEPADCCAQoCggEBAKY2vdPnY38fq4HuMzEIZwz2PfMutxbg
+| xdxMBJMk8eM9vwwMmDyiMuEMfy46w5gvCgo5zmq4VoQYKJxrcUIogiDqzLC/Pjfq
+| jSvFooDih5naltrhaoZvTHlu8Q4G0TmwhaaYpedqkhPzVLHywkckVBu9P9unrrlI
+| BI3+N3aZLTppsk1gTe67tUjhpeiMQKkYWhtgTG3upSAI9FjsB9LNhw8CyIM+VFHj
+| 2YHFlvp+Jt1A+u+vMtfDm5A86/MpdeWpLKbLTjgNk0Q79VPU0UBnoSKcS2RwAVRM
+| QkR3lLoOEGu/DLz84EQP1r9m5jLZX5p5Gc0qaa9/FG3ll9DLRL+gggsCAwEAAaNg
+| MF4wDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwIAYDVR0RBBkwF4IVbG9jYWxo
+| b3N0LmxvY2FsZG9tYWluMB8GA1UdIwQYMBaAFNch7n7MGaSjmr7qLPAGmH5iWQnd
+| MA0GCSqGSIb3DQEBCwUAA4ICAQBxLU3j7e5B47e3oO7dHrZrl6fTxAPORYcPWM19
+| Qjwq4wBluFliGz918zGukOrDQdb2WEhbJj1X2SNsLhqa6i/nEi+GKQ7XzMwpOxTg
+| vY3bFV1y550Uac/kj6lSXLIgRllLruuQOOLHsfz9BhTe5ZbSO0N20XhvHqhxbd6s
+| EBqKZeSbnweXnHUeiev/7IceZaxoWHqJ4CfM1PUXnJZL+NuWGPAfzMfv5F7ap66T
+| d1bc9xBvg9jbvP4RtmGT0QwpUTCpsXBLS3WuZjq9/jcxvyubwVfIidGCMGoiGNqy
+| pHI+XgYH3f/9W56QgxuUIjctLTeU8v5YZlS7vw58whxaZ0j3xQd50RZ+YFPTXnsy
+| L2oAOZ8Lb57SKMM/RKYju5cvSQjtTRz+KnHqZHwDA46b2WKOUONrlNvm7Hp0dICB
+| RLfD150FOj8L914sNFh85M2Sj1BFHKDSNu9ootIZg0uUxwJNGrOuzY0vlRiAJTOA
+| Sw3FNGWb1UWyAXjO1DGL2YEnW2phXMdml4MttR6HoDgw689ra0q67xNWRyNOEc00
+| OdANMqq4PpF3W58/o8zRriePTQiGYltb95DUS5skFm/ScJ9PvElefLn5MkgnhKEC
+| htGW8shfB4Rhc9r+03JJpflvJ48EtS/TikQNTyO4B9p1bEguRVbWzx6Tf/rLEYdb
+| GBMBjA==
+|_-----END CERTIFICATE-----
+| tls-alpn: 
+|_  http/1.1
+|_http-title: 400 Bad Request
+|_http-server-header: Apache/2.4.39 (Fedora) OpenSSL/1.1.0i-fips mod_perl/2.0.10 Perl/v5.26.3
+| http-robots.txt: 1 disallowed entry 
+|_/
+|_http-favicon: Unknown favicon MD5: EBF500D206705BDA0CB79021C15DA98A
+445/tcp   open   netbios-ssn syn-ack ttl 64 Samba smbd 4.8.10 (workgroup: SAMBA)
+3306/tcp  open   mysql       syn-ack ttl 64 MySQL (unauthorized)
+8000/tcp  closed http-alt    reset ttl 64
+8080/tcp  closed http-proxy  reset ttl 64
+8443/tcp  closed https-alt   reset ttl 64
+9090/tcp  open   http        syn-ack ttl 64 Cockpit web service 162 - 188
+|_http-title: Did not follow redirect to https://192.168.110.20:9090/
+| http-methods: 
+|_  Supported Methods: GET HEAD
+10080/tcp closed amanda      reset ttl 64
+10443/tcp closed cirrossp    reset ttl 64
+MAC Address: 08:00:27:A2:80:57 (Oracle VirtualBox virtual NIC)
+Device type: general purpose
+Running: Linux 5.X
+OS CPE: cpe:/o:linux:linux_kernel:5
+OS details: Linux 5.0 - 5.4
+TCP/IP fingerprint:
+OS:SCAN(V=7.92%E=4%D=2/8%OT=22%CT=111%CU=%PV=Y%DS=1%DC=D%G=N%M=080027%TM=62
+OS:023557%P=x86_64-pc-linux-gnu)SEQ(SP=107%GCD=1%ISR=10D%TI=Z%CI=Z%II=I%TS=
+OS:A)OPS(O1=M5B4ST11NW7%O2=M5B4ST11NW7%O3=M5B4NNT11NW7%O4=M5B4ST11NW7%O5=M5
+OS:B4ST11NW7%O6=M5B4ST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=FE8
+OS:8)ECN(R=Y%DF=Y%TG=40%W=FAF0%O=M5B4NNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%TG=40%S=O%A
+OS:=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%TG=40%W=0%S=A%A=Z%F=R%O=%RD=0
+OS:%Q=)T5(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%TG=40%W=0
+OS:%S=A%A=Z%F=R%O=%RD=0%Q=)T7(R=N)U1(R=N)IE(R=Y%DFI=N%TG=40%CD=S)
+
+Uptime guess: 26.164 days (since Thu Jan 13 13:22:17 2022)
+Network Distance: 1 hop
+TCP Sequence Prediction: Difficulty=263 (Good luck!)
+IP ID Sequence Generation: All zeros
+Service Info: Host: FALL; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Host script results:
+| smb2-time: 
+|   date: 2022-02-08T17:17:17
+|_  start_date: N/A
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+|_clock-skew: mean: 10h40m00s, deviation: 4h37m09s, median: 7h59m58s
+| smb-security-mode: 
+|   account_used: <blank>
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb-os-discovery: 
+|   OS: Windows 6.1 (Samba 4.8.10)
+|   Computer name: fall
+|   NetBIOS computer name: FALL\x00
+|   Domain name: \x00
+|   FQDN: fall
+|_  System time: 2022-02-08T09:17:20-08:00
+| p2p-conficker: 
+|   Checking for Conficker.C or higher...
+|   Check 1 (port 25200/tcp): CLEAN (Couldn't connect)
+|   Check 2 (port 39619/tcp): CLEAN (Couldn't connect)
+|   Check 3 (port 47728/udp): CLEAN (Timeout)
+|   Check 4 (port 52999/udp): CLEAN (Failed to receive data)
+|_  0/4 checks are positive: Host is CLEAN or ports are blocked
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   1.05 ms 192.168.110.20
+
+Read data files from: /usr/bin/../share/nmap
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Tue Feb  8 17:18:15 2022 -- 1 IP address (1 host up) scanned in 247.67 seconds
+```
 
 ## TCP/80 (HTTP)
 ### FFUF - common.txt

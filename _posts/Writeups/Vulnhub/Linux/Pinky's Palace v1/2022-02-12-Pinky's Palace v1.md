@@ -11,6 +11,58 @@ image:
 ---
 
 # Recon
+## NMAP Complete Scan
+```
+# Nmap 7.92 scan initiated Sat Feb 12 01:47:10 2022 as: nmap -vv --reason -Pn -T4 -sV -sC --version-all -A --osscan-guess -p- -oN /root/vulnHub/PinkysPalaceV1/192.168.110.27/scans/_full_tcp_nmap.txt -oX /root/vulnHub/PinkysPalaceV1/192.168.110.27/scans/xml/_full_tcp_nmap.xml 192.168.110.27
+Nmap scan report for 192.168.110.27
+Host is up, received arp-response (0.00036s latency).
+Scanned at 2022-02-12 01:47:11 +08 for 33s
+Not shown: 65532 closed tcp ports (reset)
+PORT      STATE SERVICE    REASON         VERSION
+8080/tcp  open  http       syn-ack ttl 64 nginx 1.10.3
+|_http-title: 403 Forbidden
+|_http-server-header: nginx/1.10.3
+31337/tcp open  http-proxy syn-ack ttl 64 Squid http proxy 3.5.23
+|_http-title: ERROR: The requested URL could not be retrieved
+|_http-server-header: squid/3.5.23
+64666/tcp open  ssh        syn-ack ttl 64 OpenSSH 7.4p1 Debian 10+deb9u2 (protocol 2.0)
+| ssh-hostkey: 
+|   2048 df:02:12:4f:4c:6d:50:27:6a:84:e9:0e:5b:65:bf:a0 (RSA)
+| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/eH9dt7PVqsTKvqz7gb2G/6/0wUl+dy6gSLPDX0bqkIwc5k0IiCefKqk9MpBbTOU6aUWE3T/y9IYCAjhCaW7QTRrrVn+rUviz+8lABk50s29Z5hBEDwMOme+OZ5rTX3z+8096MgbOdgPMEsQbk3W/eWTDNHXUrU9iijz0zcZgC/HkuS+1E/C8IC3+CR30GQTA+cLXD8CKQ38WEukuNbvAlwEtjw3kMGvv74kzek8cVsWQGPB1y2qLv+miQHaWROiP//WzM5e69gXiFRNcC8spesAzRH0pkYXXTDTGpgG3sBu4G+lGBHncU+30a7i2AEtv+tAy0C2bvFYHqymdFJFv
+|   256 0a:ad:aa:c7:16:f7:15:07:f0:a8:50:23:17:f3:1c:2e (ECDSA)
+| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBDZDIHslZJXVJH6dCHGaJRVy8WULZGgoqkKe8gfp/jibTQiMe8lIE8zFX2S8aXxWo4kSBd6i94zKj4YR2TcFj2o=
+|   256 4a:2d:e5:d8:ee:69:61:55:bb:db:af:29:4e:54:52:2f (ED25519)
+|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEKiR+Y3n+2PC1Zjqgt/sE9mBtaxGwqMxPj19s2cpoYU
+MAC Address: 08:00:27:3C:08:49 (Oracle VirtualBox virtual NIC)
+Device type: general purpose
+Running: Linux 3.X|4.X
+OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
+OS details: Linux 3.2 - 4.9
+TCP/IP fingerprint:
+OS:SCAN(V=7.92%E=4%D=2/12%OT=8080%CT=1%CU=%PV=Y%DS=1%DC=D%G=N%M=080027%TM=6
+OS:206A140%P=x86_64-pc-linux-gnu)SEQ(SP=105%GCD=4%ISR=107%TI=Z%CI=I%II=I%TS
+OS:=8)OPS(O1=M5B4ST11NW7%O2=M5B4ST11NW7%O3=M5B4NNT11NW7%O4=M5B4ST11NW7%O5=M
+OS:5B4ST11NW7%O6=M5B4ST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=71
+OS:20)ECN(R=Y%DF=Y%TG=40%W=7210%O=M5B4NNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%TG=40%S=O%
+OS:A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%TG=40%W=0%S=A%A=Z%F=R%O=%RD=
+OS:0%Q=)T5(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%TG=40%W=
+OS:0%S=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)
+OS:U1(R=N)IE(R=Y%DFI=N%TG=40%CD=S)
+
+Uptime guess: 0.003 days (since Sat Feb 12 01:43:41 2022)
+Network Distance: 1 hop
+TCP Sequence Prediction: Difficulty=261 (Good luck!)
+IP ID Sequence Generation: All zeros
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   0.36 ms 192.168.110.27
+
+Read data files from: /usr/bin/../share/nmap
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sat Feb 12 01:47:44 2022 -- 1 IP address (1 host up) scanned in 34.67 seconds
+```
 
 ## TCP/8080 (HTTP)
 ### FFUF
