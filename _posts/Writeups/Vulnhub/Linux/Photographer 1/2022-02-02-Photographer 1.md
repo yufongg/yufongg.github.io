@@ -157,6 +157,7 @@ Use of uninitialized value $user_info in pattern match (m//) at ./enum4linux.pl 
 ```
 - `daisa`
 - `agi`
+
 ### Crackmapexec
 ```
 ┌──(root💀kali)-[~/vulnHub/Photographer-1/192.168.110.10]
@@ -171,6 +172,7 @@ SMB         192.168.110.10  445    PHOTOGRAPHER     sambashare      READ        
 SMB         192.168.110.10  445    PHOTOGRAPHER     IPC$                            IPC Service (photographer server (Samba, Ubuntu))
 ```
 - `sambashare`, READ
+
 ### SMBMap
 ```
 ┌──(root💀kali)-[~/vulnHub/Photographer-1/192.168.110.10]
