@@ -3,7 +3,7 @@ title: Attacktive Directory
 categories: [TryHackMe, Active Directory]
 date: 2022-01-09
 tags: [ad/kerbrute/user-enum, ad/as-rep-roasting, ad/kerbrute/password-spray, ad/kerberoasting, tcp/139-445-smb/fileshare , ad/bloodhound, ad/evil-winrm, ad/secretsdump]
-img_path: /Writeups/Vulnhub/Linux/Attacktive Directory/images/
+img_path: /Writeups/TryHackMe/Active Directory/Attacktive Directory/images/
 image:
   src: Pasted%20image%2020220219220550.png
   width: 1000   # in pixels
