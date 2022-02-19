@@ -159,11 +159,13 @@ OS and Service detection performed. Please report any incorrect results at https
 	crackmapexec smb $ip
 	```
 	![Attacktivedirect crackmapexec.png](Attacktivedirect%20crackmapexec.png)
-2. Enum4linux
-	![](Pasted%20image%2020220219225515.png)
-	- Unable to enumerate any users.
-	- Domain Name AKA DNS Domain: `spookysec.local`
-	- FQDN: `AttacktiveDirectory.spookysec.local`
+
+### Enum4Linux
+![](Pasted%20image%2020220219225515.png)
+- Unable to enumerate any users.
+- Domain Name AKA DNS Domain: `spookysec.local`
+- FQDN: `AttacktiveDirectory.spookysec.local`
+
 
 
 # Initial Foothold
