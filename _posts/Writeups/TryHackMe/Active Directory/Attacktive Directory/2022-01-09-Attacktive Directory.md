@@ -154,11 +154,10 @@ OS and Service detection performed. Please report any incorrect results at https
 ## TCP/139,445 (SMB)
 
 ### Crackmapexec
-1. Crackmapexec
-	```
-	crackmapexec smb $ip
-	```
-	![Attacktivedirect crackmapexec.png](Attacktivedirect%20crackmapexec.png)
+```
+crackmapexec smb $ip
+```
+![Attacktivedirect crackmapexec.png](Attacktivedirect%20crackmapexec.png)
 
 ### Enum4Linux
 ![](Pasted%20image%2020220219225515.png)
