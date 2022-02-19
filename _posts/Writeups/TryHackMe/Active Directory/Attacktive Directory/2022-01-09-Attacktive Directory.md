@@ -3,7 +3,7 @@ title: Attacktive Directory
 categories: [TryHackMe, Active Directory]
 date: 2022-01-09
 tags: [ad/kerbrute/user-enum, ad/as-rep-roasting, ad/kerbrute/password-spray, ad/kerberoasting, tcp/139-445-smb/fileshare , ad/bloodhound, ad/evil-winrm, ad/secretsdump]
-img_path: /Writeups/TryHackMe/Active Directory/Attacktive Directory/images/
+img_path: /Writeups/Vulnhub/Linux/Attacktive Directory/images/
 image:
   src: Pasted%20image%2020220219220550.png
   width: 1000   # in pixels
@@ -21,7 +21,7 @@ image:
 	```
 	![Attacktivedirect crackmapexec.png](Attacktivedirect%20crackmapexec.png)
 2. Enum4linux
-	![Attacktivedirect enum4linux.png](Attacktivedirect%20enum4linux.png)
+	![](Pasted%20image%2020220219225515.png)
 	- Unable to enumerate any users.
 	- Domain Name AKA DNS Domain: `spookysec.local`
 	- FQDN: `AttacktiveDirectory.spookysec.local`
@@ -102,10 +102,10 @@ image:
 	- Both command works, use 1 only
 2. Bloodhound Analysis
 	- Setup
-	![](Pasted%20image%2020220219202830.png)
+	![](Pasted%20image%2020220219225605.png)
 	- Results:
 		![](Pasted%20image%2020220219203013.png)
-	![](Pasted%20image%2020220219203505.png)
+		![](Pasted%20image%2020220219225659.png)
 3. User backup@spookysec.local has generic all over the domain controller, allowing us to dump hashes on domain w/ secretsdump
 	```
 	┌──(root💀kali)-[~/tryhackme/attacktivedirect/10.10.184.179/exploit/bloodhound]
