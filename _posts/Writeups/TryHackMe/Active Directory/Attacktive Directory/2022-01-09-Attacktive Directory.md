@@ -12,6 +12,145 @@ image:
 
 # Recon 
 
+## NMAP Complete Scan
+```
+# Nmap 7.92 scan initiated Sun Jan  9 21:22:43 2022 as: nmap -vv --reason -Pn -T4 -sV -sC --version-all -A --osscan-guess -p- -oN /root/tryhackme/attacktivedirect/10.10.184.179/scans/_full_tcp_nmap.txt -oX /root/tryhackme/attacktivedirect/10.10.184.179/scans/xml/_full_tcp_nmap.xml 10.10.184.179
+adjust_timeouts2: packet supposedly had rtt of -198855 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -198855 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -199486 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -199486 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -199952 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -199952 microseconds.  Ignoring time.
+Nmap scan report for 10.10.184.179
+Host is up, received user-set (0.30s latency).
+Scanned at 2022-01-09 21:22:44 +08 for 771s
+Not shown: 65509 closed tcp ports (reset)
+PORT      STATE SERVICE       REASON          VERSION
+53/tcp    open  domain        syn-ack ttl 127 Simple DNS Plus
+80/tcp    open  http          syn-ack ttl 127 Microsoft IIS httpd 10.0
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: IIS Windows Server
+| http-methods: 
+|   Supported Methods: OPTIONS TRACE GET HEAD POST
+|_  Potentially risky methods: TRACE
+88/tcp    open  kerberos-sec  syn-ack ttl 127 Microsoft Windows Kerberos (server time: 2022-01-09 13:33:24Z)
+135/tcp   open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+139/tcp   open  netbios-ssn   syn-ack ttl 127 Microsoft Windows netbios-ssn
+389/tcp   open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: spookysec.local0., Site: Default-First-Site-Name)
+445/tcp   open  microsoft-ds? syn-ack ttl 127
+464/tcp   open  kpasswd5?     syn-ack ttl 127
+593/tcp   open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  tcpwrapped    syn-ack ttl 127
+3268/tcp  open  ldap          syn-ack ttl 127 Microsoft Windows Active Directory LDAP (Domain: spookysec.local0., Site: Default-First-Site-Name)
+3269/tcp  open  tcpwrapped    syn-ack ttl 127
+3389/tcp  open  ms-wbt-server syn-ack ttl 127 Microsoft Terminal Services
+|_ssl-date: 2022-01-09T13:35:26+00:00; +1s from scanner time.
+| ssl-cert: Subject: commonName=AttacktiveDirectory.spookysec.local
+| Issuer: commonName=AttacktiveDirectory.spookysec.local
+| Public Key type: rsa
+| Public Key bits: 2048
+| Signature Algorithm: sha256WithRSAEncryption
+| Not valid before: 2022-01-08T13:22:27
+| Not valid after:  2022-07-10T13:22:27
+| MD5:   7932 0bff f770 4fae e0c9 5c3b 55c7 f926
+| SHA-1: 4ce0 2690 8a98 dfd1 3e31 3dfe b693 7eb6 3724 21d2
+| -----BEGIN CERTIFICATE-----
+| MIIDCjCCAfKgAwIBAgIQQQpoi70iW4FFKxKDkM1g7DANBgkqhkiG9w0BAQsFADAu
+| MSwwKgYDVQQDEyNBdHRhY2t0aXZlRGlyZWN0b3J5LnNwb29reXNlYy5sb2NhbDAe
+| Fw0yMjAxMDgxMzIyMjdaFw0yMjA3MTAxMzIyMjdaMC4xLDAqBgNVBAMTI0F0dGFj
+| a3RpdmVEaXJlY3Rvcnkuc3Bvb2t5c2VjLmxvY2FsMIIBIjANBgkqhkiG9w0BAQEF
+| AAOCAQ8AMIIBCgKCAQEAsyCckYH4HEU2s2Y3860Fw7z4YzVlyifMTDlZGTgWSAPG
+| dRroXK+8etUETfB55Y4jLS2xjqkoJ90zuOfDJw5dsaK/HQk2WqwLxPgEa+swO2iQ
+| TanHUjeCghBTbvuvia3JedAPVTH47W3/XOVD12zwBZSam668/UgEDBakYobjv6p/
+| g8qyRjMGz/SXkbT2E5Hbg/H438FzrEKgE0Zca1cvh6YpeDv7Z92WPepIkwUL91tm
+| uCDCryCL4ngULzxBCtXVpuO9oYi4qBAQ6Ry7Pl+fUVov1+TXEJKkOsPUgjtEUxuy
+| rvW6JIxAMqi6unaySb6HIVO3srqkLCJc5A7ydxCZiQIDAQABoyQwIjATBgNVHSUE
+| DDAKBggrBgEFBQcDATALBgNVHQ8EBAMCBDAwDQYJKoZIhvcNAQELBQADggEBABeQ
+| s/DzdcGVl9LSiQdlKvFIsop1IUl2TUFCAFsbxnumn/dIIWJ8BvNeDlHzGbgHUHTD
+| uXSmhW22GHszgwXc3+F7crX6Q+XgWnXH54O5M1a7JSBD/lf4h/65PLbqpmyeqbum
+| LnF6SXKU/fNRARpH3bReHSu2L7WIb4jfY3aEJl8vlSYibDP3yjfOujVv5CMg1UBB
+| RlwmU3upfJSSfSN23oxRM4+9AIhbkGlK4d3oCoQoROsknlNbBikdi44b5ZVjGBp+
+| TCzCKL+STZ4bffNrTfsYMMYs57V9JM7LnIlKYqEliB90emLZd8gzPJ8fjr1fu3lL
+| hA8fpkkca7brFq+ymlU=
+|_-----END CERTIFICATE-----
+| rdp-ntlm-info: 
+|   Target_Name: THM-AD
+|   NetBIOS_Domain_Name: THM-AD
+|   NetBIOS_Computer_Name: ATTACKTIVEDIREC
+|   DNS_Domain_Name: spookysec.local
+|   DNS_Computer_Name: AttacktiveDirectory.spookysec.local
+|   DNS_Tree_Name: spookysec.local
+|   Product_Version: 10.0.17763
+|_  System_Time: 2022-01-09T13:35:18+00:00
+5985/tcp  open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-title: Not Found
+|_http-server-header: Microsoft-HTTPAPI/2.0
+9389/tcp  open  mc-nmf        syn-ack ttl 127 .NET Message Framing
+47001/tcp open  http          syn-ack ttl 127 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-title: Not Found
+|_http-server-header: Microsoft-HTTPAPI/2.0
+49664/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49665/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49667/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49668/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49672/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49675/tcp open  ncacn_http    syn-ack ttl 127 Microsoft Windows RPC over HTTP 1.0
+49676/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49679/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49683/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+49697/tcp open  msrpc         syn-ack ttl 127 Microsoft Windows RPC
+OS fingerprint not ideal because: maxTimingRatio (1.660000e+00) is greater than 1.4
+Aggressive OS guesses: Microsoft Windows 10 1709 - 1909 (93%), Microsoft Windows Server 2012 (92%), Microsoft Windows Longhorn (91%), Microsoft Windows Server 2016 (91%), Microsoft Windows Vista SP1 (91%), Microsoft Windows 10 1709 - 1803 (90%), Microsoft Windows 10 1809 - 1909 (90%), Microsoft Windows Server 2012 R2 (90%), Microsoft Windows Server 2012 R2 Update 1 (90%), Microsoft Windows Server 2016 build 10586 - 14393 (90%)
+No exact OS matches for host (test conditions non-ideal).
+TCP/IP fingerprint:
+SCAN(V=7.92%E=4%D=1/9%OT=53%CT=1%CU=31926%PV=Y%DS=2%DC=T%G=N%TM=61DAE4A7%P=x86_64-pc-linux-gnu)
+SEQ(SP=109%GCD=1%ISR=10B%TS=U)
+SEQ(SP=106%GCD=1%ISR=107%CI=I%TS=U)
+OPS(O1=M505NW8NNS%O2=M505NW8NNS%O3=M505NW8%O4=M505NW8NNS%O5=M505NW8NNS%O6=M505NNS)
+WIN(W1=FFFF%W2=FFFF%W3=FFFF%W4=FFFF%W5=FFFF%W6=FF70)
+ECN(R=Y%DF=Y%T=80%W=FFFF%O=M505NW8NNS%CC=Y%Q=)
+T1(R=Y%DF=Y%T=80%S=O%A=S+%F=AS%RD=0%Q=)
+T2(R=Y%DF=Y%T=80%W=0%S=Z%A=S%F=AR%O=%RD=0%Q=)
+T3(R=Y%DF=Y%T=80%W=0%S=Z%A=O%F=AR%O=%RD=0%Q=)
+T4(R=Y%DF=Y%T=80%W=0%S=A%A=O%F=R%O=%RD=0%Q=)
+T5(R=Y%DF=Y%T=80%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)
+T6(R=Y%DF=Y%T=80%W=0%S=A%A=O%F=R%O=%RD=0%Q=)
+T7(R=Y%DF=Y%T=80%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)
+U1(R=Y%DF=N%T=80%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)
+IE(R=Y%DFI=N%T=80%CD=Z)
+
+Network Distance: 2 hops
+TCP Sequence Prediction: Difficulty=262 (Good luck!)
+IP ID Sequence Generation: Busy server or unknown class
+Service Info: Host: ATTACKTIVEDIREC; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-time: 
+|   date: 2022-01-09T13:35:15
+|_  start_date: N/A
+| p2p-conficker: 
+|   Checking for Conficker.C or higher...
+|   Check 1 (port 13605/tcp): CLEAN (Couldn't connect)
+|   Check 2 (port 64743/tcp): CLEAN (Couldn't connect)
+|   Check 3 (port 40958/udp): CLEAN (Failed to receive data)
+|   Check 4 (port 61357/udp): CLEAN (Timeout)
+|_  0/4 checks are positive: Host is CLEAN or ports are blocked
+|_clock-skew: mean: 0s, deviation: 0s, median: 0s
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled and required
+
+TRACEROUTE (using port 22/tcp)
+HOP RTT       ADDRESS
+1   329.20 ms 10.11.0.1
+2   329.25 ms 10.10.184.179
+
+Read data files from: /usr/bin/../share/nmap
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sun Jan  9 21:35:35 2022 -- 1 IP address (1 host up) scanned in 773.53 seconds
+
+```
+
 ## TCP/139,445 (SMB)
 
 ### Crackmapexec
