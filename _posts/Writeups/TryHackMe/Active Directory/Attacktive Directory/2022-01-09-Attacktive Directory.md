@@ -170,7 +170,7 @@ crackmapexec smb $ip
 # Initial Foothold
 
 ## TCP/88 (Kerberos)
-1. Enumerate usernames w/ kerbrute
+1. Enumerate [usernames](https://raw.githubusercontent.com/Sq00ky/attacktive-directory-tools/master/userlist.txt) w/ kerbrute
 	```
 	~/tools/windows-binaries/AD/kerbrute userenum --dc $ip -d spookysec.local userlist.txt -o found_users.txt
 	```
