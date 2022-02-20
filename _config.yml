@@ -18,7 +18,7 @@ timezone: Asia/Singapore
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Yufong's Cybersec Blog                         # the main title
+title: Yufong                       # the main title
 
 tagline: Walkthrough   # it will display as the sub-title
 
