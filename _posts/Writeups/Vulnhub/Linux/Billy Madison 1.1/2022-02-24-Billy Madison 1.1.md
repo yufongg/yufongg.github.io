@@ -541,6 +541,7 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	└─# tcpdump -r eg-01.cap 
 	reading from file eg-01.cap, link-type IEEE802_11 (802.11), snapshot length 65535
 	```
+	- [`IEEE802_11`](https://www.electronics-notes.com/articles/connectivity/wifi-ieee-802-11/what-is-wifi.php#:~:text=The%20technical%20name%20for%20WiFi,devices%20from%20a%20router%20%2F%20hotspot.&text=Wi-Fi%20wireless%20connectivity%20is%20an%20established%20part%20of%20everyday%20life.)
 2. Crack `eg-01.cap` w/ `aircrack-ng`
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/veronica_ftp/192.168.110.34]
