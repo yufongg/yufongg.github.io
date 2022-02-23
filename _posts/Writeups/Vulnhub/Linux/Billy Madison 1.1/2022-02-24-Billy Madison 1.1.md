@@ -415,7 +415,7 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	```
 	- `TCP/21`
 
-## TCP/21- FTP
+## TCP/21 (FTP)
 1. Access FTP w/ eric:ericdoesntdrinkhisownpee, check for write access
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/exploit/wireshark]
