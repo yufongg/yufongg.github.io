@@ -662,20 +662,19 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	root@BM:/PRIVATE# 
 	```
 2. View files
-	- `hint.txt`:
-	``` 
-	root@BM:/PRIVATE# cat hint.txt 
-	Heh, I called the file BowelMovement because it has the same initials as
-	Billy Madison.  That truely cracks me up!  LOLOLOL!
+	- `hint.txt`
+		``` 
+		root@BM:/PRIVATE# cat hint.txt 
+		Heh, I called the file BowelMovement because it has the same initials as
+		Billy Madison.  That truely cracks me up!  LOLOLOL!
 
-	I always forget the password, but it's here:
+		I always forget the password, but it's here:
 
-	https://en.wikipedia.org/wiki/Billy_Madison
+		https://en.wikipedia.org/wiki/Billy_Madison
 
-	-EG
-	root@BM:/PRIVATE# 
-
-	```
+		-EG
+		root@BM:/PRIVATE# 
+		```
 		- `That truely cracks me up!`
 	- `BowelMovement`
 		- Truecrypt volume, based on `hint.txt`, `truely cracks me up!`
@@ -732,7 +731,7 @@ SMB         192.168.110.34  445    BM               IPC$                        
 8. Unzip `secret.zip`
 9. View extracted files
 	- `Billy_Madison_12th_Grade_Final_Project.doc`
-	![](Pasted%20image%2020220224023455.png)
+		![](Pasted%20image%2020220224023455.png)
 	- `THE-END.txt`
 		``` 
 		┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/billy]
