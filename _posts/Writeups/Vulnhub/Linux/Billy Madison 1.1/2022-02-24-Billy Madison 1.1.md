@@ -535,7 +535,13 @@ SMB         192.168.110.34  445    BM               IPC$                        
 		- packet capture file
 
 ## Crack .cap file
-4. Crack `eg-01.cap` w/ `aircrack-ng`
+1. `eg-01.cap` captured WiFi traffic
+	``` 
+	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/veronica_ftp/192.168.110.34]
+	└─# tcpdump -r eg-01.cap 
+	reading from file eg-01.cap, link-type IEEE802_11 (802.11), snapshot length 65535
+	```
+2. Crack `eg-01.cap` w/ `aircrack-ng`
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/veronica_ftp/192.168.110.34]
 	└─# aircrack-ng eg-01.cap -w /usr/share/wordlists/rockyou.txt 
