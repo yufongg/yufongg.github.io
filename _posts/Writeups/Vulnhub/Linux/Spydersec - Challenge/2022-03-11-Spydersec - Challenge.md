@@ -1,7 +1,7 @@
 ---
 title: Spydersec - Challenge
 categories: [Vulnhub, Linux]
-date: 2022-02-06 
+date: 2022-03-11 
 tags: [cryptography]
 img_path: /Writeups/Vulnhub/Linux/Spydersec - Challenge/images/
 image:
