@@ -136,8 +136,9 @@ v                       [Status: 301, Size: 296, Words: 19, Lines: 10]
 		```
 		![](Pasted%20image%2020220311153735.png)
 3. Use [javascript unpacker](https://matthewfl.com/unPacker.html) to deobfuscate/unpack/beautify the javascript code
->JavaScript Unpacker is **a useful client-side online tool to unpack/ beautify/ deobfuscate your packed JavaScript code**. If your JavaScript code looks like: eval(function (p,a,c,k,e,d){...}...)eval(function(p,a,c,k,e,r){...}...). Using this tool, you are able to deobfuscate, beautify, unpack your javascript code
 ![](Pasted%20image%2020220311154930.png)
+>JavaScript Unpacker is **a useful client-side online tool to unpack/ beautify/ deobfuscate your packed JavaScript code**. If your JavaScript code looks like: eval(function (p,a,c,k,e,d){...}...)eval(function(p,a,c,k,e,r){...}...). Using this tool, you are able to deobfuscate, beautify, unpack your javascript code
+
 4. Decode it
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Spydersec/192.168.110.38/loot/http]
