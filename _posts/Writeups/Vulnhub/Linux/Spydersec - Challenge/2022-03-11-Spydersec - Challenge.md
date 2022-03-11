@@ -281,7 +281,7 @@ v                       [Status: 301, Size: 296, Words: 19, Lines: 10]
 	- [Truecrypt volume can be hidden in a MP4 file](https://appliedtech.iit.edu/school-applied-technology/projects/mp4-steganography)
 	- [TCSteg Download](https://raw.githubusercontent.com/joshualat/CS-198-Web-API-Project/master/usb_programs/tcsteg.py)
 	> TCSteg allows users to hide a TrueCrypt hidden volume in an MP4 file, and the structure of the file makes it difficult to identify that a volume exists
-5. Uncover the hidden Truecrypt volume
+5. tcsteg info (Not needed, we can immediately mount mulder.fbi file as a Truecrypt volume)
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Spydersec/192.168.110.38/exploit]
 	└─# python tcsteg2.py 
@@ -303,16 +303,6 @@ v                       [Status: 301, Size: 296, Words: 19, Lines: 10]
 	This file will be modified in-place to make it possible to change the TrueCrypt
 	password. After changing the password, this command should be run again to
 	remove that (detectable and hence insecure) modification!
-
-	┌──(root💀kali)-[~/vulnHub/Spydersec/192.168.110.38/exploit]
-	└─# mv mulder.fbi mulder.mp4
-
-
-	┌──(root💀kali)-[~/vulnHub/Spydersec/192.168.110.38/exploit]
-	└─# python tcsteg2.py -p mulder.mp4
-	Preparing hybrid file for password change ... 
-	Complete.  Now change the TrueCrypt password
-
 	```
 6. Mount truecrypt volume w/ 'A!Vu~jtH#729sLA;h4%' (Clue 2)
 	``` 
