@@ -251,7 +251,7 @@ v                       [Status: 301, Size: 296, Words: 19, Lines: 10]
 
 ## TCP/80 (HTTP) - Clue 3
 1. Reload page & intercept w/ burpsuite
-	![](Pasted%20image%2020220311155844.png)
+	![](Pasted%20image%2020220311171216.png)
 	- URL Encoded
 2. Decode it
 	``` 
