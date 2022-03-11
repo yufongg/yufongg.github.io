@@ -121,7 +121,7 @@ v                       [Status: 301, Size: 296, Words: 19, Lines: 10]
 ```
 - `v`
 
-# Initial Foothold
+# CTF Challenge
 
 ## TCP/80 (HTTP) - Clue 1
 1. Proceed to `index.html`
