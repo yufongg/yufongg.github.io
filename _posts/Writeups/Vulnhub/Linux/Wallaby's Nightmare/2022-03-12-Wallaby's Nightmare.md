@@ -11,7 +11,60 @@ image:
 ---
 
 # Recon
+## NMAP Complete Scan
+```
+# Nmap 7.92 scan initiated Sat Mar 12 16:01:17 2022 as: nmap -vv --reason -Pn -T4 -sV -sC --version-all -A --osscan-guess -p- -oN /root/vulnHub/Wallaby_Nightmare/192.168.110.39/scans/_full_tcp_nmap.txt -oX /root/vulnHub/Wallaby_Nightmare/192.168.110.39/scans/xml/_full_tcp_nmap.xml 192.168.110.39
+Nmap scan report for 192.168.110.39
+Host is up, received arp-response (0.00050s latency).
+Scanned at 2022-03-12 16:01:17 +08 for 19s
+Not shown: 65532 closed tcp ports (reset)
+PORT      STATE    SERVICE REASON         VERSION
+22/tcp    open     ssh     syn-ack ttl 64 OpenSSH 7.2p2 Ubuntu 4ubuntu2.1 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 6e:07:fc:70:20:98:f8:46:e4:8d:2e:ca:39:22:c7:be (RSA)
+| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRXjkewNllkNLo46qiVKISIdysX+C//dfiL0yrAphV9jJg7ETXmLIcfKGQIuRVWXRPm5LgX1OE4LP4wmc5qWbCrI9HOZNMDDuZZsJ7hsHhDPVfu9J0aGoj69vPo7FCZlNWd+371cUiI0qmUeOGZGfAmZotGPkW9r6lom2ww6JphrtwpmlyI+pQk2x1qZR4ZnCIl+XmgFyGHEhim5ALMplxQP8qjnxjncr90xYSByjtQjlvURlemFjjbvVpPhX+BzsMAsXO16ywClLoig0dU39sSBbCSkgmryJYyLfkSWVO9KV6HPEXrVVxnHmUPwi19xGBiq9mxUbmPIza9r0BEofl
+|   256 99:46:05:e7:c2:ba:ce:06:c4:47:c8:4f:9f:58:4c:86 (ECDSA)
+| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBE91a97Hjo/onlxZBy2uFVZ5oTYZcVW2ivqzxdbF0EANVVX5asJJWv3jnb0NQuZY0LqUEs3cObmDVrKETtWmDfw=
+|   256 4c:87:71:4f:af:1b:7c:35:49:ba:58:26:c1:df:b8:4f (ED25519)
+|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFgAepyDFEj6/qo0tkmqI6j2gL90Fft5eg4tKHe4YgH7
+6667/tcp  filtered irc     no-response
+60080/tcp open     http    syn-ack ttl 64 Apache httpd 2.4.18 ((Ubuntu))
+|_http-title: Wallaby's Server
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+MAC Address: 08:00:27:80:57:12 (Oracle VirtualBox virtual NIC)
+Device type: general purpose
+Running: Linux 3.X|4.X
+OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
+OS details: Linux 3.2 - 4.9
+TCP/IP fingerprint:
+OS:SCAN(V=7.92%E=4%D=3/12%OT=22%CT=1%CU=31449%PV=Y%DS=1%DC=D%G=Y%M=080027%T
+OS:M=622C5360%P=x86_64-pc-linux-gnu)SEQ(SP=105%GCD=1%ISR=10B%TI=Z%CI=I%II=I
+OS:%TS=8)OPS(O1=M5B4ST11NW7%O2=M5B4ST11NW7%O3=M5B4NNT11NW7%O4=M5B4ST11NW7%O
+OS:5=M5B4ST11NW7%O6=M5B4ST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6
+OS:=7120)ECN(R=Y%DF=Y%T=40%W=7210%O=M5B4NNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O
+OS:%A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=
+OS:0%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%
+OS:S=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(
+OS:R=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=
+OS:N%T=40%CD=S)
 
+Uptime guess: 0.023 days (since Sat Mar 12 15:28:56 2022)
+Network Distance: 1 hop
+TCP Sequence Prediction: Difficulty=261 (Good luck!)
+IP ID Sequence Generation: All zeros
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   0.50 ms 192.168.110.39
+
+Read data files from: /usr/bin/../share/nmap
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sat Mar 12 16:01:36 2022 -- 1 IP address (1 host up) scanned in 20.06 seconds
+
+```
 ## TCP/60080 (HTTP)
 ### FFUF
 ```
@@ -79,7 +132,7 @@ javascript              [Status: 301, Size: 330, Words: 20, Lines: 10]
 
 # Initial Foothold
 
-## TCP/80 (HTTP) - Enumerate URL parameter against LFI wordlist 
+## TCP/60080 (HTTP) - Enumerate URL parameter against LFI wordlist 
 1. Check if LFI Vulnerability really exists
 	![](Pasted%20image%2020220312162615.png)
 	- A rabbit hole?
@@ -114,7 +167,7 @@ javascript              [Status: 301, Size: 330, Words: 20, Lines: 10]
 	![](Pasted%20image%2020220312163850.png)
 4. Could not include SSH log files, Apache log files
 
-## TCP/80 (HTTP) - Enumerate URL parameter against a command injection wordlist
+## TCP/60080 (HTTP) - Enumerate URL parameter against a command injection wordlist
 1. Enumerate URL parameter against a command injection wordlist
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Wallaby_Nightmare]
@@ -156,7 +209,7 @@ javascript              [Status: 301, Size: 330, Words: 20, Lines: 10]
 3. View `/?page=blacklist`
 	![](Pasted%20image%2020220312170145.png)
 
-## TCP/80 (HTTP) - Enumerate URL parameter against a regular wordlist 
+## TCP/60080 (HTTP) - Enumerate URL parameter against a regular wordlist 
 1. FUZZ URL parameter against `common.txt`
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Wallaby_Nightmare]
@@ -199,7 +252,7 @@ javascript              [Status: 301, Size: 330, Words: 20, Lines: 10]
 		- `/?page=mailer&mail=mail`
 		- There is a second URL parameter `mail`
 
-## TCP/80 (HTTP) - Enumerate 2nd URL Parameter + RCE
+## TCP/60080 (HTTP) - Enumerate 2nd URL Parameter + RCE
 1. FUZZ `mail` parameter against command injection wordlist
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Wallaby_Nightmare]
