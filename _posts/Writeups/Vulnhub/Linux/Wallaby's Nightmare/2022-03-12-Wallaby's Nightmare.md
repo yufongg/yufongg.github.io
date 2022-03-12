@@ -5,7 +5,7 @@ date: 2022-03-12
 tags: [exploit/command-injection, linux-priv-esc/sudo/gtfo-bin ]
 img_path: /Writeups/Vulnhub/Linux/Wallaby's Nightmare/images/
 image:
-  src: Pasted%20image%2020220312161231.png
+  src: Pasted%20image%2020220312211231.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
