@@ -389,7 +389,7 @@ javascript              [Status: 301, Size: 330, Words: 20, Lines: 10]
 
 	Nmap done: 1 IP address (1 host up) scanned in 0.21 seconds
 	```
-6. Exploit `vim`
+6. Exploit `vim`, allowing us to privilege escalate to waldo
 	``` 
 	www-data@ubuntu:/var/www/html$ sudo -u waldo /usr/bin/vim /etc/apache2/sites-available/000-default.conf
 	:!bash
@@ -437,7 +437,7 @@ javascript              [Status: 301, Size: 330, Words: 20, Lines: 10]
 	5. Execute `.run`
 		![](Pasted%20image%2020220312204125.png)
 		- We must be waldo in order to execute `.run`
-	6. We are not able to change our nickname to `waldo` using an IRC command (`/nick waldo`),  since a user called waldo already exists, we are not able to switch our nickname to waldo
+	6. We are not able to change our nickname to `waldo` using an IRC command (`/nick waldo`),  since a user called waldo already exists
 		![](Pasted%20image%2020220312204550.png)
 		- waldo exists
 5. There is a `irssi.sh` file that exists on waldo's home directory
