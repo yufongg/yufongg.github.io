@@ -439,7 +439,7 @@ javascript              [Status: 301, Size: 330, Words: 20, Lines: 10]
 		- We must be waldo in order to execute `.run`
 	6. We are not able to change our nickname to `waldo` using an IRC command (`/nick waldo`),  since a user called waldo already exists
 		![](Pasted%20image%2020220312204550.png)
-		- waldo exists
+		- waldo exists, waldo is somehow connected to the IRC server
 5. There is a `irssi.sh` file that exists on waldo's home directory
 	``` 
 	waldo@ubuntu:~$ ls
