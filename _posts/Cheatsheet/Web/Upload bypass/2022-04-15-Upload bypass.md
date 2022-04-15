@@ -99,10 +99,10 @@ shell.png%00.php
 ![](Pasted%20image%2020220415215647.png)
 
 # Use burpsuite to find bypass
-![[uploadBypass php extension.png]]
-![[uploadBypass payloads.png]]
-![[uploadBypass position.png|400]]
-![[uploadBypass Results.png|400]]
+![](uploadBypass php extension.png)
+![](uploadBypass payloads.png)
+![](uploadBypass position.png)
+![](uploadBypass Results.png)
 
 # Sources:
 https://www.onsecurity.io/blog/file-upload-checklist/
