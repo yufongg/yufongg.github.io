@@ -26,10 +26,6 @@ img_path: /Cheatsheet/Web/SQLi/images
 	```
 
 ## Database Enumeration GET
-- POST Examples
-	-  [[HackMe]],
-	-   [[Game Zone]]
-	-   [[DC9#SQLi w o SQLMap - Staff Database|DC9]]
 
 1. Query
 	![[theMarketplace query.png]]
