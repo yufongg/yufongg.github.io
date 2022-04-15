@@ -1,7 +1,7 @@
 ---
 categories: [Cheatsheet, Web]
 tags: [cheatsheet/web, exploit/file-upload-bypass]
-img_path: /Cheatsheet/Upload bypass/images
+img_path: /Cheatsheet/Web/Upload bypass/images
 ---
 
 
@@ -96,12 +96,7 @@ shell.png%00.php
 - https://hackerone.com/reports/1154542
 
 # RCE via filename
-| # | File Name |Payload Outcome| If Vulnerable|
-| --- | --- | --- | ---  |
-| 1 | `a$(whoami)z.jpg` | `$(whoami)`  	| `a[CURRENT USER]z.jpg`|
-| 2 | `a`whoami`z.jpg` | ``whoami`` |`a[CURRENT USER]z.jpg`|
-| 3 | `a;sleep 30;z.jpg` | `;sleep 30;`	 |The application will take 30+ seconds to respond|
-
+![](Pasted%20image%2020220415215647.png)
 
 # Use burpsuite to find bypass
 ![[uploadBypass php extension.png]]
