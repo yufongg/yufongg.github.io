@@ -1,6 +1,6 @@
 ---
 title: Evil-Twin
-categories: [Others]
+categories: [Projects]
 ---
 
 # Evil-Twin
