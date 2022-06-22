@@ -304,7 +304,7 @@ image:
 ## Root - Via Cronjob
 1. Ran linpeas, did not find any vulnerabilities to exploit
 2. Ran `pspy64` to sniff root processes, found an interesting process that is executed periodically
-	![](Pasted%20image%2020220623010706.png)
+	![](Pasted%20image%2020220623015528.png)
 3. Our current user `dev01` has the git directory in his home directory, we are able to edit files in it
 4. Git has a [GTFO entry](https://gtfobins.github.io/gtfobins/git/)
 	- When git is run by a superuser, it does not drop elevated privileges
@@ -317,7 +317,9 @@ image:
 	dev01@opensource:~/.git/hooks$ chmod +x pre-commit
 
 	```
-7. Root obtained
+7. Wait for cronjob to execute
+	![](Pasted%20image%2020220623015238.png)
+9. Root obtained
 	![](Pasted%20image%2020220623011747.png)
 8. Cronjob that was running
 	``` 
@@ -359,6 +361,8 @@ image:
 	^C
 	root@opensource:~# 
 	```
+
+
 
 
 
