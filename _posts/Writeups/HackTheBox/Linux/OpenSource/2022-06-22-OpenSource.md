@@ -187,7 +187,7 @@ image:
 	# along with the concatenated value
 
 	```
-	- We are able to upload a file wherever we want since we are able to**throw away the previous path** `public` & `upload` 
+	- We are able to upload a file wherever we want since we are able to **throw away the previous path** `public` & `upload` 
 	- For e.g. we wish to upload a file to /home directory, we have to name our file
 		- `/home/test.txt`
 		![](vmware_ZARksh0E1v.gif)
