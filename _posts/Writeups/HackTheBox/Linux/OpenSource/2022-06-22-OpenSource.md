@@ -3,7 +3,7 @@ title: OpenSource
 categories: [HTB, HTB-Linux]
 date: 2022-06-22 
 tags: [linux-priv-esc/sudo/gtfo-bin, exploit/file-upload-bypass ]
-img_path: /Writeups/HackTheBox/Linux/Paper/images/
+img_path: /Writeups/HackTheBox/Linux/OpenSource/images/
 image:
   src: Pasted%20image%2020220623013421.png
   width: 1000   # in pixels
