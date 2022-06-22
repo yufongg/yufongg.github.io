@@ -36,6 +36,7 @@ image:
 3. View extract and view the contents of source.zip 
 	- We have knowledge of the app's directory structure and code
 4. We are able to extract additional information from `.git` directory 
+
 	``` 
 	┌──(root💀kali)-[~/htb/open_source/10.10.11.164/loot/.git]
 	└─# git branch
@@ -64,7 +65,6 @@ image:
 	commit ee9d9f1ef9156c787d53074493e39ae364cd1e05
 	Author: gituser <gituser@local>
 	Date:   Thu Apr 28 13:45:17 2022 +0200
-
 
 	```
 5. After viewing the commits, commit `a76f8f75f7a4a12b706b0cf9c983796fa1985820` contains sensitive information
