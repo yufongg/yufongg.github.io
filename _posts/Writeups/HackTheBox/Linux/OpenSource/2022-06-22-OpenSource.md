@@ -319,9 +319,10 @@ image:
 	```
 7. Wait for cronjob to execute
 	![](Pasted%20image%2020220623015238.png)
-9. Root obtained
+8. Root obtained
 	![](Pasted%20image%2020220623011747.png)
-8. Cronjob that was running
+
+9. Cronjob that was running
 
 	``` 
 	root@opensource:~# crontab -l
@@ -355,7 +356,6 @@ image:
 	root@opensource:~# /usr/local/bin/git-sync
 	Changes detected, pushing..
 	cp: cannot create regular file '/tmp/rootbash': Text file busy
-
 
 	^C
 	root@opensource:~# 
