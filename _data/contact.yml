@@ -3,6 +3,11 @@
 -
   type: github
   icon: 'fab fa-github'
+
+- 
+  type: discord
+  icon: 'fab fa-discord'
+  url: 'http://discordapp.com/users/175250797578158080'
 #-
 #  type: twitter
 #  icon: 'fab fa-twitter'
