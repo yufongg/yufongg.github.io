@@ -1,6 +1,6 @@
 ---
 title: Evil-Twin
-categories: [Projects]
+categories: [Projects, WiFi]
 ---
 
 # Evil-Twin
