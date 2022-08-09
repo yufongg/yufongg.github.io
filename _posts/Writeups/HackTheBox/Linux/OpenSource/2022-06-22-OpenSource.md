@@ -16,7 +16,7 @@ This machine is hosting a webpage that allows user to test a file upload web app
 
 Also, after analzying the source code, there is a way to exploit the file upload application due to the lack of/insufficient user input sanitization. The exploit is done by adding a remote code execution functionality into views.py from the source code and replacing it w/ the webpage's via the file upload test instance, allowing us to obtain a shell.
 
-For the privilege escalation part, we have to escalate our privileges twice, to Dev01 and to root. The initial shell we obtained is in a docker environment, and there exists a internal service on port 3000. Through chisel we are able to escape docker environment and access the internal service on port 3000 running gitea. Through the credentials we obtained earlier (.git), we are able to login to dev01 on gitea and obtain dev01 SSH private key.
+For the privilege escalation part, we have to escalate our privileges twice, to Dev01 and to root. The initial shell we obtained is in a docker environment, and there exists a internal service on port 3000. Through chisel we are able to escape docker environment and access the internal service on port 3000 running gitea. We are able to login to gitea w/ the credentials from earlier (.git directory) and obtain dev01 SSH private key
 
 On the system, pspy64 revealed that there is a cronjob running as root executing git. Git contains a GTFOBins entry allowing us to privilege escalate to root.
 
