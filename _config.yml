@@ -23,7 +23,7 @@ title: Yufong                       # the main title
 tagline: Walkthrough   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
-  Walkthrough/Writeups for vulnerable machines from Vulnhub/TryHackMe/etc.
+  Walkthrough/Writeups for vulnerable machines from Vulnhub/TryHackMe/HackTheBox etc.
 
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
@@ -71,7 +71,7 @@ google_analytics:
 #     light  - Use the light color scheme
 #     dark   - Use the dark color scheme
 #
-theme_mode:   # [light|dark]
+theme_mode: dark
 
 # The CDN endpoint for images.
 # Notice that once it is assigned, the CDN url
