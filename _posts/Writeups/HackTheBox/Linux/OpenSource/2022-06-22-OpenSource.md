@@ -20,6 +20,7 @@ For the privilege escalation part, we have to escalate our privileges twice, to 
 
 On the system, pspy64 revealed that there is a cronjob running as root executing git. Git contains a GTFOBins entry allowing us to privilege escalate to root.
 
+---
 
 | Column       | Details      |
 | ------------ | ------------ |
@@ -29,6 +30,7 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 | Difficulty   | Easy         |
 | Creator      | [irogir](https://app.hackthebox.com/users/476556)          |
 | Release Date |   22-May-2022           |
+
 
 
 # Recon

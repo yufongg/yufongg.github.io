@@ -18,6 +18,8 @@ Another way is via mysql is running as root, allowing us to access mysql to crea
 
 The final way (hardest) is a buffer overflow vulnerability existing in the SUID file.
 
+---
+
 # Recon
 - Only TCP/22 (SSH) is up
 - Requires Port Knocking to open up ports
