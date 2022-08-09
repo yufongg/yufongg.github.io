@@ -87,7 +87,7 @@ avatar: /Writeups/Vulnhub/Linux/Bob 1.0.1/images/koko.jpg
 toc: true
 
 comments:
-  active:  true       # The global switch for posts comments, e.g., 'disqus'.  Keep it empty means disable
+  active: disqus       # The global switch for posts comments, e.g., 'disqus'.  Keep it empty means disable
   # The active options are as follows:
   disqus:
     shortname: yufongg-github-io
