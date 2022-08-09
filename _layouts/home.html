@@ -61,12 +61,17 @@ layout: page
           {% assign img_name = post.image.src %}
           {% assign combined = img_cdn | append: img_path | append: img_name %}
         {% else %}
-         {% assign combined = "https://c.tenor.com/8Hq4WY2CxBsAAAAd/hacker-man.gif" %}
+          {% assign combined = "https://c.tenor.com/8Hq4WY2CxBsAAAAd/hacker-man.gif" %}
         {% endif %}
           <img src="{{ combined }}" alt="{{post.title}} image" class="post-img" style="width:900px;height:550px;">
         </a>
       </div>
       <p>
+        
+        {% include no-linenos.html content=post.content %}
+        {% if post.content contains "Overview" %}
+         {{ content | markdownify | strip_html | truncate: 300 | escape | remove: "Overview" }}
+        {% endif %}
       </p>
     </div>
 

@@ -5,10 +5,18 @@ tags: [port-knocking,exploit/sqli/database-enum,linux-priv-esc/mysql,linux-priv-
 img_path: /Writeups/Vulnhub/Linux/Lord of the Root 1.0.1/images/
 pin: true
 image:
-  src: Lord of the Root 1.0.1.jpg
+  src: gollum.gif
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
+# Overview
+This machine begins w/ SSH revealing a port knocking sequence, allowing us to open an additional port TCP/1337 running HTTP. The webpage has a login page that is susceptible to SQLi, allowing us to enumerate the Webapp database revealing several credentials. With the credentials, we are able to bruteforce SSH and obtain a shell.
+
+There are 3 ways to obtain root, the easiest way is via a kernel exploit and can be done by downloading an exploit on exploit db.
+
+Another way is via mysql is running as root, allowing us to access mysql to create a UDF function to escalate our privilege, obtaining root.
+
+The final way (hardest) is a buffer overflow vulnerability existing in the SUID file.
 
 # Recon
 - Only TCP/22 (SSH) is up

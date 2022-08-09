@@ -1,6 +1,7 @@
 ---
 title: HackTheBox - OpenSource 
 categories: [HackTheBox, HTB-Linux]
+description: OpenSource is an easy difficulty box
 date: 2022-06-22 
 tags: [linux-priv-esc/sudo/gtfo-bin, exploit/file-upload-bypass ]
 img_path: /Writeups/HackTheBox/Linux/OpenSource/images/
@@ -9,6 +10,26 @@ image:
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
+
+# Overview 
+This machine is hosting a webpage that allows user to test a file upload web application and download its source code. However, the source code is archived together with a directory .git, revealing user credentials. 
+
+Also, after analzying the source code, there is a way to exploit the file upload application due to the lack of/insufficient user input sanitization. The exploit is done by adding a remote code execution functionality into views.py from the source code and replacing it w/ the webpage's via the file upload test instance, allowing us to obtain a shell.
+
+For the privilege escalation part, we have to escalate our privileges twice, to Dev01 and to root. The initial shell we obtained is in a docker environment, and there exists a internal service on port 3000. Through chisel we are able to escape docker environment and access the internal service on port 3000 running gitea. Through the credentials we obtained earlier (.git), we are able to login to dev01 on gitea and obtain dev01 SSH private key.
+
+On the system, pspy64 revealed that there is a cronjob running as root executing git. Git contains a GTFOBins entry allowing us to privilege escalate to root.
+
+
+| Column       | Details      |
+| ------------ | ------------ |
+| Box Name     | OpenSource   |
+| IP           | 10.10.11.164 |
+| Points       | -            |
+| Difficulty   | Easy         |
+| Creator      | [irogir](https://app.hackthebox.com/users/476556)          |
+| Release Date |   22-May-2022           |
+
 
 # Recon
 
