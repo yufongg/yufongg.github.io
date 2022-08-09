@@ -1,5 +1,5 @@
 ---
-title: Photographer 1
+title: Vulnhub - Photographer 1
 categories: [Vulnhub, Linux]
 tags: [tcp/139-445-smb/fileshare,tcp/80-http/web-app-cms-exploit,linux-priv-esc/suid/gtfo-bin]
 img_path: /Writeups/Vulnhub/Linux/Photographer 1

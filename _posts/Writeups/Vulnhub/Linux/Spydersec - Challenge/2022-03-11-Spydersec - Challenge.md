@@ -1,5 +1,5 @@
 ---
-title: Spydersec - Challenge
+title: Vulnhub - Spydersec Challenge
 categories: [Vulnhub, Linux]
 date: 2022-03-11 
 tags: [cryptography]

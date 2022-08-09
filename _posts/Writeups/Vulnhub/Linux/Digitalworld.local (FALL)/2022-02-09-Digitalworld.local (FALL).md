@@ -1,5 +1,5 @@
 ---
-title: Digitalworld.local (FALL)
+title: Vulnhub - Digitalworld.local (FALL)
 categories: [Vulnhub, Linux]
 date: 2022-02-09
 tags: [ exploit/file-inclusion/lfi, linux-priv-esc/linux-creds-found ]

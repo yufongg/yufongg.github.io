@@ -1,5 +1,5 @@
 ---
-title: Digitalworld.local (MERCY v2)
+title: Vulnhub - Digitalworld.local (MERCY v2)
 categories: [Vulnhub, Linux]
 date: 2022-02-08
 tags: [tcp/139-445-smb/fileshare,port-knocking,tcp/80-http/web-app-cms-exploit,tcp/80-http/cms/tomcat,linux-priv-esc/cronjob ]

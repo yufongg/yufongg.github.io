@@ -1,5 +1,5 @@
 ---
-title: Glasglow Smile 1.1
+title: Vulnhub - Glasglow Smile 1.1
 categories: [Vulnhub, Linux]
 tags: [tcp/80-http/cms/joomla,linux-priv-esc/linux-creds-found,linux-priv-esc/cronjob,cryptography]
 img_path: /Writeups/Vulnhub/Linux/Glasglow Smile 1.1

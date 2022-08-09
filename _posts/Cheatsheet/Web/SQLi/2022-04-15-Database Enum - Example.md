@@ -1,5 +1,5 @@
 ---
-title: SQL Injection
+title: Cheatsheet - SQL Injection (SQLi)
 categories: [Cheatsheet, Web]
 tags: [cheatsheet/web, exploit/sqli/database-enum ]
 img_path: /Cheatsheet/Web/SQLi/images

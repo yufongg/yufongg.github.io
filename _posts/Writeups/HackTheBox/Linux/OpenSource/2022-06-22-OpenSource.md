@@ -1,5 +1,5 @@
 ---
-title: OpenSource Writeup
+title: HackTheBox - OpenSource 
 categories: [HackTheBox, HTB-Linux]
 date: 2022-06-22 
 tags: [linux-priv-esc/sudo/gtfo-bin, exploit/file-upload-bypass ]

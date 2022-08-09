@@ -1,5 +1,5 @@
 ---
-title: Attacktive Directory
+title: TryHackMe - Attacktive Directory
 categories: [TryHackMe, Active Directory]
 date: 2022-01-09
 tags: [ad/kerbrute/user-enum, ad/as-rep-roasting, ad/kerbrute/password-spray, ad/kerberoasting, tcp/139-445-smb/fileshare , ad/bloodhound, ad/evil-winrm, ad/secretsdump]

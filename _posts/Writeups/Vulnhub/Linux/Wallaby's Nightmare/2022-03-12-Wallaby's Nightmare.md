@@ -1,5 +1,5 @@
 ---
-title: Wallaby's Nightmare
+title: Vulnhub - Wallaby's Nightmare
 categories: [Vulnhub, Linux]
 date: 2022-03-12 
 tags: [exploit/command-injection, linux-priv-esc/sudo/gtfo-bin ]

@@ -1,4 +1,5 @@
 ---
+title: Cheatsheet - Shellshock 
 categories: [Cheatsheet, Web]
 tags: [cheatsheet/web, exploit/shell-shock]
 img_path: /Cheatsheet/Web/Shellshock via cgi-bin/images

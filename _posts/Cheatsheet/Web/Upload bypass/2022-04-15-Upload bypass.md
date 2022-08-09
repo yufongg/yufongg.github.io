@@ -1,4 +1,5 @@
 ---
+title: Cheatsheet - Upload Bypass
 categories: [Cheatsheet, Web]
 tags: [cheatsheet/web, exploit/file-upload-bypass]
 img_path: /Cheatsheet/Web/Upload bypass/images

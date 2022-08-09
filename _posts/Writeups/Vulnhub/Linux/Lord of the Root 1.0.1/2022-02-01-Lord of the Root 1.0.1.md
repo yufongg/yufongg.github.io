@@ -1,5 +1,5 @@
 ---
-title: Lord of the Root 1.0.1
+title: Vulnhub - Lord of the Root 1.0.1
 categories: [Vulnhub, Linux]
 tags: [port-knocking,exploit/sqli/database-enum,linux-priv-esc/mysql,linux-priv-esc/kernel-exploit,bof/linux-bof]
 img_path: /Writeups/Vulnhub/Linux/Lord of the Root 1.0.1/images/

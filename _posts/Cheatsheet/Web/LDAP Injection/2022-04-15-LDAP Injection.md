@@ -1,4 +1,5 @@
 ---
+title: Cheatsheet - LDAP Injection
 categories: [Cheatsheet, Web]
 tags: [cheatsheet/web, exploit/ldap-injection]
 img_path: /Cheatsheet/Web/LDAP Injection/images
