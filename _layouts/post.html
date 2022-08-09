@@ -98,7 +98,9 @@ tail_includes:
 <img src="https://www.jetss.com/wp-content/uploads/2018/04/6.gif" alt="{{post.title}} image" class="post-img" style="width:1000px;height:450px;">
 
 <div class="post-tail-wrapper text-muted">
-
+{% if site.disqus.shortname %}
+  {% include disqus_comments.html %}
+{% endif %}
   <!-- categories -->
   {% if page.categories.size > 0 %}
   <div class="post-meta mb-3">
