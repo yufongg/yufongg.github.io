@@ -140,9 +140,10 @@ tail_includes:
     </div>
 
     {% include post-sharing.html %}
-    {% if site.disqus.shortname %}
-      {% include disqus_comments.html %}
-    {% endif %}
   </div><!-- .post-tail-bottom -->
 
 </div><!-- div.post-tail-wrapper -->
+
+{% if site.disqus.shortname %}
+  {% include disqus_comments.html %}
+{% endif %}
