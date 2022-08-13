@@ -94,8 +94,12 @@ tail_includes:
   {{ content }}
 </div>
 
-<p style="text-align:center"> - ROOTED! -</p>
-<img src="https://www.jetss.com/wp-content/uploads/2018/04/6.gif" alt="{{post.title}} image" class="post-img" style="width:1000px;height:450px;">
+
+{% if page.categories contains "HackTheBox" or page.categories contains "Vulnhub" or page.categories contains "TryHackMe"  %}
+  <p style="text-align:center"> - ROOTED! -</p>
+  <img src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Bob%201.0.1/images/bb.gif" alt="{{post.title}} image" class="post-img" style="width:1000px;height:450px;">
+{% endif %}
+
 {% if site.disqus.shortname %}
   {% include disqus_comments.html %}
 {% endif %}
