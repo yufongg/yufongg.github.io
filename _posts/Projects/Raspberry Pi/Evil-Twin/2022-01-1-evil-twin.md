@@ -3,6 +3,10 @@ title: Evil-Twin
 categories: [Projects, Raspberry Pi]
 ---
 
+
+# Overview
+During my internship, I was given a raspberry pi to experiment with and was tasked to come up with something related to WiFi Pentesting. I wanted to find something that really intrigued me so began my research and found many interesting raspberry pi projects such as RubberDucky, Wi-Fi password cracking, hosting a phishing website, Evil Twin attacks. I decided to combine a few of the projects by creating an Evil-Twin access point with DNS poisoning that will redirect victims to a phishing website upon clicking a phishing website. 
+
 # Evil-Twin
 Evil Twin AP + DNS Poisoning
 
