@@ -1,0 +1,99 @@
+---
+title: Pi-Hole Setup & Results
+categories: [Projects, Raspberry Pi] 
+---
+
+# Prerequisite Tools
+- [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
+- [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
+
+# Pi-Hole Setup
+## OS Installation
+1. Select `Raspberry Pi OS`
+	![](Pasted%20image%2020220813222530.png)
+2. Select Settings at `Bottom Right`, 
+	![](Pasted%20image%2020220813222603.png)
+3. Enable SSH, set username & password
+	![](Pasted%20image%2020220813222645.png)
+4. Eject SSD
+5. Plug SSD into Pi
+6. Connect ethernet cable 
+7. Power on the Pi
+
+
+## Configure Static IP address for your Pi
+1. Login to your Router's web interface
+	- `http://192.168.1.1`
+	- `http://192.168.1.254`.
+2. View local device to find out Pi's assigned IP address
+	![](Pasted%20image%2020220814022541.png)
+3. SSH w/ your configured credentials
+	![](Pasted%20image%2020220814022636.png)
+4. View currently defined router
+	![](Pasted%20image%2020220814022849.png)
+	- routers: `192.168.1.254`
+5. View current DNS Server
+	```
+	sudo nano /etc/resolv.conf
+	```
+	![](Pasted%20image%2020220813233053.png)
+	- nameserver: `192.168.1.254`
+6. Modify `dhcpcd.conf` to configure our static IP address for your Pi
+	```
+	interface <NETWORK>                     
+	static ip_address=<STATICIP>/24
+	static routers=<ROUTERIP>
+	static domain_name_servers=<DNSIP>
+
+	<NETWORK>:  wlan0(wireless)/eth0(wired)
+	<STATICIP>: IP Address in the Upper Numbers of your DHCP range [Recommendation]
+	<routers>:  Refer to Step 4
+	<DNSIP>:    Refer to step 5
+	```
+	![](Pasted%20image%2020220814023243.png)
+	- Save the file `CTRL + X` then `Y`, followed by `ENTER`
+7. Reboot
+	```
+	sudo reboot
+	```
+- [Source](https://pimylifeup.com/raspberry-pi-static-ip-address/)
+
+
+## Pi-Hole Installation
+1. Proceed to your SSH w/ your configured credentials
+2.  [Install Pi-Hole](https://github.com/pi-hole/pi-hole/#curl--ssl-httpsinstallpi-holenet--bash) (one-liner)
+	```
+	curl -sSL https://install.pi-hole.net | bash
+	```
+3. Use the following settings
+	1. `YES` - Set static IP using current values
+	2. Choose your DNS Provider
+	3. Select 3rd party list, just go with the suggested list
+	4. `On` - web admin interface
+	5. `On` - web server (lighttpd)
+	6. `On` - Log queries
+	7. `0` - Show everything
+	8. Done
+		![](Pasted%20image%2020220813233107.png)
+4. Add additional blocklist
+	1. Login to `http://<Pi IP address>/admin`
+	2. Proceed to `Group Management` > `Adlists`
+	3. Proceed to [firebog](https://firebog.net), copy links that are highlighted in green
+		![](Pasted%20image%2020220814025452.png)
+	4. Paste them in `Address`, under `Add new adlist`
+		![](Pasted%20image%2020220814025548.png)
+	5. Click online to update your gravity list, and your done!
+
+
+## DNS Server
+1. If you have the option to set your DNS Server on your router, change it to your Pi's IP Address
+	- Unfortunately my router does not allow me to do so, so I will have to manually set the DNS Server of my devices
+
+
+## Results
+- Youtube:
+	- Unfortunately, due to how youtube ads works, it does not work for youtube.
+- Streaming sites, it works really well!
+	- For e.g., when you click on the play button, an ad pops up and forces you to open another tab and sometimes even redirects you to another application.
+	- Or there are so many ads that you can't even see the panels/video
+	![](IMG_1831.mov)
