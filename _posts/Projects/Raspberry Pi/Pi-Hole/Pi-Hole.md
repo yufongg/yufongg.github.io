@@ -96,4 +96,4 @@ categories: [Projects, Raspberry Pi]
 - Streaming sites, it works really well!
 	- For e.g., when you click on the play button, an ad pops up and forces you to open another tab and sometimes even redirects you to another application.
 	- Or there are so many ads that you can't even see the panels/video
-	![](IMG_1831.mov)
+	[https://streamable.com/uk07kh](<iframe height="1792" width="828" src="https://streamable.com/o/uk07kh" class="streamable-embed" allowfullscreen="" allow="fullscreen" style="width: 100%; height: 100%; aspect-ratio: 4 / 3;"></iframe>)

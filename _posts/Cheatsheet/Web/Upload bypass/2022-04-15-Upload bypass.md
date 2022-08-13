@@ -13,7 +13,7 @@ img_path: /Cheatsheet/Web/Upload bypass/images
 	GIF89a;
 	```
 - Some Examples:
-	- [[PwnLab#Port 80]]
+	- [Vulnhub PwnLab - Bypass upload via header](https://youtu.be/Q85ku046Q_E?t=1210)
 
 # Append the allowed extension
 - If only `.png` allowed, try appending `.png` at the end
@@ -23,7 +23,7 @@ img_path: /Cheatsheet/Web/Upload bypass/images
 	.png.php
 	```
 	- Some Examples:
-		- [[fristileaks#Port 80]]
+		- [Vulnhub Fristileaks 1.3 - Upload bypass via appending](https://youtu.be/jPW_0BFxAYU?t=658)
 
 # Other PHP Extensions
 ```
@@ -35,8 +35,8 @@ php5
 phptml
 ```
 - Some Examples
-	- [[RootMe#key 1]]
-	- vulnversity writeup
+	- [TryHackMe RootMe - Upload bypass via other PHP ext](https://youtu.be/7ZgZv6yJtjM?t=315)
+	- [TryHackMe Vulnveristy - Upload bypass via other PHP ext](https://youtu.be/VoY2ERH08Bs?t=564)
 
 # Case Sensitive Extensions
 ```
@@ -76,7 +76,7 @@ shell.phP5
 	strings malicious.png | grep system
 	```
 - Some Examples:
-	- [[port 8001|hackerOne - Easy Port 8001]]
+	- TryHackMe HackerOne Easy Port 8001
 
 # Nullbyte
 ```

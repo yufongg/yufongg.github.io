@@ -14,7 +14,7 @@ img_path: /Cheatsheet/Web/LDAP Injection/images
 	/usr/share/wordlists/ldap_injection/ldap_injection.txt
 	```
 - Some Examples:
-	- [[Symfonos 5.2#TCP 80 - HTTP - LDAP Injection]]
+	- [Vulnhub Symfonos 5.2 - LDAP Injection](https://yufongg.github.io/posts/Symfonos-5.2/#tcp80-http---ldap-injection)
 
 
 # Extract everything from a Domain

