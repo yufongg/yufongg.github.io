@@ -240,6 +240,8 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 8. Inspect element and change type from `password` to `text` to reveal password
 	![](Pasted%20image%2020220817040252.png)
 	- `kHGuERB29DNiNE`
+
+
 ## Accessing SMTP Server
 1. Launch `Thunderbird` to view email
 	![](Pasted%20image%2020220818022505.png)
