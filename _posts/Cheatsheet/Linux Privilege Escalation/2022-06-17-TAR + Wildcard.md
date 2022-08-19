@@ -1,5 +1,5 @@
 ---
-title: Cheatsheet -TAR + Wildcard
+title: Cheatsheet - TAR + Wildcard
 categories: [Cheatsheet, Linux Privilege Escalation]
 tags: [linux-priv-esc/cronjob, cheatsheet/linux]
 ---

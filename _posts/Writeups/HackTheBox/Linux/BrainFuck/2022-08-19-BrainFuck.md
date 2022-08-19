@@ -512,7 +512,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	orestis adm cdrom dip plugdev lxd lpadmin sambashare
 	```
 	- `lxd`
-2. LXD Group Exploit
+2. [LXD Group Exploit](https://yufongg.github.io/posts/LXD-Group/)
 	- A member of the `lxd` group can easily privilege escalate to root because LXD is a root process that carries out actions for anyone with write access to the LXD UNIX socket.
 	- We are able to use `lxd` to mount the entire victim's filesystem into a container, allowing us to have root access to the entire system.
 3. [Download](https://github.com/saghul/lxd-alpine-builder) and transfer image onto `brainfuck.htb`
