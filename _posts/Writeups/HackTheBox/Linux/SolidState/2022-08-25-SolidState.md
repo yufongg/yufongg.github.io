@@ -83,15 +83,15 @@ Login id:
 	- It has a modular architecture based on a rich set of **modern** and **efficient** components which provides at the end **complete, stable, secure and extendable Mail Servers running on the JVM**.
 	- [Default Credentials](https://james.apache.org/server/archive/configuration_v2_0.html)
 		- `root:root`
-1. Search exploits for `James`
+1. Search exploits for `James`, found exact matches to our version
 
-	| Exploit Title                                                                      |                       |
+	| Exploit Title                                                                      |    Path               |
 	| ---------------------------------------------------------------------------------- | --------------------- |
 	| Apache James Server 2.2 - SMTP Denial of Service                                   | multiple/dos/27915.pl |
 	| Apache James Server 2.3.2 - Insecure User Creation Arbitrary File Write (Metasploi | linux/remote/48130.rb |
 	| Apache James Server 2.3.2 - Remote Command Execution                               | linux/remote/35513.py |
 	| Apache James Server 2.3.2 - Remote Command Execution (RCE) (Authenticated) (2)     | linux/remote/50347.py |
-	- An exact match to our version
+		
 3. Try `linux/remote/35513.py`
 	1. How does the exploit work?
 		- Due the lack of input sanitization when creating a user in `James Server 2.3.2`, messages for a given user are stored in a directory partially defined by the username, by creating a user w/ path traversal payload (`../`) as its username, commands can be written to a given directory. 
