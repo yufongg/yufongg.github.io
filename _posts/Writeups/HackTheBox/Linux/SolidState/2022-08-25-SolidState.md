@@ -60,6 +60,7 @@ For privilege escalation, after enumerating the system w/ `linpeas.sh`, there is
 |_    Login id:
 ```
 - `JAMES Remote Administration Tool 2.3.2`
+
 ### NC
 ```
 ┌──(root💀kali)-[~/htb/solidstate]
