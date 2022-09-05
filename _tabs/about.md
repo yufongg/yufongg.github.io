@@ -43,8 +43,6 @@ View my other <a href="https://github.com/yufongg/writeups">writeups</a> in PDF 
     <div id="test1">
         <script src="https://tryhackme.com/badge/663816" wid></script>
     </div>
-    <div id="test">
-        <script src="https://www.hackthebox.eu/badge/834331"></script>
-    </div>
+
 </div>
 
