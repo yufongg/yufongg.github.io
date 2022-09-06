@@ -128,7 +128,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 
 # Initial Foothold
 
-## TCP/443 (HTTPS) - Wordpress Responsive Ticket System Plugin Priv Esc Exploit
+## TCP/443 (HTTPS) - WP Responsive Ticket System Plugin Exploit
 1. Add both subdomains to `/etc/hosts`
 2. Proceed to `https://brainfuck.htb`, view post (`Dev Update`)
 	![](Pasted%20image%2020220817022035.png)
@@ -250,7 +250,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	- `orestis:kIEnnfEKJ#9UmdO`
 	- This is likely used for `sup3rs3cr3t.brainfuck.htb` subdomain
 
-## TCP/443 (HTTPS) - Found encrypted text
+## TCP/443 (HTTPS) - Encrypted text
 1. Proceed to `sup3rs3cr3t.brainfuck.htb` & login w/ `orestis:kIEnnfEKJ#9UmdO`
 	![](Pasted%20image%2020220818020211.png)
 2. View `SSH Access` post
