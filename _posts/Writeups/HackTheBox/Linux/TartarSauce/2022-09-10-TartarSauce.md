@@ -372,6 +372,7 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 		- This is similar to NFS `no_root_squash` exploit. Whereby the permission of a file when created on our own machine stays when access in the victim's machine.
 		- The directory `/var/tmp/check` is created to extract the archive created from (`/var/www/html`) into it, and comparing it to `tartarsauce.htb` web directory to see if there are any changes.
 		- If there is any change in content, `/var/tmp/check` will not be deleted, and we can execute the `setuid` file
+		
 	1. Create setuid file 
 		- setuid file
 			```
