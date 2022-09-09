@@ -169,9 +169,21 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 			![](Pasted%20image%2020220907050822.png)
 	7. [Stabalize shell](https://null-byte.wonderhowto.com/how-to/upgrade-dumb-shell-fully-interactive-shell-for-more-flexibility-0197224/)
 		
-
-## TCP/22 (SSH)
-
+	<html>
+	<head>
+	<link rel="stylesheet" type="text/css" href="/asciinema-player.css" />
+	</head>
+	<body>
+	<div id="wp_exploit"></div>
+	<script src="/asciinema-player.min.js"></script>
+	<script>
+		AsciinemaPlayer.create('https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/TartarSauce/images/wp_exploit.cast', document.getElementById('wp_exploit'), { 
+		loop: true,
+		autoPlay: true
+			});
+	</script>
+	</body>
+	</html>
 
 # Privilege Escalation - 1
 
