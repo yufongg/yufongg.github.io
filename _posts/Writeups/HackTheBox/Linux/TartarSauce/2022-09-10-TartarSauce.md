@@ -167,7 +167,7 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 			```
 		6. Obtained `www-data` shell
 			![](Pasted%20image%2020220907050822.png)
-	7. [Stabalize shell](https://null-byte.wonderhowto.com/how-to/upgrade-dumb-shell-fully-interactive-shell-for-more-flexibility-0197224/)
+3. [Stabalize shell](https://null-byte.wonderhowto.com/how-to/upgrade-dumb-shell-fully-interactive-shell-for-more-flexibility-0197224/)
 		
 	<html>
 	<head>
