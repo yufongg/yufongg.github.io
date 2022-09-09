@@ -326,20 +326,25 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 		www-data@TartarSauce:/var/www$ cat /var/backups/onuma_backup_error.txt | tail -n 1
 		94950492344b54734ea2550b122def59
 		```
-		<body>
-		<div id="symlink"></div>
-		<script src="/asciinema-player.min.js"></script>
-		<script>
-			AsciinemaPlayer.create('https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/TartarSauce/images/symlink.cast', document.getElementById('symlink'), { 
-			loop: true,
-			autoPlay: true
-				});
-		</script>
-		</body>
 5. Root Flag
 	```
 	94950492344b54734ea2550b122def59
 	```
+	<html>
+	<head>
+	<link rel="stylesheet" type="text/css" href="/asciinema-player.css" />
+	</head>
+	<body>
+	<div id="symlink"></div>
+	<script src="/asciinema-player.min.js"></script>
+	<script>
+		AsciinemaPlayer.create('https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/TartarSauce/images/symlink.cast', document.getElementById('symlink'), { 
+		loop: true,
+		autoPlay: true
+			});
+	</script>
+	</body>
+	</html>
 
 # Privilege Escalation - 2
 
@@ -384,7 +389,7 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 			└─# ls -la setuid 
 			-rwsr-xr-x 1 root root 15296 Sep 10 00:19 setuid
 			```
-
+			
 	2. Create an archive of `/var/www/html`  on `tartarsauce.htb`, transfer it to `kali`
 	3. On `kali`, extract it, copy `setuid` file into the extracted directory `<your directory>/var/www/html/`
 		```
