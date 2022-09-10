@@ -2,7 +2,7 @@
 title: HackTheBox - TartarSauce
 categories: [HackTheBox, HTB-Linux]
 date: 2022-09-10
-tags: [exploit/sqli/database-enum]
+tags: [linux-priv-esc/sudo/gtfo-bin, tcp/80-http/cms/wordpress-plugin]
 img_path: /Writeups/HackTheBox/Linux/TartarSauce/images/
 image:
   src: Pasted%20image%2020220910011653.png
