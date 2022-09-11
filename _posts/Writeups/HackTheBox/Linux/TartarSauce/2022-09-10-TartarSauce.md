@@ -301,6 +301,7 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 			```
 		- To exploit this, we have to take advantage of the 30 second sleep and `diff` outputing the contents of the file.
 		- If there is a difference in the content of the archive and `tartarsauce.htb` web directory, the content of the files that are different from each other will be outputed into `/var/backups/onuma_backup_error.txt`
+		
 	1. Monitor when when `backuperer` is executed
 		```
 		# to sniff processes
