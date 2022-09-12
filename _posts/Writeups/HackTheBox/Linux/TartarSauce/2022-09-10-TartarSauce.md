@@ -167,8 +167,8 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 			```
 		6. Obtained `www-data` shell
 			![](Pasted%20image%2020220907050822.png)
-3. [Stabalize shell](https://null-byte.wonderhowto.com/how-to/upgrade-dumb-shell-fully-interactive-shell-for-more-flexibility-0197224/)
-		
+		7. [Stabalize shell](https://null-byte.wonderhowto.com/how-to/upgrade-dumb-shell-fully-interactive-shell-for-more-flexibility-0197224/)
+3. Demo - WP Plugin Gwolle Guestbook 1.5.3 - Remote File Inclusion     
 	<html>
 	<head>
 	<link rel="stylesheet" type="text/css" href="/asciinema-player.css" />
@@ -343,6 +343,7 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 	```
 	94950492344b54734ea2550b122def59
 	```
+6. 	Demo - Backuperer read root.txt
 	<html>
 	<head>
 	<link rel="stylesheet" type="text/css" href="/asciinema-player.css" />
@@ -368,12 +369,11 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 	Linux TartarSauce 4.15.0-041500-generic #201802011154 SMP Thu Feb 1 12:05:23 UTC 2018 i686 athlon i686 GNU/Linux
 	```
 	- `x86`
-2. Exploiting backuperer 
-	- How do we exploit it?
-		- This is similar to NFS `no_root_squash` exploit. Whereby the permission of a file when created on our own machine stays when access in the victim's machine.
-		- The directory `/var/tmp/check` is created to extract the archive created from (`/var/www/html`) into it, and comparing it to `tartarsauce.htb` web directory to see if there are any changes.
-		- If there is any change in content, `/var/tmp/check` will not be deleted, and we can execute the `setuid` file
-		
+2. How do we exploit `backuperer`?
+	- This is similar to NFS `no_root_squash` exploit. Whereby the permission of a file when created on our own machine stays when access in the victim's machine.
+	- The directory `/var/tmp/check` is created to extract the archive created from (`/var/www/html`) into it, and comparing it to `tartarsauce.htb` web directory to see if there are any changes.
+	- If there is any change in content, `/var/tmp/check` will not be deleted, and we can execute the `setuid` file
+3. Exploiting `backuperer`
 	1. Create setuid file 
 		- setuid file
 			```
@@ -403,7 +403,6 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 			└─# ls -la setuid 
 			-rwsr-xr-x 1 root root 15296 Sep 10 00:19 setuid
 			```
-			
 	2. Create an archive of `/var/www/html`  on `tartarsauce.htb`, transfer it to `kali`
 	3. On `kali`, extract it, copy `setuid` file into the extracted directory `<your directory>/var/www/html/`
 		```
@@ -437,8 +436,9 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 		onuma@TartarSauce:/var/tmp$ cp /tmp/sauce_web_dir_suid /var/tmp/.3f2d27416c4d4e4
 		```
 	10. Wait for 30seconds
-	11. Proceed to `check/var/www/html` & execute `setuid`.
+	11. Proceed to `check/var/www/html` & execute `setuid`
 		![](Pasted%20image%2020220910011310.png)
+	12. Demo - Backuperer SetUID Privilege Escalation
 	<html>
 	<head>
 	<link rel="stylesheet" type="text/css" href="/asciinema-player.css" />
