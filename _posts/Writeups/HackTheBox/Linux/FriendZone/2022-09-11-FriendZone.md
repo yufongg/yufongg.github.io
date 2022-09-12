@@ -21,7 +21,7 @@ For the privilege escalation part, we have to privilege escalate twice, to `frie
 
 After enumerating the system w/ `linpeas.sh`, there is a directory called `/opt/server_admin`, that is out of the norm, inside it resides a python script that imports `os` library to print something. Through `pspy64`, it is discovered that the python script is executed every 2 minutes as `root`.  It is exploitable because the library that it is importing is writable, allowing us to replace  the library (`os.py`) w/ a python script that will create `rootbash`, allowing us to privilege escalate to `root`.
 
-If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LFI) & HackTheBox Nineveh (LFI), TryHackMe Wonderland (Python Hijacking).
+If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LFI) & HackTheBox Nineveh (LFI), TryHackMe Wonderland (Python Library Hijacking).
 
 ---
 
