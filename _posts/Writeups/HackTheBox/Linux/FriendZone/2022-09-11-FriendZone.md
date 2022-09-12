@@ -192,6 +192,10 @@ After enumerating the system w/ `linpeas.sh`, there is a directory called `/opt/
 	- `image_id`
 		- Able to display images from `/image` directory
 		- Enumerated it against `LFI` & `Command Injection` payloads, nothing is displayed, this is because the webpage is coded to only display images.
+			```
+			# Hypothesis
+			<center><img src='images/$_GET['image_id']'></center>
+			```
 	- `pagename`
 		- Based on how the webpage included `timestamp`, we are able to assume that `.php` is appended before the file is included.
 			```
