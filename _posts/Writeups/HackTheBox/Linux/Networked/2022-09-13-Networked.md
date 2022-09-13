@@ -103,6 +103,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	- `check_attack.php`
 2. View `check_attack.php`
 	![](Pasted%20image%2020220913021555.png)
+
 ## Guly - What is check_attack.php doing?
 1. Assign some variables
 	```
