@@ -285,7 +285,10 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 			exit 0
 		fi
 		```
-11. How do we exploit `backuperer`?
+
+
+## Root - exploiting backuperer
+1. How do we exploit `backuperer`?
 	- `/usr/bin/diff` - If there is a difference found in the contents of the file, the contents of the specified files will be displayed.
 		```
 		┌──(root💀kali)-[~/htb/tartarsauce/10.10.10.88/loot/test]
@@ -302,9 +305,7 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 		- To exploit this, we have to take advantage of the 30 second sleep and `diff` outputing the contents of the file.
 		- If there is a difference in the content of the archive and `tartarsauce.htb` web directory, the content of the files that are different from each other will be outputed into `/var/backups/onuma_backup_error.txt`
 
-
-## Root - exploiting backuperer
-1. Exploiting `backuperer`
+2. Exploiting `backuperer`
 	1. Monitor when when `backuperer` is executed
 		```
 		pspy32 
