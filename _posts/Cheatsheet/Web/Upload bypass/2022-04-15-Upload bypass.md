@@ -13,7 +13,8 @@ img_path: /Cheatsheet/Web/Upload bypass/images
 	GIF89a;
 	```
 - Some Examples:
-	- [Vulnhub PwnLab - Bypass upload via header](https://youtu.be/Q85ku046Q_E?t=1210)
+	- [Vulnhub PwnLab - Bypass upload](https://youtu.be/Q85ku046Q_E?t=1210)
+	- [HackTheBox Networked - Bypass upload](https://yufongg.github.io/posts/Networked/#tcp80-http---file-upload-bypass)
 
 # Append the allowed extension
 - If only `.png` allowed, try appending `.png` at the end
