@@ -219,7 +219,7 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 	1c4c8a145480c441d6bb10c866d967b8
 	```
 
-## Root.txt - Found Backuperer 
+## Root - Enumeration
 1. Found something interesting w/ `linpeas.sh`
 	![](Pasted%20image%2020220908011503.png)
 	- `backuperer.service` - similar to a cronjob executing periodically
@@ -227,7 +227,7 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 2. View contents of `backuperer` file
 	![](Pasted%20image%2020220908011902.png)
 
-## Root.txt - What is backuperer doing?
+## Root - What is backuperer doing?
 1. Assign variables 
 	```
 	# Line 11-17
@@ -303,7 +303,7 @@ The privilege escalation is really challenging, I learnt that if there is a comp
 		- If there is a difference in the content of the archive and `tartarsauce.htb` web directory, the content of the files that are different from each other will be outputed into `/var/backups/onuma_backup_error.txt`
 
 
-## Root.txt - Via exploiting backuperer
+## Root - exploiting backuperer
 1. Exploiting `backuperer`
 	1. Monitor when when `backuperer` is executed
 		```
