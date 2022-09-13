@@ -61,7 +61,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	- `.php` - unable to upload
 	- `.jpg, .png` - successfully uploaded
 	- Uploaded files go to `uploads/<IP Address>.ext`
-2. Attempt file upload bypass
+2. Attempt file [upload bypass](https://yufongg.github.io/posts/Upload-bypass/)
 	1. Upload `php-reverse-shell.php`, intercept w/ `burp`
 	2. Change POST data
 		```
