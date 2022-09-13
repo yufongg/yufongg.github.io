@@ -12,11 +12,11 @@ image:
 
 
 # Overview 
-This machine begins w/ a web enumeration, discovering a page where users can only upload images onto the system due to the filters in place, however it can be bypassed by changing the content type (1), filename (2) and adding a GIF header (3), allowing us to upload php-reverse-shell.php, obtaining a low-privilege/www-data shell.
+This machine begins w/ a web enumeration, discovering a page where users can **only** upload images onto the system due to the filters in place, however it can be bypassed by changing the content type (1), filename (2) and adding a GIF header (3), allowing us to upload  `php-reverse-shell.php`, obtaining a low-privilege/`www-data` shell.
 
-For the privilege escalation part, we have to privilege escalate to guly and then to root. After some enumeration, there is a cronjob that is executing a script check_attack.php as guly. The purpose of that script is to check if files in /var/www/html/uploads have a valid IP address in its name, otherwise delete it. The script is vulnerable to command injection due to passing user input directly into exec(), privilege escalating us to user guly.
+For the privilege escalation part, we have to privilege escalate to `guly` and then to `root`. After some enumeration, there is a cronjob that is executing a script `check_attack.php` as `guly`.  The purpose of that script is to check if files in `/var/www/html/uploads` have a valid IP address in its name, otherwise delete it. The script is vulnerable to command injection due to passing user input directly into `exec()`, privilege escalating us to user `guly`.
 
-User guly has a sudoers entry, that allows guly to execute change_name.sh as root, the purpose of the script is to add attributes into guly network script. The script is vulnerable because it is writing to a network script file. The vulnerability resides in how attributes in network scripts are handled. If there is a white space in the attribute, system will try to execute the word after the whitespace, allowing us to privilege escalate to root.
+User `guly` has a sudoers entry, that allows `guly` to execute `change_name.sh` as `root`, the purpose of the script is to add attributes into `guly` network script. The script is vulnerable because it is writing to a network script file. The vulnerability resides in how attributes in network scripts are handled. If there is a white space in the attribute, system will try to execute the word after the whitespace, allowing us to privilege escalate to `root`.
 
 
 
