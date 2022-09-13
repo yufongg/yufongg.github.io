@@ -5,7 +5,7 @@ date: 2022-09-13
 tags: [exploit/file-upload-bypass, exploit/command-injection]
 img_path: /Writeups/HackTheBox/Linux/Networked/images/
 image:
-  src: 
+  src: Pasted%20image%2020220913201610.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
