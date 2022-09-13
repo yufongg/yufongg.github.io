@@ -18,7 +18,7 @@ For the privilege escalation part, we have to privilege escalate to `guly` and t
 
 User `guly` has a sudoers entry, that allows `guly` to execute `change_name.sh` as `root`, the purpose of the script is to add attributes into `guly` network script. The script is vulnerable because it is writing to a network script file. The vulnerability resides in how attributes in network scripts are handled. If there is a white space in the attribute, system will try to execute the word after the whitespace, allowing us to privilege escalate to `root`.
 
-
+If you wish to practice boxes similar to this, try VulnHub PwnLab
 
 ---
 
