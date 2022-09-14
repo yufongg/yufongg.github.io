@@ -388,8 +388,8 @@ marym:3kfs86sfd
 	--users #Get usernames od DB
 	--passwords #Get passwords of users in DB
 	--privileges #Get privileges
-	
 	```
+
 ## DB Data
 1. Dump databases
 	```
