@@ -2,7 +2,7 @@
 title: HackTheBox - Unlock Password Protected Post
 categories: [Cheatsheet]
 date: 2022-09-18
-img_path: /Cheatsheet/HackTheBox/Unlock Post/images
+img_path: /Cheatsheet/HackTheBox/Unlock Post/images/
 image:
   src: Pasted%20image%2020220919012146.png
   width: 1000   # in pixels
