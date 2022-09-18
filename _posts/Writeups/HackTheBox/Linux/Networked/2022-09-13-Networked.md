@@ -1,6 +1,6 @@
 ---
 title: HackTheBox - Networked
-categories: [HackTheBox, HTB-Linux]
+categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-09-13
 tags: [exploit/file-upload-bypass, exploit/command-injection]
 img_path: /Writeups/HackTheBox/Linux/Networked/images/

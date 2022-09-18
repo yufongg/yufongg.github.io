@@ -1,6 +1,6 @@
 ---
 title: HackTheBox - Valentine
-categories: [HackTheBox, HTB-Linux]
+categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-08-29
 tags: [linux-priv-esc/kernel-exploit]
 img_path: /Writeups/HackTheBox/Linux/Valentine/images/

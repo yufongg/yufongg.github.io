@@ -1,6 +1,6 @@
 ---
 title: HackTheBox - BrainFuck
-categories: [HackTheBox, HTB-Linux]
+categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-08-19
 tags: [linux-priv-esc/lxd, cryptography]
 img_path: /Writeups/HackTheBox/Linux/BrainFuck/images/

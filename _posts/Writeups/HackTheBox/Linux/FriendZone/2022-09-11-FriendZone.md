@@ -1,6 +1,6 @@
 ---
 title: HackTheBox - FriendZone
-categories: [HackTheBox, HTB-Linux]
+categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-09-11
 tags: [exploit/file-inclusion/lfi ]
 img_path: /Writeups/HackTheBox/Linux/FriendZone/images/

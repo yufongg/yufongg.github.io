@@ -1,6 +1,6 @@
 ---
 title: HackTheBox - TartarSauce
-categories: [HackTheBox, HTB-Linux]
+categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-09-09
 tags: [linux-priv-esc/sudo/gtfo-bin, tcp/80-http/cms/wordpress-plugin]
 img_path: /Writeups/HackTheBox/Linux/TartarSauce/images/

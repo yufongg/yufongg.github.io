@@ -1,6 +1,6 @@
 ---
 title: HackTheBox - SolidState
-categories: [HackTheBox, HTB-Linux]
+categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-08-25
 tags: [jail]
 img_path: /Writeups/HackTheBox/Linux/SolidState/images/
