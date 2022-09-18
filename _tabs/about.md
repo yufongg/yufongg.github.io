@@ -20,6 +20,7 @@ View my other <a href="https://github.com/yufongg/writeups">writeups</a> in PDF 
 <a href="https://tryhackme.com/p/kyluc" rel="nofollow"><img src="https://camo.githubusercontent.com/ecc774294fea437fc4f918396e774470d08522488e0a5ff0fd7c72cc2738f784/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d5472794861636b4d652d3231324334323f6c6f676f3d5472794861636b4d65" alt="TryHackMe" data-canonical-src="https://img.shields.io/badge/-TryHackMe-212C42?logo=TryHackMe" style="max-width: 100%;"></a>
 <a href="mailto:yufongggg@gmail.com"><img src="https://camo.githubusercontent.com/b1ac5027d7820abfd6ccaad12b2bda39f826afe78fef5247b1be178c046801be/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d476d61696c2d626c61636b3f7374796c653d666c61742d737175617265266c6f676f3d6861636b746865626f78266c6f676f436f6c6f723d7768697465266c696e6b3d68747470733a2f2f6170702e6861636b746865626f782e636f6d2f75736572732f383334333331" alt="Gmail" data-canonical-src="https://img.shields.io/badge/-Gmail-black?style=flat-square&amp;logo=hackthebox&amp;logoColor=white&amp;link=https://app.hackthebox.com/users/834331" style="max-width: 100%;"></a>
 <style>
+
 #test {
   float: left;
   position: relative;
@@ -28,8 +29,6 @@ View my other <a href="https://github.com/yufongg/writeups">writeups</a> in PDF 
 
 #test1 {
     float: left;
-
-
 }
 
 
@@ -41,8 +40,11 @@ View my other <a href="https://github.com/yufongg/writeups">writeups</a> in PDF 
 
 <div class="row">
     <div id="test1">
-        <script src="https://tryhackme.com/badge/663816" wid></script>
+        <script src="https://tryhackme.com/badge/663816"></script>
     </div>
-
+    <div id="test">
+       <script src="https://www.hackthebox.eu/badge/834331"></script>
+    </div>
 </div>
+
 
