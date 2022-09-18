@@ -1,6 +1,6 @@
 ---
 title: HackTheBox - Unlock Password Protected Post
-categories: [Cheatsheet, HackTheBox]
+categories: [Cheatsheet]
 date: 2022-09-18
 img_path: /Writeups/HackTheBox/Linux/<>/images/
 image:
