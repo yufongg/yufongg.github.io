@@ -118,6 +118,8 @@ blockquote {
     }
   }
 
+  @include prompt("tip", "\f0eb", 400);
+  @include prompt("info", "\f06a");
   @include prompt("note", "\f0eb", 400);
 
   @include prompt("warning", "\f06a");
