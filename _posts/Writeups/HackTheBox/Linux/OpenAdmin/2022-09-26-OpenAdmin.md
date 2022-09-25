@@ -349,6 +349,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	joannabash-4.4$ ls -la /home/joanna | grep .ssh
 	drwx------ 2 joanna joanna 4096 Nov 23  2019 .ssh
 	```
+	
 ## Joanna - Crack SSH Private Key
 1. Transfer `id_rsa` to `kali`
 2. Convert it to john format
