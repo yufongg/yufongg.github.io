@@ -144,11 +144,13 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 			> - We can `base64` encode the payload and then decode it pip it in `sh`
 			> - Use `$(which bash)`
 		{: .prompt-info }
+
 	5. Creating the payload (2)
 		> 1. Our command injection payload is directed into `/dev/null`, 
 		> 2. Bypass/Overcome the restriction 
 			> - simply add a random command (`;id`) so that that command will be passed to `/dev/null` instead.
 		{: .prompt-info }
+		
 3. Exploiting `check_attack.php`
 	1. Monitor when `check_attack.php` is executed w/ `pspy64`
 	2. Create our command injection file (1)
