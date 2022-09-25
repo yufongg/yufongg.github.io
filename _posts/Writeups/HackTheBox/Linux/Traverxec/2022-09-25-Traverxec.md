@@ -14,7 +14,7 @@ image:
 # Overview 
 This machine begins w/ a web enumeration, discovering that the webserver is running `nostromo 1.9.6` which is susceptible to a directory traversal that leads to RCE vulnerability due to insufficient input sanitization, allowing us to obtain a low-privilege/`www-data` user.
 
-For the privilege escalation part, we have to privilege escalate to `david` and then `root`. After enumerating the system, `nostromo` configuration file reveals that `homedirs: /home` & `homedirs_public /public_www` is defined, meaning we have access to the home directory (`/<user>/public_www`) of users on the system through HTTP via `http://traverxec.htb/~<USER>/`. Since `david` is the only user, we know that `/home/david/public_www` exists, `public_www` directory contains a backup of `david` SSH encrypted SSH private key, after cracking it w/ `john`, we are able to SSH into `david` by specifying his SSH private key.
+For the privilege escalation part, we have to privilege escalate to `david` and then `root`. After enumerating the system, `nostromo` configuration file reveals that `homedirs: /home` & `homedirs_public: /public_www` is defined, meaning we have access to the home directory (`/<user>/public_www`) of users on the system through HTTP via `http://traverxec.htb/~<USER>/`. Since `david` is the only user, we know that `/home/david/public_www` exists, `public_www` directory contains a backup of `david` SSH encrypted SSH private key, after cracking it w/ `john`, we are able to SSH into `david` by specifying his SSH private key.
 
 On user `david`'s home directory, there is a script that reveals that user `david` is allowed to execute `/usr/bin/journalctl -n5 -unostromo.service` as root. `journalctl` has a GTFOBins entry, allowing us to privilege escalate to `root` w/ `!/bin/sh`.
 
@@ -64,7 +64,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	- Due to the lack of input sanitization, there is a directory traversal vulnerability in the function `http_verify`, attackers can include `/bin/sh` to do remote code execution.
 	- Carriage returns (`\r, %0d`) is used to bypass the input sanitization of `/../` (Directory Traversal), allowing attackers to include `/bin/sh` to execude code.
 	- [More Info](https://www.sudokaikan.com/2019/10/cve-2019-16278-unauthenticated-remote.html)
-4. Try `nostromo 1.9.6 - Remote Code Execution` - (`multiple/remote/47837.py`
+4. Try `nostromo 1.9.6 - Remote Code Execution` - (`multiple/remote/47837.py`)
 	1. Run exploit
 		```
 		┌──(root💀kali)-[~/htb/traverxec/10.10.10.165/exploit]
@@ -246,13 +246,16 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	homedirs_public         public_www
 	```
 	- `/var/nostromo/conf/.htpasswd`
-		- Basic Authentication credentials
+		>  Contains basic authentication credentials
+		{: .prompt-info }
 	- `homedirs: /home`
-		- When `homedirs` is defined, the public can access the home directory of users on the system
-		- Proceed to `http://example.com/~<Name Of User>/` to access the home directory of the specified user 
+		>  When `homedirs` is defined, the public can access the home directory of users on the system
+		>  Proceed to `http://example.com/~<Name Of User>/` to access the home directory of the specified user 
+		{: .prompt-info }
 	- `homedirs_public: public_www`
-		- `public_www` is a directory that exists in the user's directory
-		- When `homedirs_public` is defined, the public can only access `public_www` directory, instead of the entire home directory
+		>  `public_www` is a directory that exists in the user's directory
+		>   When `homedirs_public` is defined, the public can only access `public_www` directory, instead of the entire home directory
+		{: .prompt-info }
 	- [Source](https://www.gsp.com/cgi-bin/man.cgi?section=8&topic=NHTTPD#BASIC_AUTHENTICATION)
 4. Extract Hash in `.htpasswd`
 	```
