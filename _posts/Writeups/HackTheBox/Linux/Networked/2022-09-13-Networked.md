@@ -105,154 +105,20 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	![](Pasted%20image%2020220913021555.png)
 
 ## Guly - What is check_attack.php doing?
-1. Assign some variables
-	```
-	# Line 2-7
-	require '/var/www/html/lib.php';
-	$path = '/var/www/html/uploads/';
-	$logpath = '/tmp/attack.log';
-	$to = 'guly';
-	$msg= '';
-	$headers = "X-Mailer: check_attack.php\r\n";
-	```
-2. Create an empty array called `files`
-	```
-	# Line 9
-	$files = array();
-	```
-3. Populate array w/  files in `/var/www/html/uploads`
-	```
-	# Line 10
-	$files = preg_grep('/^([^.])/', scandir($path));
-	```
-	```
-	# Testing what is Line 10 doing
-	
-	┌──(root💀kali)-[~/htb/networked/10.10.10.146/exploit/test]
-	└─# cat test.php 
-	<?php
-	$files = preg_grep('/^([^.])/', scandir("/root/htb/networked/10.10.10.146/exploit/test/files"));
-	
-	foreach($files as $key){
-		echo $key . "\n";
-	}
-	?>
-	┌──(root💀kali)-[~/htb/networked/10.10.10.146/exploit/test]
-	└─# ls -la /root/htb/networked/10.10.10.146/exploit/test/files
-	total 8
-	drwxr-xr-x 2 root root 4096 Sep 13 02:27 .
-	drwxr-xr-x 3 root root 4096 Sep 13 02:26 ..
-	-rw-r--r-- 1 root root    0 Sep 13 02:27 10_10_14_19.png
-	-rw-r--r-- 1 root root    0 Sep 13 02:27 asdf
-	-rw-r--r-- 1 root root    0 Sep 13 02:27 testing_123.png
-	-rw-r--r-- 1 root root    0 Sep 13 02:27 test.png
-	
-	┌──(root💀kali)-[~/htb/networked/10.10.10.146/exploit/test]
-	└─# php test.php 
-	10_10_14_19.png
-	asdf
-	test.png
-	testing_123.png
-	```
-4. In this for loop, and if statement
-	```
-	# Line 12-16
-	foreach ($files as $key => $value) {
-			$msg='';
-	  if ($value == 'index.html') {
-			continue;
-	  }
-	```
-	1. Values in `$files` array are stored in `$key` and assign `$key` to `$value`
-	2. If `$value == index.html`, go right back to the loop instead of proceeding to line 20 onwards.
-	3. The purpose is to exclude `index.html`, from code (Line 20 onwards) 
-5. Pass `$value` into `getNameCheck` function
-	```
-	# $filename = 10_10_14_19.png
-	# Screenshots are for "safe/not attacks" file (10_10_14_19.png)
-	# If invalid/unsafe file (asdf) , return array("asdf",NULL)
+1. Once a files is uploaded, its name is changed to the IP address of the machine that uploaded the file. Instead of `'.'`, `'_'` is used. `10_10_14_14.jpg`
+2. Firstly, it checks is the files in `/var/www/html/uploads` whether their name is a valid IP address.
+3. Next, The `getNameCheck($value)`  function fix the format of the IP address by replacing `'_'` w/ `'.'` and returning the filename  `10.10.10.14` and extension `.jpg`.
+4. The `check_ip($name, $value)` function just checks whether the variable `$name` (`10.10.10.14`) is a valid IP address, if not returns `ret=false`, which means `$check[0]` is NULL.
+5. If `$check[0]` is NULL, append message to log, remove invalid file and mail. (This part is vulnerable)
 
-	function getnameCheck($filename) {
-	  $pieces = explode('.',$filename);
-	  $name= array_shift($pieces);
-	  $name = str_replace('_','.',$name);
-	  $ext = implode('.',$pieces);
-	  return array($name,$ext);
-	}
-	```
-	1. Separates the filename into parts by `.`
-		- for e.g. `10_10_14_19.png`
-		- `$pieces[0] = 10_10_14_19.png`
-		- `$pieces[1] = .png`
-			![](Pasted%20image%2020220913033835.png)
-	2. Remove first array in `$pieces` , store it in `$name`
-		- `$name = 10_10_14_19`
-		![](Pasted%20image%2020220913034200.png)
-	3. Replaces `_` in `$name` w/ `.` 
-		- `10_10_14_19 to 10.10.14.19`
-		![](Pasted%20image%2020220913033458.png)
-	4. Get file extension
-		- `$ext = png`
-		![](Pasted%20image%2020220913034649.png)
-	5. Return `array($name,$ext)`
-6. Store array into list
-	```
-	list ($name,$ext) = getnameCheck($value);	
-	```
-	![](Pasted%20image%2020220913041721.png)
-7. Pass `$name, $value` into `check_ip` function
-	```
-	# $name  = 10.10.14.19      = $prefix
-	# $value = 10_10_14_19.png  = $filename
-	
-	function check_ip($prefix,$filename) {
-	  $ret = true;
-	  if (!(filter_var($prefix, FILTER_VALIDATE_IP))) {
-		$ret = false;
-		$msg = "4tt4ck on file ".$filename.": prefix is not a valid ip ";
-	  } else {
-		$msg = $filename;
-	  }
-	  return array($ret,$msg);
-	}
-	```
-	1. Set `$ret = true`
-	2. If IP Address is invalid, 
-		- `$ret = false`  
-		- `$msg=...not impt...`
-			![](Pasted%20image%2020220913042410.png)
-	3. If IP Address is Valid
-		- `$msg = 10_10_14_19.png`
-		- `$ret = true`
-			![](Pasted%20image%2020220913041225.png)
-	4. Return
-		- Valid IP: `array(1,"10_10_14_19.png")`
-		- Invalid IP: `array(false,"4tt4ck on file 10_10_14_19.png: prefix is not a valid ip")`
-8. If the first value in array `$check` is `false`
-	```
-	  if (!($check[0])) {
-		echo "attack!\n";e
-		file_put_contents($logpath, $msg, FILE_APPEND | LOCK_EX);
-	
-		exec("rm -f $logpath");
-		exec("nohup /bin/rm -f $path$value > /dev/null 2>&1 &");
-		echo "rm -f $path$value\n";
-		mail($to, $msg, $msg, $headers, "-F$value");
-	  }
-	```
-	1. Prints `"attack"`
-	2. Append `$msg`  into `/tmp/attack.log`
-	3. Remove `/tmp/attack.log`
-	4. Remove the invalid/unsafe file
-	5. Prints `"rm -f $path$value"`
 
 
 ## Guly - Exploiting check_attack.php 
 1. How do we exploit `check_attack.php`?
 	1. Identifying the vulnerable code
 		1. We are only interested in `exec(...)` because it is code execution.
-		2. `exec("nohup /bin/rm -f $path$value > /dev/null 2>&1 &");` is vulnerable because `$value` is passed into `exec`
-		3. The variable `$value` are files residing in `/var/www/html/uploads/<file>`
+		 2.  `exec("nohup /bin/rm -f $path$value > /dev/null 2>&1 &");` is vulnerable because `$value` is passed into `exec`
+		 3. The variable `$value` are files residing in `/var/www/html/uploads/<file>`
 	2.  In order to get to the `exec(...)` statement, we simply just have to create a file that is `!= 10_10_10_10.png`, not a valid IP Address.
 	3. We are able to do command injection by naming the files in `uploads` directory commands we want to execute
 		```
@@ -464,3 +330,147 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 
 
 
+
+# Additional
+
+## Guly -  What is check_attack.php doing? (In-Depth)
+1. Assign some variables
+	```
+	# Line 2-7
+	require '/var/www/html/lib.php';
+	$path = '/var/www/html/uploads/';
+	$logpath = '/tmp/attack.log';
+	$to = 'guly';
+	$msg= '';
+	$headers = "X-Mailer: check_attack.php\r\n";
+	```
+2. Create an empty array called `files`
+	```
+	# Line 9
+	$files = array();
+	```
+3. Populate array w/  files in `/var/www/html/uploads`
+	```
+	# Line 10
+	$files = preg_grep('/^([^.])/', scandir($path));
+	```
+	```
+	# Testing what is Line 10 doing
+	
+	┌──(root💀kali)-[~/htb/networked/10.10.10.146/exploit/test]
+	└─# cat test.php 
+	<?php
+	$files = preg_grep('/^([^.])/', scandir("/root/htb/networked/10.10.10.146/exploit/test/files"));
+	
+	foreach($files as $key){
+		echo $key . "\n";
+	}
+	?>
+	┌──(root💀kali)-[~/htb/networked/10.10.10.146/exploit/test]
+	└─# ls -la /root/htb/networked/10.10.10.146/exploit/test/files
+	total 8
+	drwxr-xr-x 2 root root 4096 Sep 13 02:27 .
+	drwxr-xr-x 3 root root 4096 Sep 13 02:26 ..
+	-rw-r--r-- 1 root root    0 Sep 13 02:27 10_10_14_19.png
+	-rw-r--r-- 1 root root    0 Sep 13 02:27 asdf
+	-rw-r--r-- 1 root root    0 Sep 13 02:27 testing_123.png
+	-rw-r--r-- 1 root root    0 Sep 13 02:27 test.png
+	
+	┌──(root💀kali)-[~/htb/networked/10.10.10.146/exploit/test]
+	└─# php test.php 
+	10_10_14_19.png
+	asdf
+	test.png
+	testing_123.png
+	```
+4. In this for loop, and if statement
+	```
+	# Line 12-16
+	foreach ($files as $key => $value) {
+			$msg='';
+	  if ($value == 'index.html') {
+			continue;
+	  }
+	```
+	1. Values in `$files` array are stored in `$key` and assign `$key` to `$value`
+	2. If `$value == index.html`, go right back to the loop instead of proceeding to line 20 onwards.
+	3. The purpose is to exclude `index.html`, from code (Line 20 onwards) 
+5. Pass `$value` into `getNameCheck` function
+	```
+	# $filename = 10_10_14_19.png
+	# Screenshots are for "safe/not attacks" file (10_10_14_19.png)
+	# If invalid/unsafe file (asdf) , return array("asdf",NULL)
+
+	function getnameCheck($filename) {
+	  $pieces = explode('.',$filename);
+	  $name= array_shift($pieces);
+	  $name = str_replace('_','.',$name);
+	  $ext = implode('.',$pieces);
+	  return array($name,$ext);
+	}
+	```
+	1. Separates the filename into parts by `.`
+		- for e.g. `10_10_14_19.png`
+		- `$pieces[0] = 10_10_14_19.png`
+		- `$pieces[1] = .png`
+			![](Pasted%20image%2020220913033835.png)
+	2. Remove first array in `$pieces` , store it in `$name`
+		- `$name = 10_10_14_19`
+		![](Pasted%20image%2020220913034200.png)
+	3. Replaces `_` in `$name` w/ `.` 
+		- `10_10_14_19 to 10.10.14.19`
+		![](Pasted%20image%2020220913033458.png)
+	4. Get file extension
+		- `$ext = png`
+		![](Pasted%20image%2020220913034649.png)
+	5. Return `array($name,$ext)`
+6. Store array into list
+	```
+	list ($name,$ext) = getnameCheck($value);	
+	```
+	![](Pasted%20image%2020220913041721.png)
+7. Pass `$name, $value` into `check_ip` function
+	```
+	# $name  = 10.10.14.19      = $prefix
+	# $value = 10_10_14_19.png  = $filename
+	
+	function check_ip($prefix,$filename) {
+	  $ret = true;
+	  if (!(filter_var($prefix, FILTER_VALIDATE_IP))) {
+		$ret = false;
+		$msg = "4tt4ck on file ".$filename.": prefix is not a valid ip ";
+	  } else {
+		$msg = $filename;
+	  }
+	  return array($ret,$msg);
+	}
+	```
+	1. Set `$ret = true`
+	2. If IP Address is invalid, 
+		- `$ret = false`  
+		- `$msg=...not impt...`
+			![](Pasted%20image%2020220913042410.png)
+	3. If IP Address is Valid
+		- `$msg = 10_10_14_19.png`
+		- `$ret = true`
+			![](Pasted%20image%2020220913041225.png)
+	4. Return
+		- Valid IP: `array(1,"10_10_14_19.png")`
+		- Invalid IP: `array(false,"4tt4ck on file 10_10_14_19.png: prefix is not a valid ip")`
+8. If the first value in array `$check` is `false`
+	```
+	  if (!($check[0])) {
+		echo "attack!\n";e
+		file_put_contents($logpath, $msg, FILE_APPEND | LOCK_EX);
+	
+		exec("rm -f $logpath");
+		exec("nohup /bin/rm -f $path$value > /dev/null 2>&1 &");
+		echo "rm -f $path$value\n";
+		mail($to, $msg, $msg, $headers, "-F$value");
+	  }
+	```
+	1. Prints `"attack"`
+	2. Append `$msg`  into `/tmp/attack.log`
+	3. Remove `/tmp/attack.log`
+	4. Remove the invalid/unsafe file
+	5. Prints `"rm -f $path$value"`
