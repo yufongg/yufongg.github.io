@@ -105,11 +105,14 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	![](Pasted%20image%2020220913021555.png)
 
 ## Guly - What is check_attack.php doing?
-1. Once a files is uploaded, its name is changed to the IP address of the machine that uploaded the file. Instead of `'.'`, `'_'` is used. `10_10_14_14.jpg`
-2. Firstly, it checks is the files in `/var/www/html/uploads` whether their name is a valid IP address.
-3. Next, The `getNameCheck($value)`  function fix the format of the IP address by replacing `'_'` w/ `'.'` and returning the filename  `10.10.10.14` and extension `.jpg`.
-4. The `check_ip($name, $value)` function just checks whether the variable `$name` (`10.10.10.14`) is a valid IP address, if not returns `ret=false`, which means `$check[0]` is NULL.
-5. If `$check[0]` is NULL, append message to log, remove invalid file and mail. (This part is vulnerable)
+1. What is check_attack.php doing? - summarized
+	1. Once a files is uploaded, its name is changed to the IP address of the machine that uploaded the file. Instead of `'.'`, `'_'` is used. `10_10_14_14.jpg`
+	2. Basically, it checks is the files in `/var/www/html/uploads` whether their name is a valid IP address, if it is, do nothing, if isn't append a warning into a log file and then delete the invalid file.
+2. Breaking down what check_attack.php doing?
+	1. The for loop goes through files residing in `/var/www/html/uploads`, excluding `/var/www/html`
+	2. The `getNameCheck($value)`  function fix the format of the IP address by replacing `'_'` w/ `'.'` and returning the filename  `10.10.10.14` and extension `.jpg`.
+	3. The `check_ip($name, $value)` function just checks whether the variable `$name` (`10.10.10.14`) is a valid IP address, if not returns `ret=false`, which means `$check[0]` is NULL.
+	4. If `$check[0]` is NULL, append message to log, remove invalid file and mail. (This part is vulnerable)
 
 
 
