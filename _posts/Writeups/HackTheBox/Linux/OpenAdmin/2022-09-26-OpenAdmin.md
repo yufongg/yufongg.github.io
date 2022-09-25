@@ -60,7 +60,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	| OpenNetAdmin 18.1.1 - Command Injection Exploit (Metasploit) | php/webapps/47772.rb |
 	| OpenNetAdmin 18.1.1 - Remote Code Execution                  | php/webapps/47691.sh |
 3. How does `OpenNetAdmin 18.1.1 - Remote Code Execution` - (`php/webapps/47691.sh`) work?
-	1. 
+	- This module exploits a command injection in OpenNetAdmin between` 8.5.14` and `18.1.1`.
 4. Try `OpenNetAdmin v18.1.1 - Remote Code Execution` - (`php/webapps/47691.sh`)
 	1. Exploit!
 		```
