@@ -349,7 +349,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	joannabash-4.4$ ls -la /home/joanna | grep .ssh
 	drwx------ 2 joanna joanna 4096 Nov 23  2019 .ssh
 	```
-	
+
 ## Joanna - Crack SSH Private Key
 1. Transfer `id_rsa` to `kali`
 2. Convert it to john format
@@ -501,7 +501,8 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	Click here to logout <a href="logout.php" tite = "Logout">Session
 	</html>
 	```
-	>  This because `die` is not used to terminate the remaining code, after it checks whether username is set, it continues to execute `PHP` code.
+	>  This because `die` is not used to terminate the remaining code, after it checks whether username is set, it continues to execute `PHP` code, instead of just exiting the page.
+	{: .prompt-info}
 2. Fix `main.php`
 	```php
 	<?php session_start(); if (!isset ($_SESSION['username'])) { header("Location: /index.php"); die; };
