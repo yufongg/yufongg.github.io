@@ -114,13 +114,14 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 
 
 ## Guly - Exploiting check_attack.php 
-1. How do we exploit `check_attack.php`?
-	1. Identifying the vulnerable code
-		1. We are only interested in `exec(...)` because it is code execution.
-		 2.  `exec("nohup /bin/rm -f $path$value > /dev/null 2>&1 &");` is vulnerable because `$value` is passed into `exec`
-		 3. The variable `$value` are files residing in `/var/www/html/uploads/<file>`
-	2.  In order to get to the `exec(...)` statement, we simply just have to create a file that is `!= 10_10_10_10.png`, not a valid IP Address.
-	3. We are able to do command injection by naming the files in `uploads` directory commands we want to execute
+1. How do we exploit `check_attack.php`? (1)
+	1. We are only interested in `exec(...)` because it is code execution.
+		>  `exec("nohup /bin/rm -f $path$value > /dev/null 2>&1 &");` is vulnerable because `$value` is passed into `exec`
+	2. The variable `$value` are files residing in `/var/www/html/uploads/<file>`
+	3.  In order to get to the `exec(...)` statement, we simply just have to create a file that is `!= 10_10_10_10.png`, not a valid IP Address.
+	
+2. How do we exploit `check_attack.php`? (2)
+	1. We are able to do command injection by naming the files in `uploads` directory commands we want to execute
 		```
 		# Create our Command Injection Payload
 		touch /var/www/html/uploads/'<Command Injection Payload'
@@ -134,15 +135,15 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 		exec("nohup /bin/rm -f /var/www/html/uploads<Command Injection Payload> > /dev/null 2>&1
 		```
 	4. Creating the payload (1)
-		1. Commands we would want to inject will be a reverse shell, most reverse shell requires the character `/`, however, it is not possible to create a file w/ `/` in its filename.
-		2. Bypass/Overcome the restriction 
-			- We can `base64` encode the payload and then decode it pip it in `sh`
-			- Use `$(which bash)`
+		> 1. Commands we would want to inject will be a reverse shell, most reverse shell requires the character `/`, however, it is not possible to create a file w/ `/` in its filename.
+		> 2. Bypass/Overcome the restriction 
+			> - We can `base64` encode the payload and then decode it pip it in `sh`
+			> - Use `$(which bash)`
 	5. Creating the payload (2)
-		1. Our command injection payload is directed into `/dev/null`, 
-		2. Bypass/Overcome the restriction 
-			- simply add a random command (`;id`) so that that command will be passed to `/dev/null` instead.
-2. Exploiting `check_attack.php`
+		> 1. Our command injection payload is directed into `/dev/null`, 
+		> 2. Bypass/Overcome the restriction 
+			>	- simply add a random command (`;id`) so that that command will be passed to `/dev/null` instead.
+3. Exploiting `check_attack.php`
 	1. Monitor when `check_attack.php` is executed w/ `pspy64`
 	2. Create our command injection file (1)
 		```
@@ -179,8 +180,8 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 			```
 	7. Start listener
 	8. Wait for cronjob to execute
-		![](Pasted%20image%2020220913055843.png)
-2. Demo - `check_attack.php` Privilege Escalation
+		![](Pasted%20image%2020220913055843.png) 
+4. Demo - `check_attack.php` Privilege Escalation
 	<html>
 	<head>
 	<link rel="stylesheet" type="text/css" href="/asciinema-player.css" />
