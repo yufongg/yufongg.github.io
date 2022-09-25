@@ -12,7 +12,7 @@ image:
 
 
 # Overview 
-This machine begins w/ a web enumeration, discovering that the webserver is running `nostromo 1.9.6` which is susceptible to a directory traversal that leads to RCE vulnerability, allowing us to obtain a low-privilege/`www-data` user.
+This machine begins w/ a web enumeration, discovering that the webserver is running `nostromo 1.9.6` which is susceptible to a directory traversal that leads to RCE vulnerability due to insufficient input sanitization, allowing us to obtain a low-privilege/`www-data` user.
 
 For the privilege escalation part, we have to privilege escalate to `david` and then `root`. After enumerating the system, `nostromo` configuration file reveals that `homedirs: /home` & `homedirs_public /public_www` is defined, meaning we have access to the home directory (`/<user>/public_www`) of users on the system. Since `david` is the only user, we know that `/home/david/public_www` exists, `public_www` directory contains a backup of `david` SSH encrypted SSH private key, after cracking it w/ `john`, we are able to SSH into `david` by specifying his SSH private key.
 
