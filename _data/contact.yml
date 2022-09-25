@@ -11,6 +11,11 @@
   type: discord
   icon: 'fab fa-discord'
   url: 'http://discordapp.com/users/175250797578158080'
+-
+  type: rss
+  icon: 'fas fa-rss'
+  noblank: true
+
 #-
 #  type: twitter
 #  icon: 'fab fa-twitter'
