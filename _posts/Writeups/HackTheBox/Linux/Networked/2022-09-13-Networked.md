@@ -224,65 +224,15 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	![](Pasted%20image%2020220913190525.png)
 
 ## Root - What is changename.sh doing?
-1. It is assigning some variables and **writing** it into `/etc/sysconfig/network-scripts/ifcfg-guly`
-	```
-	cat > /etc/sysconfig/network-scripts/ifcfg-guly << EoF
-	DEVICE=guly0
-	ONBOOT=no
-	NM_CONTROLLED=no
-	EoF
-	```
-2. Create a regex rule
-	```
-	regexp="^[a-zA-Z0-9_\ /-]+$"
+1. What is changename.sh doing - TLDR
+	- Basically, `changename.sh` is a script that allow users to configure parameters on a network interface file called `ifcfg-guly` by taking their input 
+2. Breaking down what `changename.sh` is doing
+	1. Configure parameters (`DEVICE, ONBOOT, NM_CONTROLLED`)
+	2. The for loop will take in users input to configure parameters (`NAME, PROXY_METHOD, BROWSER_ONLY, BOOTPROTO`)
+	3. If user input has banned characters, ask for user input again until a valid one is provided
+	4. Writes user input into `ifcfg-guly`
+	5. Starts interface `guly0`
 
-	# Matches:
-	1. a-z
-	2. A-Z
-	3. 0-9
-	4. The character '_'
-	5. The character '<space>'
-	6. The character '/'
-	7. The character '-' 
-	8. One or MORE times
-	```
-	![](Pasted%20image%2020220913192306.png)
-3. In every `for` loop,
-	1. Create variable `$var`, assign it to `NAME, PROXY_METHOD, BROWSER_ONLY, BOOTPROTO` in each loop
-		```
-		# Loop1:
-		$var = NAME
-		
-		# Loop2:
-		$var = PROXY_METHOD
-		
-		# Loop3
-		$var = BROWSER_ONLY
-		
-		# Loop4
-		$var = BOOTPROTO
-		```
-	2. Print `$var` in each loop
-		```
-		# Example:
-		
-		┌──(root💀kali)-[~/htb/networked/10.10.10.146/exploit]
-		└─# for var in NAME PROXY_METHOD BROWSER_ONLY BOOTPROTO; do echo $var; done
-		NAME
-		PROXY_METHOD
-		BROWSER_ONLY
-		BOOTPROTO
-		```
-	1. Accept user input
-	2.  Goes into a `while` loop If user input does not match regex expression,
-			1. Print "wrong input..." 
-			2. Print  `$var`
-			3. Accept user input again **until user input matches regex expression**.
-	3. Appends output of `$var=<user input>`  into `ifcfg-guly` in each loop
-4. Bring interface `guly0` up.
-	```
-	/sbin/ifup guly0
-	```
 
 ## Root - Exploiting changename.sh
 1. After analyzing `changename.sh`, I could not find any way to do command injection, `echo "$var"` is usually safe, so command injection is not possible.
@@ -479,3 +429,64 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	3. Remove `/tmp/attack.log`
 	4. Remove the invalid/unsafe file
 	5. Prints `"rm -f $path$value"`
+
+## What is changename.sh doing? (In-Depth)
+1. It is assigning some variables and **writing** it into `/etc/sysconfig/network-scripts/ifcfg-guly`
+	```
+	cat > /etc/sysconfig/network-scripts/ifcfg-guly << EoF
+	DEVICE=guly0
+	ONBOOT=no
+	NM_CONTROLLED=no
+	EoF
+	```
+2. Create a regex rule
+	```
+	regexp="^[a-zA-Z0-9_\ /-]+$"
+
+	# Matches:
+	1. a-z
+	2. A-Z
+	3. 0-9
+	4. The character '_'
+	5. The character '<space>'
+	6. The character '/'
+	7. The character '-' 
+	8. One or MORE times
+	```
+	![](Pasted%20image%2020220913192306.png)
+3. In every `for` loop,
+	1. Create variable `$var`, assign it to `NAME, PROXY_METHOD, BROWSER_ONLY, BOOTPROTO` in each loop
+		```
+		# Loop1:
+		$var = NAME
+		
+		# Loop2:
+		$var = PROXY_METHOD
+		
+		# Loop3
+		$var = BROWSER_ONLY
+		
+		# Loop4
+		$var = BOOTPROTO
+		```
+	2. Print `$var` in each loop
+		```
+		# Example:
+		
+		┌──(root💀kali)-[~/htb/networked/10.10.10.146/exploit]
+		└─# for var in NAME PROXY_METHOD BROWSER_ONLY BOOTPROTO; do echo $var; done
+		NAME
+		PROXY_METHOD
+		BROWSER_ONLY
+		BOOTPROTO
+		```
+	1. Accept user input
+	2.  Goes into a `while` loop If user input does not match regex expression,
+			1. Print "wrong input..." 
+			2. Print  `$var`
+			3. Accept user input again **until user input matches regex expression**.
+	3. Appends output of `$var=<user input>`  into `ifcfg-guly` in each loop
+4. Bring interface `guly0` up.
+	```
+	/sbin/ifup guly0
+	```
