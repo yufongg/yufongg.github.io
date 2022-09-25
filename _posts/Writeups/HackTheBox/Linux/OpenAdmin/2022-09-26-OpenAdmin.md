@@ -264,7 +264,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	 > - Virtual Host web root directory: `/var/www/internal`
 	 > - Virtual Host is running on `TCP/52846`
 	 > - User `jimmy` has write access to the web root directory.
-
+	{: .prompt-info}
 
 ## Joanna - How to privilege escalate w/ the info we have?
 1. Analyzing the information we have
