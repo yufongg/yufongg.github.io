@@ -117,6 +117,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 1. How do we exploit `check_attack.php`? (1)
 	1. We are only interested in `exec(...)` because it is code execution.
 		>  `exec("nohup /bin/rm -f $path$value > /dev/null 2>&1 &");` is vulnerable because `$value` is passed into `exec`
+		{: .prompt-info }
 	2. The variable `$value` are files residing in `/var/www/html/uploads/<file>`
 	3.  In order to get to the `exec(...)` statement, we simply just have to create a file that is `!= 10_10_10_10.png`, not a valid IP Address.
 	
@@ -139,10 +140,12 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 		> 2. Bypass/Overcome the restriction 
 			> - We can `base64` encode the payload and then decode it pip it in `sh`
 			> - Use `$(which bash)`
+		{: .prompt-info }
 	5. Creating the payload (2)
 		> 1. Our command injection payload is directed into `/dev/null`, 
 		> 2. Bypass/Overcome the restriction 
 			>	- simply add a random command (`;id`) so that that command will be passed to `/dev/null` instead.
+		{: .prompt-info }
 3. Exploiting `check_attack.php`
 	1. Monitor when `check_attack.php` is executed w/ `pspy64`
 	2. Create our command injection file (1)
