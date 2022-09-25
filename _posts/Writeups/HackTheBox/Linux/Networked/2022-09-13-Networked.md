@@ -147,7 +147,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 		> 3. Our command injection payload is directed into `/dev/null`, 
 		> 4. Bypass/Overcome the restriction 
 			> - simply add a random command (`;id`) so that that command will be passed to `/dev/null` instead.
-			
+
 3. Exploiting `check_attack.php`
 	1. Monitor when `check_attack.php` is executed w/ `pspy64`
 	2. Create our command injection file (1)
@@ -290,12 +290,11 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 3. How do we exploit `changename.sh` - [source](https://vulmon.com/exploitdetails?qidtp=maillist_fulldisclosure&qid=e026a0c5f83df4fd532442e1324ffa4f)
 	1. The vulnerability resides in how attributes in network scripts are not handled correctly
 	2. If there are whitespaces in the attribute name, `system` will try to execute the word after the white space.
-	3. For e.g.
 		```
 		NAME=testing whoami
 		# whoami will be executed by system as root
 		```
-	4. Spawn `root` shell
+	3. Spawn `root` shell
 		```
 		a /bin/bash
 		```
