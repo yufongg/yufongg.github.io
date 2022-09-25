@@ -381,6 +381,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	Sep 24 16:50:48 traverxec sudo[13909]: pam_unix(sudo:auth): auth could not identify password for [www-data]
 	Sep 24 16:50:48 traverxec sudo[13909]: www-data : command not allowed ; TTY=pts/1 ; PWD=/tmp/home/david/.ssh ; USER=root ; COMMAND=list
 	```
+	
 ## Root - SUDO GTFOBINS
 1. How do we exploit `journalctl`
 	- `journalctl` invokes the default pager, likely to be `less`. 
