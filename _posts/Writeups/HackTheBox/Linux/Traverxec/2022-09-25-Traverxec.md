@@ -14,7 +14,7 @@ image:
 # Overview 
 This machine begins w/ a web enumeration, discovering that the webserver is running `nostromo 1.9.6` which is susceptible to a directory traversal that leads to RCE vulnerability due to insufficient input sanitization, allowing us to obtain a low-privilege/`www-data` user.
 
-For the privilege escalation part, we have to privilege escalate to `david` and then `root`. After enumerating the system, `nostromo` configuration file reveals that `homedirs: /home` & `homedirs_public: /public_www` is defined, meaning we have access to the home directory (`/<user>/public_www`) of users on the system through HTTP via `http://traverxec.htb/~<USER>/`. Since `david` is the only user, we know that `/home/david/public_www` exists, `public_www` directory contains a backup of `david` SSH encrypted SSH private key, after cracking it w/ `john`, we are able to SSH into `david` by specifying his SSH private key.
+For the privilege escalation part, we have to privilege escalate to `david` and then `root`. After enumerating the system, `nostromo` configuration file reveals that `homedirs: /home` & `homedirs_public: /public_www` is defined, meaning we have access to the home directory (`/<user>/public_www`) of users on the system through HTTP via `http://traverxec.htb/~<USER>/`. Since `david` is the only user, we know that `/home/david/public_www` exists, `public_www` directory contains a backup of `david` encrypted SSH private key, after cracking it w/ `john`, we are able to SSH into `david` by specifying his SSH private key.
 
 On user `david`'s home directory, there is a script that reveals that user `david` is allowed to execute `/usr/bin/journalctl -n5 -unostromo.service` as root. `journalctl` has a GTFOBins entry, allowing us to privilege escalate to `root` w/ `!/bin/sh`.
 
@@ -381,7 +381,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	Sep 24 16:50:48 traverxec sudo[13909]: pam_unix(sudo:auth): auth could not identify password for [www-data]
 	Sep 24 16:50:48 traverxec sudo[13909]: www-data : command not allowed ; TTY=pts/1 ; PWD=/tmp/home/david/.ssh ; USER=root ; COMMAND=list
 	```
-	
+
 ## Root - SUDO GTFOBINS
 1. How do we exploit `journalctl`
 	- `journalctl` invokes the default pager, likely to be `less`. 
