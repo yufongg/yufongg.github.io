@@ -11,11 +11,10 @@
   type: discord
   icon: 'fab fa-discord'
   url: 'http://discordapp.com/users/175250797578158080'
--
-  type: rss
-  icon: 'fas fa-rss'
-  noblank: true
 
+- type: hackthebox
+  icon: 'far fa-cube'
+  url: 'https://www.hackthebox.com/home/users/profile/834331'
 #-
 #  type: twitter
 #  icon: 'fab fa-twitter'
