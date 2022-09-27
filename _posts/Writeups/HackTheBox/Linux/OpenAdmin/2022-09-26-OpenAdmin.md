@@ -279,6 +279,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	└─# ssh -L52846:127.0.0.1:52846 jimmy@openadmin.htb
 	```
 	> On `kali`, port 52846 is forwarded to `openadmin.htb` on port 52846
+	{: .prompt-info}
 2. Enumerate `TCP/52846` on `kali`
 	```
 	┌──(root💀kali)-[~/htb/OpenAdmin]
