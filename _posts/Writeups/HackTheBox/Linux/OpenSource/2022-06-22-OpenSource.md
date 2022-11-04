@@ -1,7 +1,6 @@
 ---
 title: HackTheBox - OpenSource 
-categories: [HackTheBox, HTB-Linux]
-description: OpenSource is an easy difficulty box
+categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-06-22 
 comments: true
 tags: [linux-priv-esc/sudo/gtfo-bin, exploit/file-upload-bypass ]
