@@ -258,8 +258,9 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 	-rw-rw-r-- 1 root root 1838 Mar 13  2022 .gitignore
 	drwxrwxr-x 3 root root 4096 Mar 13  2022 whackywidget
 	```
-	
-3. View `git` branches
+
+3. View `git` branches 
+
 	```
 	developer@ambassador:/opt/my-app$ git branch
 	* main
