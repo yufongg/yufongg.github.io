@@ -230,6 +230,7 @@ After enumerating the system, user `wizard` has a sudoers entry that allows user
 
 
 # Additional
+
 ## How did the Command Injection exploit work?
 1. View `server.rb`
 	```
@@ -259,6 +260,8 @@ After enumerating the system, user `wizard` has a sudoers entry that allows user
 	>2. `filetype` `POST` parameter is susceptible to a command injection attack due to the lack of input sanitization, the webserver checks whether `filetype` `POST` parameter starts w/ `png` or `jpg`. 
 	>3. This means that `png ;<Command Injection)`, `jpg <Command Injection>` is valid.
 	>4. Next, the `filetype` parameter is directly passed into `system` where code execution happens, thus we are able to do command injection.
+	{: .prompt-info}
+	
 ## Patch Command Injection Vulnerability
 1. Add another check for `POST` parameter `filetype`
 	```ruby
