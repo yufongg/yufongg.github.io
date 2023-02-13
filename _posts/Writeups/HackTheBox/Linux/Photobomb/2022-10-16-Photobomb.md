@@ -58,7 +58,7 @@ After enumerating the system, user `wizard` has a sudoers entry that allows user
 	}
 	window.onload = init;
 	```
-	- `pH0t0:b0Mb!`
+	>- `pH0t0:b0Mb!`
 	{: .prompt-info}
 
 3. Successfully login w/ `pH0t0:b0Mb!` 
@@ -88,13 +88,15 @@ After enumerating the system, user `wizard` has a sudoers entry that allows user
 3. After some testing, I can conclude that
 	- This is a valid request
 		![](Pasted%20image%2020221015162531.png)
-	- `photo` - specify photo name, must match the photo that exists on the webserver, any invalid name will cause a `500 Internal Server Error - Source photo does not exist`
+	- `photo` - specify photo name, must match the photo that exists on the webserver, 
 		![](Pasted%20image%2020221015161904.png)
-	- `filetype` - specify file type (`jpg`, `png`) only, however we are able to append anything  as long as `jpg` or `png` is infront of the appended text.
-	![](Pasted%20image%2020221015162415.png)
-	> We can see that the request is processed `filename=andrea-de-santis-uCFuP0Gc_MM-unsplash_1x1.jpg testing 123`
-	{: .prompt-info}
-
+		> any invalid name will cause a `500 Internal Server Error - Source photo does not exist`
+		{: .prompt-info}
+	- `filetype` - specify file type (`jpg`, `png`) only, 
+		![](Pasted%20image%2020221015162415.png)
+		> - however we are able to append anything  as long as `jpg` or `png` is infront of the appended text.
+		> - We can see that the request is processed `filename=andrea-de-santis-uCFuP0Gc_MM-unsplash_1x1.jpg testing 123`
+		{: .prompt-info}
 	- `dimensions` - specify dimension `numberxnumber`
 4. Determine if `filetype` `POST` parameter is susceptible to command injection
 	```
