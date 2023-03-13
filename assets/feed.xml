@@ -27,15 +27,6 @@ permalink: /feed.xml
   <entry>
     <title>{{ post.title }}</title>
     <link href="{{ post_absolute_url }}" rel="alternate" type="text/html" title="{{ post.title }}" />
-        {% if post.image %}
-          {% assign img_cdn = "https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts" %}
-          {% assign img_path = post.img_path %}
-          {% assign img_name = post.image.src %}
-          {% assign combined = img_cdn | append: img_path | append: img_name %}
-        {% else %}
-          {% assign combined = "https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Bob%201.0.1/images/hacking.gif" %}
-        {% endif %}
-      <img src="{{ combined }}" alt="{{post.title}} image" class="post-img" width="1000" height="450">
     <published>{{ post.date | date_to_xmlschema }}</published>
   {% if post.last_modified_at %}
     <updated>{{ post.last_modified_at | date_to_xmlschema }}</updated>
