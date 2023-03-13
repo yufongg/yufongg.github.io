@@ -15,6 +15,10 @@
 - type: hackthebox
   icon: 'fa fa-cube'
   url: 'https://www.hackthebox.com/home/users/profile/834331'
+
+- type: rss
+  icon: 'fas fa-rss'
+  noblank: true
 #-
 #  type: twitter
 #  icon: 'fab fa-twitter'
@@ -25,10 +29,10 @@
 #   type: mastodon
 #   icon: 'fab fa-mastodon'   # icons powered by <https://fontawesome.com/>
 #   url:  ''                  # Fill with your mastodon account page
--
-  type: linkedin
-  icon: 'fab fa-linkedin'   # icons powered by <https://fontawesome.com/>
-  url:  'https://www.linkedin.com/in/yufongg/'                  # Fill with your Linkedin homepage
+# -
+#   type: linkedin
+#   icon: 'fab fa-linkedin'   # icons powered by <https://fontawesome.com/>
+#   url:  'https://www.linkedin.com/in/yufongg/'                  # Fill with your Linkedin homepage
 # -
 #   type: stack-overflow
 #   icon: 'fab fa-stack-overflow'
