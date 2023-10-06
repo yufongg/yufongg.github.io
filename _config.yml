@@ -1,5 +1,5 @@
 # The Site Configuration
-
+include: [".well-known"]
 # Import the theme
 theme: jekyll-theme-chirpy
 
@@ -173,4 +173,3 @@ jekyll-archives:
     tag: /tags/:name/
     category: /categories/:name/
 
-include: [".well-known"]
