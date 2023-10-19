@@ -1,7 +1,6 @@
 # The Site Configuration
 
-include:
-- .well-known
+include: [".nojekyll"]
 
 # Import the theme
 theme: jekyll-theme-chirpy
