@@ -51,6 +51,6 @@ image:
 	
 # Solution
 
-<video muted autoplay controls style="width: 640px; height: 360px;">
+<video muted autoplay controls style="width: 740px; height: 460px;">
 	<source src="{{site.img_cdn}}{{page.img_path}}/fIpqfFcrFW.mp4" type="video/mp4">
 </video>

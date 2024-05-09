@@ -93,7 +93,7 @@ input[value^="a"] {
 
 ## Manual
 
-<video muted autoplay controls style="width: 640px; height: 360px;">
+<video muted autoplay controls style="width: 740px; height: 460px;">
     <source src="{{site.img_cdn}}{{page.img_path}}/2iYhEiyqAg.mp4" type="video/mp4">
 </video>
 
@@ -113,7 +113,7 @@ input[value^="a"] {
 	```
 3. Demo 
 
-	<video muted autoplay controls style="width: 640px; height: 360px;">
+	<video muted autoplay controls style="width: 740px; height: 460px;">
 		<source src="{{site.img_cdn}}{{page.img_path}}/TNQyqBL0CV.mp4" type="video/mp4">
 	</video>
 
@@ -142,7 +142,7 @@ input[value^="a"] {
 
 4. Demo 
 
-	<video muted autoplay controls style="width: 640px; height: 360px;">
+	<video muted autoplay controls style="width: 740px; height: 460px;">
 		<source src="{{site.img_cdn}}{{page.img_path}}/aQM7QZyd60.mp4" type="video/mp4">
 	</video>
 

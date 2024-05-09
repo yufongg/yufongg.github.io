@@ -78,28 +78,27 @@ async fn query(State(state): State<AppState>, Json(body): Json<Query>) -> axum::
     Ok(String::from("No results!"))
 }
 ```
->Vulnerability Details:
->Line 17-21:
->- We can figure out the table name partially, `table_{<here>}_{}`, since its taken from `user_id` (plaintext) and the string `fearless_concurrency` (salt)
->	- `user_id` is returned when a user is registered
->
-> Line 37-40:
-> - Susceptible to SQLi due to lack of input sanitization
-> 
-> Line 27-47:
-> 1. A table (we know the name) is created and user secret is inserted, 
-> 2. A pointless query can be made (vulnerable to sqli), pointless since we are just retrieving `Hello World!`
-> 3. Table is dropped
->
->Exploiting it:
->1. Register 2 users, `dummy_id`, `user_id`
->	1. `user_id` is used to sleep MySQL (so that table is not deleted) and retrieve the Flag
->	2. `dummy_id` is used to leak the full `table name (tbl_{}_{})` and `user_secret`
->2. Inject a sleep statement with `uid1`
->3. Retrieve full table name using SQL `LIKE` operator with `uid2`
->4. Retrieve secret with `uid2`
->5. Retrieve flag with `uid1`
-{: .prompt-info}
+
+Line 17-21:
+- We can figure out the table name partially, `table_{<here}_{}`, since its taken from `user_id` (plaintext) and the string `fearless_concurrency` (salt)
+	- `user_id` is returned when a user is registered
+
+Line 37-40:
+ - Susceptible to SQLi due to lack of input sanitization
+ 
+Line 27-47:
+1. A table (we know the name) is created and user secret is inserted, 
+2. A pointless query can be made (vulnerable to sqli), pointless since we are just retrieving `Hello World!`
+3. Table is dropped
+
+Exploiting it:
+1. Register 2 users, `dummy_id`, `user_id`
+	1. `user_id` is used to sleep MySQL (so that table is not deleted) and retrieve the Flag
+	2. `dummy_id` is used to leak the full `table name (tbl_{}_{})` and `user_secret`
+2. Inject a sleep statement with `uid1`
+3. Retrieve full table name using SQL `LIKE` operator with `uid2`
+4. Retrieve secret with `uid2`
+5. Retrieve flag with `uid1`
 
 
 # Solution
@@ -175,7 +174,7 @@ async fn query(State(state): State<AppState>, Json(body): Json<Query>) -> axum::
 
 - Demo 
 
-	<video muted autoplay controls style="width: 640px; height: 360px;">
+	<video muted autoplay controls style="width: 740px; height: 460px;">
 		<source src="{{site.img_cdn}}{{page.img_path}}/2YHcR4CJY5.mp4" type="video/mp4">
 	</video>
 
@@ -196,7 +195,12 @@ async fn query(State(state): State<AppState>, Json(body): Json<Query>) -> axum::
 	[*] retrieved flag: grey{ru57_c4n7_pr3v3n7_l061c_3rr0r5}
 	[*] slept
 	```
-	
+2. Demo 
+
+	<video muted autoplay controls style="width: 740px; height: 460px;">
+		<source src="{{site.img_cdn}}{{page.img_path}}/C4uRasuuAF.mp4" type="video/mp4">
+	</video>
+
 
 	
 # Code
@@ -276,3 +280,15 @@ if __name__ == "__main__":
 ```
 
 {% endraw %}
+
+# Failed Attempts
+
+Instead of trying to extract the full name of the table, tried to exfiltrate all the tables, store them in a list and iterate through all of them to get their secrets and then the flags.
+
+
+After sleeping the MySQL db and then querying for all the tables, the new table (created cuz of the query) isn't displayed.
+
+
+<video muted autoplay controls style="width: 740px; height: 460px;">
+	<source src="{{site.img_cdn}}{{page.img_path}}/Y8CXOfOtng.mp4" type="video/mp4">
+</video>
