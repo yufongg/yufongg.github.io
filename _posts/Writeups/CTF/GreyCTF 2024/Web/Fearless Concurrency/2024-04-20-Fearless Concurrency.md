@@ -179,7 +179,7 @@ Exploiting it:
 	</video>
 
 
-{% raw %}
+
 ## Auto
 
 1. Run script
@@ -201,8 +201,7 @@ Exploiting it:
 		<source src="{{site.img_cdn}}{{page.img_path}}/C4uRasuuAF.mp4" type="video/mp4">
 	</video>
 
-
-	
+{% raw %}
 # Code
 
 
