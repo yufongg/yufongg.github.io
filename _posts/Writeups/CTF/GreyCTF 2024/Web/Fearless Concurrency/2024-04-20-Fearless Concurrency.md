@@ -175,7 +175,7 @@ Exploiting it:
 - Demo 
 
 	<video muted autoplay controls style="width: 740px; height: 460px;">
-		<source src="{{site.img_cdn}}{{page.img_path}}/2YHcR4CJY5.mp4" type="video/mp4">
+		<source src="{{site.img_cdn}}{{page.img_path}}2YHcR4CJY5.mp4" type="video/mp4">
 	</video>
 
 
@@ -198,7 +198,7 @@ Exploiting it:
 2. Demo 
 
 	<video muted autoplay controls style="width: 740px; height: 460px;">
-		<source src="{{site.img_cdn}}{{page.img_path}}/C4uRasuuAF.mp4" type="video/mp4">
+		<source src="{{site.img_cdn}}{{page.img_path}}C4uRasuuAF.mp4" type="video/mp4">
 	</video>
 
 {% raw %}
@@ -289,5 +289,5 @@ After sleeping the MySQL db and then querying for all the tables, the new table 
 
 
 <video muted autoplay controls style="width: 740px; height: 460px;">
-	<source src="{{site.img_cdn}}{{page.img_path}}/Y8CXOfOtng.mp4" type="video/mp4">
+	<source src="{{site.img_cdn}}{{page.img_path}}Y8CXOfOtng.mp4" type="video/mp4">
 </video>
