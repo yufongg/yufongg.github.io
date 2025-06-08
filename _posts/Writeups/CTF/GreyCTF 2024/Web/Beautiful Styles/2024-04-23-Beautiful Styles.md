@@ -10,7 +10,7 @@ difficulty: 2.5
 solution: "https://github.com/NUSGreyhats/greyctf24-challs-public/tree/main/quals/web/beautiful-styles"
 img_path: /Writeups/CTF/GreyCTF%202024/Web/Beautiful%20Styles/attachments
 image:
-  src: Beautiful%20Styles-20240510000105525.png
+  src: /Beautiful%20Styles-20240510000105525.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
