@@ -1,4 +1,0 @@
-{"version": 2, "width": 117, "height": 48, "timestamp": 1662161918, "env": {"SHELL": "/bin/bash", "TERM": "xterm-256color"}}
-[0.022972, "o", "\u001b[?2004h\u001b]0;root@kali: ~/htb/sunday/10.10.10.76/loot\u0007\u001b[;94m┌──(\u001b[1;31mroot💀kali\u001b[;94m)-[\u001b[0;1m~/htb/sunday/10.10.10.76/loot\u001b[;94m]\r\r\n"]
-[0.023842, "o", "\u001b[;94m└─\u001b[1;31m#\u001b[0m "]
-[4.221281, "o", "\u001b[?2004l\r\r\nexit\r\n"]
