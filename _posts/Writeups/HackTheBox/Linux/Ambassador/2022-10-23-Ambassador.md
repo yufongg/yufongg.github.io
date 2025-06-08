@@ -29,6 +29,7 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 
 # Recon
 
+
 ## TCP/80 (HTTP)
 
 - FFUF
@@ -49,14 +50,17 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 
 # Initial Foothold
 
+
 ## TCP/80 (HTTP) 
 
 1. Found a post, revealing a username `developer`
 	 ![](Pasted%20image%2020221022123113.png)
 
+
 ## TCP/22 (SSH) - Bruteforce Developer User (Failed)
 
 1. Tried to bruteforce failed.
+
 
 ## TCP/3000 (HTTP) - CVE-2021-43798, Grafana 8.0.0-beta1- 8.3.0 (Arbitrary File Read) 
 
@@ -130,6 +134,7 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 
 5. Demo -  `Grafana 8.3.0 - Directory Traversal and Arbitrary File Read` - `multiple/webapps/50581.py`
 	![](0pSYxUEhNJ.gif)
+
 
 ## TCP/3306 (MySQL) - Access MySQL
 
@@ -213,6 +218,7 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 	>-  `developer:anEnglishManInNewYork027468`
 	{: .prompt-info}
 
+
 ## TCP/22 (SSH) - Successfully SSH
 
 1. SSH w/ `developer:anEnglishManInNewYork027468`
@@ -252,6 +258,7 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 	```
 
 # Privilege Escalation
+
 
 ## Root - Enumeration (.git Repo)
 
@@ -407,6 +414,7 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 		- [Hasicorp](https://lab.wallarm.com/consul-by-hashicorp-from-infoleak-to-rce/)
 		- [Wallarm](https://lab.wallarm.com/consul-by-hashicorp-from-infoleak-to-rce/) 
 
+
 ## Port Forwarding w/ SSH Tunnel
 
 1. We have to be able to access consul on `kali` in order to use the metasploit exploit, we can do so w/ `SSH Tunnel` 
@@ -427,6 +435,7 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 	└─# curl localhost:8500/v1/test
 	Invalid URL path: not a recognized HTTP API endpoint
 	```
+
 
 ## Root - Consul RCE (Metasploit)
 
@@ -469,6 +478,7 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 	![](Pasted%20image%2020221023145738.png)
 
 # Additional
+
 
 ## TCP/3000 (HTTP) - CVE-2021-43798, Grafana 8.0.0-beta1- 8.3.0 (Arbitrary File Read) (Manual)
 
@@ -564,6 +574,7 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 	>- `grafana:dontStandSoCloseToMe63221!`
 	{: .prompt-info}
 
+
 ## Root - Consul RCE (Manual)
 
 1. Create malicious `json` service configuration file to do RCE via `consul` API
@@ -624,6 +635,7 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 6. Demo - `consul` RCE (manual)
 	![](EXrqjmnOxo.gif)
 
+
 ## Root - Config.d Directory
 
 1. From [Ippsec](https://www.youtube.com/watch?v=6M_6rapjTL0&t=1220s)
@@ -668,6 +680,7 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 6. Start listener and wait for reverse shell to execute
 7. Demo - Write to `/etc/consul.d/config.d`
 	![](UrMBaoxamu.gif)
+
 
 ##  AESDecrypt Tool Fix
 
@@ -715,6 +728,7 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 		[*] PlainText= jas502n
 		[*] EncodePassword= VTh1akR5aFf7zo3AvF2q8+8h69PdTvFtcjwBl70sjg==
 		```
+
 
 ## Decrypt secureJsonData Password w/ AESDecrypt
 

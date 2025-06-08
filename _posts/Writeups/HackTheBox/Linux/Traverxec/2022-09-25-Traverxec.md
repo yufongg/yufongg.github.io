@@ -31,6 +31,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 
 # Recon
 
+
 ## TCP/80 (HTTP)
 
 - FFUF
@@ -47,6 +48,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	```
 
 # Initial Foothold
+
 
 ## TCP/80 (HTTP) - nostromo/nhttpd 1.9.6 RCE
 
@@ -105,6 +107,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 
 		![](Pasted%20image%2020220925015312.png)
 
+
 ## TCP/80 (HTTP) - nostromo/nhttpd 1.9.6 RCE (Manual)
 
 1. How does `nostromo 1.9.6 - Remote Code Execution` work?
@@ -162,6 +165,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 5. Demo - nostromo 1.9.6 RCE
 	![](19CaxMPgGy.gif)
 
+
 ## TCP/80 (HTTP) - nostromo/nhttpd 1.9.6 RCE (Metasploit)
 
 1. Launch `msfconsole`
@@ -213,6 +217,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	![](Pasted%20image%2020220925054440.png)
 
 # Privilege Escalation
+
 
 ## David - Enumeration
 
@@ -308,6 +313,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	david:$1$e7NfNpNi$A6nCwOTqrNR2oDuIKirRZ/
 	```
 
+
 ## David - Crack Hash
 
 1. Identify the hash alogrithm
@@ -334,6 +340,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 
 	- It took really long
 3. Could not switch to `david` w/ `Nowonly4me`
+
 
 ## David - Found Backup SSH Keys
 
@@ -390,6 +397,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	david@traverxec:~$
 	```
 
+
 ##  Root - Enumeration
 
 1. Found a script in `david`'s home directory
@@ -438,6 +446,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	Sep 24 16:50:48 traverxec sudo[13909]: pam_unix(sudo:auth): auth could not identify password for [www-data]
 	Sep 24 16:50:48 traverxec sudo[13909]: www-data : command not allowed ; TTY=pts/1 ; PWD=/tmp/home/david/.ssh ; USER=root ; COMMAND=list
 	```
+
 
 ## Root - SUDO GTFOBINS
 

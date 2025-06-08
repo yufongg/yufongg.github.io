@@ -39,6 +39,7 @@ Another way (unintended way) is via LXD groups where `orestis` belongs to. It al
 
 # Recon
 
+
 ## TCP/443 (HTTPS)
 
 ### FFUF
@@ -132,6 +133,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	- `brainfuck.htb`
 
 # Initial Foothold
+
 
 ## TCP/443 (HTTPS) - WP Responsive Ticket System Plugin Exploit
 
@@ -257,6 +259,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	![](Pasted%20image%2020220817040252.png)
 	- `kHGuERB29DNiNE`
 
+
 ## Accessing SMTP Server
 
 1. Launch `Thunderbird` to view email
@@ -265,6 +268,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	![](Pasted%20image%2020220817042321.png)
 	- `orestis:kIEnnfEKJ#9UmdO`
 	- This is likely used for `sup3rs3cr3t.brainfuck.htb` subdomain
+
 
 ## TCP/443 (HTTPS) - Encrypted text
 
@@ -287,6 +291,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 		- `mnvze` is likely `http`
 		- `sp_ptr` is likely `id_rsa`
 4. We can figure out the encryption key via [known-plaintext attack](https://en.wikipedia.org/wiki/Known-plaintext_attack)
+
 
 ## Derive encryption key w/ Vigenere Cipher (Subtraction)
 
@@ -350,6 +355,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 
 ![](Pasted%20image%2020220818060905.png)
 
+
 ## Derive encryption key w/ Vigenere Cipher (Vigenere Table)
 
 - Vigenere Table
@@ -396,6 +402,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 
 	![](Pasted%20image%2020220818053722.png)
 
+
 ## TCP/22 (SSH)
 
 1. Download the key
@@ -440,6 +447,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 ![](Pasted%20image%2020220819025428.png)
 
 # Privilege Escalation
+
 
 ## Root - Via Cracking/Reverse Engineering RSA
 
@@ -561,6 +569,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	```
 	6efc1a5dbb8904751ce6566a305bb8ef
 	```
+
 
 ## Root - Via LXD
 

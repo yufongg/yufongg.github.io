@@ -29,6 +29,7 @@ After enumerating the system, user `wizard` has a sudoers entry that allows user
 
 # Recon
 
+
 ## TCP/80 (HTTP)
 
 - FFUF
@@ -37,6 +38,7 @@ After enumerating the system, user `wizard` has a sudoers entry that allows user
 	{: .prompt-info}
 
 # Initial Foothold
+
 
 ## TCP/80 (HTTP) - /printer (Basic Authentication), Creds Found
 
@@ -69,6 +71,7 @@ After enumerating the system, user `wizard` has a sudoers entry that allows user
 
 	> `/printer` allows authenticated users to select an image, change its dimensions, file extension (`.jpg, .png`) and download it.
 	{: .prompt-info}
+
 
 ## TCP/80 (HTTP) - /printer, Command Injection
 
@@ -160,6 +163,7 @@ After enumerating the system, user `wizard` has a sudoers entry that allows user
 
 # Privilege Escalation
 
+
 ## Root - Enumeration
 
 1. View `wizard` sudo access
@@ -203,6 +207,7 @@ After enumerating the system, user `wizard` has a sudoers entry that allows user
 	2. Since we are able to `SETENV`, we can easily prepend a writable PATH (`/tmp`)
 	3. Create a malicious binary at `/tmp` named the same as the binary that is not called w/ its FULL PATH
 	4. Since `/tmp` is the first PATH in our path environment variable, `/tmp/find` will be invoked first, instead of the actual binary, allowing us to privilege escalate.
+
 
 ## Root - SUDO SETENV PATH Hijacking
 
@@ -260,6 +265,7 @@ After enumerating the system, user `wizard` has a sudoers entry that allows user
 
 # Additional
 
+
 ## How did the Command Injection exploit work?
 
 1. View `server.rb`
@@ -293,6 +299,7 @@ After enumerating the system, user `wizard` has a sudoers entry that allows user
 	>3. This means that `png ;<Command Injection)`, `jpg <Command Injection>` is valid.
 	>4. Next, the `filetype` parameter is directly passed into `system` where code execution happens, thus we are able to do command injection.
 	{: .prompt-info}
+
 
 ## Patch Command Injection Vulnerability
 

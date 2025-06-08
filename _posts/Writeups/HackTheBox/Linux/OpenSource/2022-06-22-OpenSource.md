@@ -34,6 +34,7 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 
 # Recon
 
+
 ## TCP/80 (HTTP)
 
 ### FFUF
@@ -46,11 +47,13 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 - `console`
 - `download`
 
+
 ## TCP/3000 (?)
 
 - Filtered
 
 # Initial Foothold
+
 
 ## TCP/80 (HTTP) - .git Directory
 
@@ -155,6 +158,7 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 	![](Pasted%20image%2020220622212605.png)
 7. However visiting `http://10.10.11.164/uploads/php-reverse-shell.php` does not execute the reverse shell, instead the file is downloaded
 
+
 ## TCP/80 (HTTP) - Exploiting Upcloud by analyzing the source code
 
 1. After browsing through the source code, found a way to exploit the application
@@ -251,6 +255,7 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 	![](vmware_EgRtOFfRY8.gif)
 
 # Privilege Escalation
+
 
 ## Dev01 - Docker Escape + Pivot
 
@@ -349,6 +354,7 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 	```
 
 	![](Pasted%20image%2020220623003447.png)
+
 
 ## Root - Via Cronjob
 

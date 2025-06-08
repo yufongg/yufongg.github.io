@@ -37,6 +37,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 
 # Recon
 
+
 ## TCP/80 (HTTP)
 
 - FFUF
@@ -49,6 +50,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 
 - `robots.txt`
 - `wordpress`
+
 
 ## TCP/139, 445 (SMB)
 
@@ -70,6 +72,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	- `general` - `R`
 	- `Development` - `RW`
 
+
 ## TCP/443 (HTTPS)
 
 - NMAP
@@ -83,6 +86,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 
 	- Subdomain
 		- `friendzone.red`
+
 
 ## TCP/UDP/53 (DNS)
 
@@ -116,6 +120,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 
 # Initial Foothold
 
+
 ## TCP/139, 445 (SMB) - File Exfiltration
 
 1. Download all files from `general` & `Development` SMB fileshare
@@ -140,6 +145,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 
 	- `admin:WORKWORKHhallelujah@#`
 
+
 ## TCP/443 (HTTP) - Enumerating friendzone.red
 
 1. In the page source of index, saw something interesting
@@ -155,6 +161,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	- Random `base64` encoded characters is displayed
 3. Tried to enumerate some `GET` parameters, nothing interesting is found
 4. Based on that, I think it is a rabbit-hole.
+
 
 ## TCP/443 (HTTP) - Enumerating uploads.friendzone.red
 
@@ -174,6 +181,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 			- OR the uploaded files are renamed
 2. Attempt to upload a file, regardless of whatever the file is, even if nothing is uploaded, it says successfully uploaded.
 3. Based on that, I think it is a rabbit-hole.
+
 
 ## TCP/443 (HTTP) - Enumerating administrator1.friendzone.red
 
@@ -286,6 +294,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 6. We are able to spawn a shell if we are able to somehow upload a `php-reverse-shell.php`.
 7. Earlier, while enumerating `TCP/139,445 (SMB)`, there is a fileshare `Development` that we have `RW` access to it
 
+
 ## TCP/139, 445 (SMB) - Upload php-reverse-shell.php
 
 1. Upload a `php-reverse-shell.php`
@@ -321,6 +330,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	```
 
 	- We can assume that `Development` fileshare resides in `/etc/Development`
+
 
 ## TCP/443 (HTTPS) - Execute reverse shell
 
@@ -376,6 +386,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 
 # Privilege Escalation
 
+
 ## Friend - Via File containing creds
 
 1. Found something interesting in `/var/www`
@@ -412,6 +423,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	```
 
 	![](Pasted%20image%2020220911184320.png)
+
 
 ## Root - Via Python Library Hijacking
 

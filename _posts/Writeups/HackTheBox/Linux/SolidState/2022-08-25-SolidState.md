@@ -33,6 +33,7 @@ For privilege escalation, after enumerating the system w/ `linpeas.sh`, there is
 
 # Recon
 
+
 ## TCP/80 (HTTP)
 
 ### FFUF
@@ -47,6 +48,7 @@ For privilege escalation, after enumerating the system w/ `linpeas.sh`, there is
 403      GET       11l       32w      299c http://10.10.10.51/server-status
 200      GET      130l      967w     8404c http://10.10.10.51/services.html
 ```
+
 
 ## TCP/4555 (James Server 2.3.2)
 
@@ -78,9 +80,11 @@ Login id:
 
 # Initial Foothold
 
+
 ## TCP/80 (HTTP) 
 
 1. After browsing through the webserver, could not find anything interesting.
+
 
 ## TCP/4555 (James Server 2.3.2)
 
@@ -137,6 +141,7 @@ Login id:
 
 		![](Pasted%20image%2020220825031413.png)
 
+
 ## Accessing the SMTP Server
 
 1. Access SMTP server w/ `POP3`
@@ -167,6 +172,7 @@ Login id:
 	![](Pasted%20image%2020220825034752.png)
 	- `mindy:P@55W0rd1!2@`
 
+
 ## TCP/22 (SSH) 
 
 1. Access w/ `mindy:P@55W0rd1!2@`
@@ -182,6 +188,7 @@ Login id:
 		- We are in a jail shell
 		- [Escape it](https://www.hacknos.com/rbash-escape-rbash-restricted-shell-escape/)
 2. Earlier, we found an RCE exploit on `James Server 2.3.2` that executes the payload when the user logs in, we can use this to escape the jail shell.
+
 
 ## TCP/4555 (James Server 2.3.2) - RCE exploit
 
@@ -226,6 +233,7 @@ Login id:
 	![](Pasted%20image%2020220825041833.png)
 
 # Privilege Escalation
+
 
 ## Root - Via Cronjob
 

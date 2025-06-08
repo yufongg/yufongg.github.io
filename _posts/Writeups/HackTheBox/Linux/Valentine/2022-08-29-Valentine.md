@@ -33,6 +33,7 @@ The final way is via a kernel exploit called `dirtycow`
 
 # Recon
 
+
 ## TCP/80 (HTTP)
 
 ### FFUF - common.txt
@@ -70,6 +71,7 @@ The final way is via a kernel exploit called `dirtycow`
 - `omg`
 
 # Initial Foothold
+
 
 ## TCP/80 (HTTP) - Found Private Key
 
@@ -148,6 +150,7 @@ The final way is via a kernel exploit called `dirtycow`
 	- The picture at `index.php` is a hint
 	- Username is obvious
 	
+
 
 ## TCP/443 (HTTPS) - Heartbleed
 
@@ -229,6 +232,7 @@ The final way is via a kernel exploit called `dirtycow`
 
 		- This should be the passphrase for the SSH private key
 
+
 ## TCP/22 (SSH)
 
 1. SSH w/ `hype:heartbleedbelievethehype`
@@ -247,6 +251,7 @@ The final way is via a kernel exploit called `dirtycow`
 	![](Pasted%20image%2020220829025828.png)
 
 # Privilege Escalation - 1 
+
 
 ## Root - Via CVE-2021-4034
 
@@ -269,6 +274,7 @@ The final way is via a kernel exploit called `dirtycow`
 	![](Pasted%20image%2020220829035444.png)
 
 # Privilege Escalation - 2
+
 
 ## Root - Via TMUX hijack
 
@@ -297,6 +303,7 @@ The final way is via a kernel exploit called `dirtycow`
 	![](vmware_s2COZodOHC.gif)
 
 # Privilege Escalation - 3
+
 
 ## Root - Via Kernel Exploit
 

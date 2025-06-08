@@ -33,6 +33,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 
 # Recon
 
+
 ## TCP/80 (HTTP)
 
 - FFUF
@@ -54,6 +55,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 - `uploads/`
 
 # Initial Foothold
+
 
 ## TCP/80 (HTTP) - File Upload Bypass
 
@@ -90,6 +92,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 
 # Privilege Escalation
 
+
 ## Guly - Enumeration 
 
 1. Found something interesting in `/home/guly`
@@ -114,6 +117,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 2. View `check_attack.php`
 	![](Pasted%20image%2020220913021555.png)
 
+
 ## Guly - What is check_attack.php doing?
 
 1. What is check_attack.php doing? - TLDR
@@ -124,6 +128,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	2. The `getNameCheck($value)`  function fix the format of the IP address by replacing `'_'` w/ `'.'` and returning the filename  `10.10.10.14` and extension `.jpg`.
 	3. The `check_ip($name, $value)` function just checks whether the variable `$name` (`10.10.10.14`) is a valid IP address, if not returns `ret=false`, which means `$check[0]` is NULL.
 	4. If `$check[0]` is NULL, append message to log, remove invalid file and mail. (This part is vulnerable)
+
 
 ## Guly - Exploiting check_attack.php 
 
@@ -224,6 +229,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	</body>
 	</html>
 
+
 ## Root - Enumeration
 
 1. Check `guly` sudo access
@@ -247,6 +253,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 2. View contents of `/usr/local/sbin/changename.sh`
 	![](Pasted%20image%2020220913190525.png)
 
+
 ## Root - What is changename.sh doing?
 
 1. What is changename.sh doing - TLDR
@@ -257,6 +264,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	3. If user input has banned characters, ask for user input again until a valid one is provided
 	4. Writes user input into `ifcfg-guly`
 	5. Starts interface `guly0`
+
 
 ## Root - Exploiting changename.sh
 
@@ -317,6 +325,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	</html>
 
 # Additional
+
 
 ## Guly -  What is check_attack.php doing? (In-Depth)
 
@@ -478,6 +487,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	3. Remove `/tmp/attack.log`
 	4. Remove the invalid/unsafe file
 	5. Prints `"rm -f $path$value"`
+
 
 ## What is changename.sh doing? (In-Depth)
 
