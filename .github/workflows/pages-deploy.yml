@@ -1,5 +1,4 @@
 name: 'Automatic build'
-
 on:
   push:
     branches:
@@ -23,8 +22,8 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2    # 🔥 upgraded Ruby version
-          bundler-cache: true  # cache gems to speed up builds
+          ruby-version: 2.7
+          bundler-cache: true
 
       - name: Deploy
         run: bash tools/deploy.sh

