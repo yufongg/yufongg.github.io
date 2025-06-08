@@ -8,9 +8,9 @@ tags:
 details: CSS XS-Leak
 difficulty: 2.5
 solution: "https://github.com/NUSGreyhats/greyctf24-challs-public/tree/main/quals/web/beautiful-styles"
-img_path: /Writeups/CTF/GreyCTF%202024/Web/Beautiful%20Styles/attachments
+img_path: /Writeups/CTF/GreyCTF%202024/Web/Beautiful%20Styles/attachments/
 image:
-  src: /Beautiful%20Styles-20240510000105525.png
+  src: Beautiful%20Styles-20240510000105525.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -94,7 +94,7 @@ input[value^="a"] {
 ## Manual
 
 <video muted autoplay controls style="width: 740px; height: 460px;">
-    <source src="{{site.img_cdn}}{{page.img_path}}/2iYhEiyqAg.mp4" type="video/mp4">
+    <source src="{{site.img_cdn}}{{page.img_path}}2iYhEiyqAg.mp4" type="video/mp4">
 </video>
 
 
@@ -114,7 +114,7 @@ input[value^="a"] {
 3. Demo 
 
 	<video muted autoplay controls style="width: 740px; height: 460px;">
-		<source src="{{site.img_cdn}}{{page.img_path}}/TNQyqBL0CV.mp4" type="video/mp4">
+		<source src="{{site.img_cdn}}{{page.img_path}}TNQyqBL0CV.mp4" type="video/mp4">
 	</video>
 
 
@@ -143,7 +143,7 @@ input[value^="a"] {
 4. Demo 
 
 	<video muted autoplay controls style="width: 740px; height: 460px;">
-		<source src="{{site.img_cdn}}{{page.img_path}}/aQM7QZyd60.mp4" type="video/mp4">
+		<source src="{{site.img_cdn}}{{page.img_path}}aQM7QZyd60.mp4" type="video/mp4">
 	</video>
 
 
