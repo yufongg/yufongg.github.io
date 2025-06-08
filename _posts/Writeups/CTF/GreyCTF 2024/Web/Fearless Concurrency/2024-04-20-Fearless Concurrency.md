@@ -11,7 +11,7 @@ difficulty: 3
 solved: no
 solution:
   - "https://github.com/NUSGreyhats/greyctf24-challs-public/tree/main/quals/web/fearless-concurrency/fearless-concurrency-solve"
-img_path: /Writeups/CTF/GreyCTF%202024/Web/Fearless%20Concurrency/attachments/
+img_path: /Writeups/CTF/GreyCTF%202024/Web/Fearless%20Concurrency/attachments
 image:
   src: ../../Beautiful%20Styles/attachments/Beautiful%20Styles-20240510000105525.png
   width: 1000   # in pixels
@@ -80,7 +80,7 @@ async fn query(State(state): State<AppState>, Json(body): Json<Query>) -> axum::
 ```
 
 Line 17-21:
-- We can figure out the table name partially, `table_{<here}_{}`, since its taken from `user_id` (plaintext) and the string `fearless_concurrency` (salt)
+- We can figure out the table name partially, `table_{<here>}_{}`, since its taken from `user_id` (plaintext) and the string `fearless_concurrency` (salt)
 	- `user_id` is returned when a user is registered
 
 Line 37-40:
@@ -91,7 +91,9 @@ Line 27-47:
 2. A pointless query can be made (vulnerable to sqli), pointless since we are just retrieving `Hello World!`
 3. Table is dropped
 
-Exploiting it:
+
+# Solution
+
 1. Register 2 users, `dummy_id`, `user_id`
 	1. `user_id` is used to sleep MySQL (so that table is not deleted) and retrieve the Flag
 	2. `dummy_id` is used to leak the full `table name (tbl_{}_{})` and `user_secret`
@@ -99,10 +101,6 @@ Exploiting it:
 3. Retrieve full table name using SQL `LIKE` operator with `uid2`
 4. Retrieve secret with `uid2`
 5. Retrieve flag with `uid1`
-
-
-# Solution
-
 
 ## Manual
 
@@ -175,7 +173,7 @@ Exploiting it:
 - Demo 
 
 	<video muted autoplay controls style="width: 740px; height: 460px;">
-		<source src="{{site.img_cdn}}{{page.img_path}}2YHcR4CJY5.mp4" type="video/mp4">
+		<source src="{{site.img_cdn}}{{page.img_path}}/2YHcR4CJY5.mp4" type="video/mp4">
 	</video>
 
 
@@ -198,7 +196,7 @@ Exploiting it:
 2. Demo 
 
 	<video muted autoplay controls style="width: 740px; height: 460px;">
-		<source src="{{site.img_cdn}}{{page.img_path}}C4uRasuuAF.mp4" type="video/mp4">
+		<source src="{{site.img_cdn}}{{page.img_path}}/C4uRasuuAF.mp4" type="video/mp4">
 	</video>
 
 {% raw %}
@@ -289,5 +287,5 @@ After sleeping the MySQL db and then querying for all the tables, the new table 
 
 
 <video muted autoplay controls style="width: 740px; height: 460px;">
-	<source src="{{site.img_cdn}}{{page.img_path}}Y8CXOfOtng.mp4" type="video/mp4">
+	<source src="{{site.img_cdn}}{{page.img_path}}/Y8CXOfOtng.mp4" type="video/mp4">
 </video>

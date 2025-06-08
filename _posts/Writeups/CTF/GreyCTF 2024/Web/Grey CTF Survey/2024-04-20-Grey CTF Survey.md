@@ -9,7 +9,7 @@ details: Improper use of `parseInt` leads to unexpected results
 difficulty: 2
 solved: yes
 solution: "https://github.com/NUSGreyhats/greyctf24-challs-public/tree/main/quals/web/greyctf-survey"
-img_path: /Writeups/CTF/GreyCTF%202024/Web/Grey%20CTF%20Survey/attachments/
+img_path: /Writeups/CTF/GreyCTF%202024/Web/Grey%20CTF%20Survey/attachments
 image:
   src: ../../Beautiful%20Styles/attachments/Beautiful%20Styles-20240510000105525.png
   width: 1000   # in pixels
