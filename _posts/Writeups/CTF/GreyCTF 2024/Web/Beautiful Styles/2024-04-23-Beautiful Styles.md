@@ -110,6 +110,9 @@ input[value^="a"] {
 	└─$ pip3 install selenium pyngrok
 	```
 2. Run script
+
+    > [code](https://github.com/yufongg/ctf/blob/main/greyctf/2024/web/beautiful_styles/solve2.py)
+
 	```
 	┌──(root💀kali)-[~/…/ctf/greyCTF2024/WEB/Beautiful Styles]
 	└─$ python3 semi_auto.py
@@ -131,6 +134,9 @@ input[value^="a"] {
 	└─$ pip3 install selenium pyngrok
 	```
 3. Run script
+
+    > [code](https://github.com/yufongg/ctf/blob/main/greyctf/2024/web/beautiful_styles/solve.py)
+
 	```
 	./geckodriver &
 	
@@ -144,7 +150,7 @@ input[value^="a"] {
 	```
 
 4. Demo 
-
+    
 	<video muted autoplay controls style="width: 740px; height: 460px;">
 		<source src="{{site.cdn}}{{page.img_path}}aQM7QZyd60.mp4" type="video/mp4">
 	</video>

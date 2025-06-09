@@ -186,6 +186,9 @@ Line 27-47:
 ### Auto
 
 1. Run script
+
+    > [code](https://github.com/yufongg/ctf/blob/main/greyctf/2024/web/fearless_concurrency/solve.py)
+
 	```
 	┌──(root💀kali)-[~/…/ctf/greyCTF2024/WEB/Fearless Concurrency]
 	└─$ python3 test.py
