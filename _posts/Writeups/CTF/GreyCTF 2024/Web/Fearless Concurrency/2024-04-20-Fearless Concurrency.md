@@ -7,8 +7,9 @@ date_time: 2024-04-20 18:09
 tags:
   - rust
   - web/mysqli/union-based
-details: Improper use of synchronization
-difficulty: 3
+info:
+  description: "Rust is the most safest, fastest and bestest language to write web app! The code compiles, therefore it is impossible for bugs!"
+  difficulty: 3
 solved: no
 solution:
   - "https://github.com/NUSGreyhats/greyctf24-challs-public/tree/main/quals/web/fearless-concurrency/fearless-concurrency-solve"
@@ -19,8 +20,11 @@ image:
   height: 400   # in pixels
 ---
 
+## Challenge Description
 
-# Source Code Analysis
+{{page.info.description}}
+
+## Source Code Analysis
 
 ```rust
 async fn query(State(state): State<AppState>, Json(body): Json<Query>) -> axum::response::Result<String> {
@@ -93,7 +97,7 @@ Line 27-47:
 3. Table is dropped
 
 
-# Solution
+## Solution
 
 1. Register 2 users, `dummy_id`, `user_id`
 	1. `user_id` is used to sleep MySQL (so that table is not deleted) and retrieve the Flag
@@ -103,7 +107,7 @@ Line 27-47:
 4. Retrieve secret with `uid2`
 5. Retrieve flag with `uid1`
 
-## Manual
+### Manual
 
 1. Create 2 users
 	```
@@ -179,7 +183,7 @@ Line 27-47:
 
 
 
-## Auto
+### Auto
 
 1. Run script
 	```
@@ -201,7 +205,7 @@ Line 27-47:
 	</video>
 
 {% raw %}
-# Code
+## Code
 
 
 ```python
@@ -211,7 +215,7 @@ import time
 import hashlib
 
 
-#proxies = {'http': 'http://127.0.0.1:8080'}
+##proxies = {'http': 'http://127.0.0.1:8080'}
 URL = "http://challs.nusgreyhats.org:33333"
 
 def get_hash(user_id):
@@ -279,7 +283,7 @@ if __name__ == "__main__":
 
 {% endraw %}
 
-# Failed Attempts
+## Failed Attempts
 
 Instead of trying to extract the full name of the table, tried to exfiltrate all the tables, store them in a list and iterate through all of them to get their secrets and then the flags.
 

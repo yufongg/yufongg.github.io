@@ -6,8 +6,9 @@ date: 2024-04-21
 date_time: 2024-04-21 10:47
 tags: 
 - web/xss
-details: XSS in Markdown fenced code block	
-difficulty: 2
+info:
+  description: XSS in Markdown fenced code block	
+  difficulty: 2
 solved: yes
 solution: "https://github.com/NUSGreyhats/greyctf24-challs-public/tree/main/quals/web/markdown-parser"
 img_path: /_posts/Writeups/CTF/GreyCTF%202024/Web/Markdown%20Parser/attachments/
@@ -17,9 +18,11 @@ image:
   height: 400   # in pixels
 ---
 
+## Challenge Description
 
+{{page.info.description}}
 
-# Source Code Analysis
+## Source Code Analysis
 - `markdown.js`
 	```
 	function parseMarkdown(markdownText) {
@@ -50,7 +53,7 @@ image:
 	>- In markdown the triple backticks, is used to start a code block. After the 3 backticks, it is used to declare the language that resides in the code block. Since no input sanitization is done, we can inject xss there
 	{: .prompt-info}
 	
-# Solution
+## Solution
 
 <video muted autoplay controls style="width: 740px; height: 460px;">
 	<source src="{{site.cdn}}{{page.img_path}}fIpqfFcrFW.mp4" type="video/mp4">

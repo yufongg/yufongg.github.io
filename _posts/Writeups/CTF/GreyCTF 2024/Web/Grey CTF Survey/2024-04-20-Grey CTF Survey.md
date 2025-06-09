@@ -6,8 +6,9 @@ date: 2024-04-20
 date_time: 2024-04-20 18:09
 tags: 
 - js/parseInt
-details: Improper use of `parseInt` leads to unexpected results	
-difficulty: 2
+info:
+  description: "Improper use of `parseInt` leads to unexpected results"
+  difficulty: 2
 solved: yes
 solution: "https://github.com/NUSGreyhats/greyctf24-challs-public/tree/main/quals/web/greyctf-survey"
 img_path: /_posts/Writeups/CTF/GreyCTF%202024/Web/Grey%20CTF%20Survey/attachments/
@@ -17,7 +18,11 @@ image:
   height: 400   # in pixels
 ---
 
-# Source Code Analysis
+## Challenge Description
+
+{{page.info.description}}
+
+## Source Code Analysis
 
 ```
 app.post('/vote', async (req, res) => {
@@ -77,7 +82,7 @@ String(0.0000005); // => '5e-7' => 5
 
 
 
-# Solution
+## Solution
 
 ```
 ┌──(root💀kali)-[~/boxes/nusgreyhat/WEB/Grey CTF Survey]
