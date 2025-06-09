@@ -4,9 +4,9 @@ author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-08-19
 tags: [linux-priv-esc/lxd, cryptography]
-img_path: /Writeups/HackTheBox/Linux/BrainFuck/images/
+img_path: /_posts/Writeups/HackTheBox/Linux/BrainFuck/images/
 image:
-  src: Pasted%20image%2020220819053202.png
+  path: /_posts/Writeups/HackTheBox/Linux/BrainFuck/images/Pasted%20image%2020220819053202.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -132,7 +132,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 ## TCP/443 (HTTPS) - WP Responsive Ticket System Plugin Exploit
 1. Add both subdomains to `/etc/hosts`
 2. Proceed to `https://brainfuck.htb`, view post (`Dev Update`)
-	![](Pasted%20image%2020220817022035.png)
+	![]({{ page.img_path }}Pasted%20image%2020220817022035.png)
 	- `oretis`
 	- `admin`
 3. Enumerate wordpress
@@ -225,7 +225,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 6. Try `php/webapps/41006.txt - Privilege Escalation`
 	1. This exploit allows you to login as any user due to of an incorrect usage of `wp_set_auth_cookie()`.
 	2. Create form `exploit.html`
-		![](Pasted%20image%2020220817033059.png)
+		![]({{ page.img_path }}Pasted%20image%2020220817033059.png)
 	3. Host form w/ python webserver
 		```
 		┌──(root💀kali)-[~/htb/brainfuck/10.10.10.17/exploit]
@@ -233,33 +233,33 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 		Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...		
 		```
 	4. Proceed to `http://localhost/exploit.html` and click `Login`
-		![](Pasted%20image%2020220817033222.png)
+		![]({{ page.img_path }}Pasted%20image%2020220817033222.png)
 	5. Allow it to process for a moment, and you are Admin!
-		![](Pasted%20image%2020220817033247.png)
+		![]({{ page.img_path }}Pasted%20image%2020220817033247.png)
 6. `php/webapps/40939.txt - SQLi`, did not work for me
 7. Proceed to `Settings` > `Easy WP SMTP`
 8. Inspect element and change type from `password` to `text` to reveal password
-	![](Pasted%20image%2020220817040252.png)
+	![]({{ page.img_path }}Pasted%20image%2020220817040252.png)
 	- `kHGuERB29DNiNE`
 
 
 ## Accessing SMTP Server
 1. Launch `Thunderbird` to view email
-	![](Pasted%20image%2020220818022505.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818022505.png)
 2. View `Forum Access Details` email
-	![](Pasted%20image%2020220817042321.png)
+	![]({{ page.img_path }}Pasted%20image%2020220817042321.png)
 	- `orestis:kIEnnfEKJ#9UmdO`
 	- This is likely used for `sup3rs3cr3t.brainfuck.htb` subdomain
 
 ## TCP/443 (HTTPS) - Encrypted text
 1. Proceed to `sup3rs3cr3t.brainfuck.htb` & login w/ `orestis:kIEnnfEKJ#9UmdO`
-	![](Pasted%20image%2020220818020211.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818020211.png)
 2. View `SSH Access` post
-	![](Pasted%20image%2020220818023306.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818023306.png)
 	- `Orestis - Hacking for fun and profit` is always written at the end of `orestis`'s post
 	- Encrypted thread to converse about SSH key
 3. View `Key` post
-	![](Pasted%20image%2020220818023501.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818023501.png)
 	- The encrypted text at the end of all of `orestis`'s post looks like the text we saw from earlier
 		- `Orestis - Hacking for fun and profit`
 		- `Pieagnm - Jkoijeg nbw zwx mle grwsnn`
@@ -284,7 +284,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	Plaintext + Key = Ciphertext
 	T(19) + X(23) = Q(16)
 	```
-	![](Pasted%20image%2020220818034735.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818034735.png)
 2. **Example** of deriving the `Key` from `Plaintext` & `Ciphertext`
 	```
 	Plaintext: THIS IS SECRET
@@ -294,7 +294,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	Key = Ciphertext - Plaintext
 	Key = Q(16) - T(19)
 	```
-	![](Pasted%20image%2020220818035327.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818035327.png)
 4. Derive key 
 	```
 	Ciphertext: Pieagnm - Jkoijeg nbw zwx mle grwsn
@@ -316,12 +316,12 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	
 	Key = FUCKMYBRAIN
 	```
-	![](Pasted%20image%2020220818060216.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818060216.png)
 5. Decrypt URL
 	```
 	https://10.10.10.17/8ba5aa10e915218697d1c658cdee0bb8/orestis/id_rsa
 	```
-![](Pasted%20image%2020220818060905.png)
+![]({{ page.img_path }}Pasted%20image%2020220818060905.png)
 
 ## Derive encryption key w/ Vigenere Cipher (Vigenere Table)
 - Vigenere Table
@@ -346,16 +346,16 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	Key = FUCKMYBRAIN
 
 	```
-	![](Pasted%20image%2020220818052843.png)
-	![](Pasted%20image%2020220818052923.png)
-	![](Pasted%20image%2020220818053003.png)
-	![](Pasted%20image%2020220818053118.png)
-	![](Pasted%20image%2020220818053208.png)
-	![](Pasted%20image%2020220818053329.png)
-	![](Pasted%20image%2020220818053409.png)
-	![](Pasted%20image%2020220818053540.png)
-	![](Pasted%20image%2020220818053645.png)
-	![](Pasted%20image%2020220818053722.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818052843.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818052923.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818053003.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818053118.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818053208.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818053329.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818053409.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818053540.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818053645.png)
+	![]({{ page.img_path }}Pasted%20image%2020220818053722.png)
 
 
 ## TCP/22 (SSH)
@@ -392,7 +392,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	```
 	- `3poulakia!`
 4. SSH & Obtain User Flag
-![](Pasted%20image%2020220819025428.png)
+![]({{ page.img_path }}Pasted%20image%2020220819025428.png)
 
 
 # Privilege Escalation
@@ -437,7 +437,7 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	debug.write(str(e)+'\n')
 	
 	```
-	![](Pasted%20image%2020220819041906.png)
+	![]({{ page.img_path }}Pasted%20image%2020220819041906.png)
 	- `p, q, e` - suggests that it is RSA
 		- We have the values of `p, q, e` in `debug.txt`
 	- `ct/ciphertext/enc_pass` - ciphertext/output of encoding root.txt`
@@ -500,8 +500,8 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	- Then convert `pt - plaintxt` to `Hex` and then to `ASCII`
 		- `m = Integer(int(password.encode('hex'),16))` - due to this line of code (Line 6)
 6. Convert
-![](Pasted%20image%2020220819051338.png)
-![](Pasted%20image%2020220819051359.png)
+![]({{ page.img_path }}Pasted%20image%2020220819051338.png)
+![]({{ page.img_path }}Pasted%20image%2020220819051359.png)
 7. Root Flag
 	```
 	6efc1a5dbb8904751ce6566a305bb8ef
@@ -536,11 +536,11 @@ Nmap 7.92 scan initiated Wed Aug 17 01:17:56 2022 as: nmap -vv --reason -Pn -T4 
 	# Execute the container and get an interactive shell
 	lxc exec privesc-container /bin/sh
 	```
-	![](Pasted%20image%2020220819052441.png)
+	![]({{ page.img_path }}Pasted%20image%2020220819052441.png)
 4. To obtain root, replace root hash w/ `orestis`'s 
 	```
 	vi /mnt/root/etc/shadow
 	```
-	![](Pasted%20image%2020220819060640.png)
+	![]({{ page.img_path }}Pasted%20image%2020220819060640.png)
 5. Switch to root w/ `orestis`'s password `kHGuERB29DNiNE`
-	![](Pasted%20image%2020220819060751.png)
+	![]({{ page.img_path }}Pasted%20image%2020220819060751.png)

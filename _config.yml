@@ -75,10 +75,10 @@ theme_mode: dark
 # will be added to all image (site avatar & posts' images) paths starting with '/'
 #
 # e.g. 'https://cdn.com'
-img_cdn: https://raw.githubusercontent.com/yufongg/yufongg.github.io/main/_posts
+cdn: https://raw.githubusercontent.com/yufongg/yufongg.github.io/main
 
 # the avatar on sidebar, support local or CORS resources
-avatar: /Writeups/Vulnhub/Linux/Bob 1.0.1/images/koko.jpg
+avatar: /assets/img/koko.jpg
 
 # boolean type, the global switch for ToC in posts.
 toc: true

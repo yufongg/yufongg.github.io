@@ -5,9 +5,9 @@ categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-06-22 
 comments: true
 tags: [linux-priv-esc/sudo/gtfo-bin, exploit/file-upload-bypass ]
-img_path: /Writeups/HackTheBox/Linux/OpenSource/images/
+img_path: /_posts/Writeups/HackTheBox/Linux/OpenSource/images/
 image:
-  src: Pasted%20image%2020220810021625.png
+  path: /_posts/Writeups/HackTheBox/Linux/OpenSource/images/Pasted%20image%2020220810021625.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -52,10 +52,10 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 
 ## TCP/80 (HTTP) - .git Directory
 1. Proceed to `http://10.10.11.164`	
-	![](Pasted%20image%2020220622192252.png)
+	![]({{ page.img_path }}Pasted%20image%2020220622192252.png)
 	- We are able download and view the source code by clicking the download button
 2. After clicking download, `source.zip` is downloaded 
-	![](Pasted%20image%2020220622204731.png)
+	![]({{ page.img_path }}Pasted%20image%2020220622204731.png)
 	- `.git` could reveal sensitive information
 3. View extract and view the contents of source.zip 
 	- We have knowledge of the app's directory structure and code
@@ -146,15 +146,15 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 	```
 	- dev01:Soulless_Developer#2022
 6. Proceed to `http://10.10.11.164/upcloud` & attempt to upload `php-reverse-shell.php`
-	![](Pasted%20image%2020220622212605.png)
+	![]({{ page.img_path }}Pasted%20image%2020220622212605.png)
 7. However visiting `http://10.10.11.164/uploads/php-reverse-shell.php` does not execute the reverse shell, instead the file is downloaded
 
 ## TCP/80 (HTTP) - Exploiting Upcloud by analyzing the source code
 1. After browsing through the source code, found a way to exploit the application
 	- `views.py`
-		![](Pasted%20image%2020220622205247.png)
+		![]({{ page.img_path }}Pasted%20image%2020220622205247.png)
 	-`utils.py`
-		![](Pasted%20image%2020220622205458.png)
+		![]({{ page.img_path }}Pasted%20image%2020220622205458.png)
 		- `../` is replaced
 2. `os.path.join` is exploitable 
 	``` 
@@ -220,9 +220,9 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 3. Earlier at we tried to include `php-reverse-shell.php` but the file is not executed 
 4. Instead we have to replace `views.py` with our own version of it that will execute a reverse shell by exploiting `os.path.join`
 5. Add command execute functionality into `views.py`
-	![](Pasted%20image%2020220622213126.png)
+	![]({{ page.img_path }}Pasted%20image%2020220622213126.png)
 6. Replace `views.py` and test whether our command execution functionality works
-	![](Pasted%20image%2020220622214144.png)
+	![]({{ page.img_path }}Pasted%20image%2020220622214144.png)
 	![](vmware_g2dbCRTyYF.gif)
 	- Server is pinging our machine
 7. Reverse shell payload
@@ -302,17 +302,17 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 		``` 
 		/app # ./chiselLinux64 client 10.10.14.16:1337 R:8888:172.17.0.1:3000 &
 		```
-		![](Pasted%20image%2020220623002006.png)
+		![]({{ page.img_path }}Pasted%20image%2020220623002006.png)
 1. Access the newly opened port 
-	![](Pasted%20image%2020220623002101.png)
+	![]({{ page.img_path }}Pasted%20image%2020220623002101.png)
 8. Found a familiar username
-	![](Pasted%20image%2020220623002136.png)
+	![]({{ page.img_path }}Pasted%20image%2020220623002136.png)
 9. Earlier, we found credentials for user `dev01`
 	- `dev01:Soulless_Developer#2022`
 10. Successfully login
-	![](Pasted%20image%2020220623002309.png)
+	![]({{ page.img_path }}Pasted%20image%2020220623002309.png)
 12. Found SSH private key
-	![](Pasted%20image%2020220623003350.png)
+	![]({{ page.img_path }}Pasted%20image%2020220623003350.png)
 13. SSH w/ found private key
 	``` 
 	┌──(root💀kali)-[~/htb/open_source]
@@ -321,14 +321,14 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 	┌──(root💀kali)-[~/htb/open_source]
 	└─# ssh -i id_rsa dev01@10.10.11.164
 	```
-	![](Pasted%20image%2020220623003447.png)
+	![]({{ page.img_path }}Pasted%20image%2020220623003447.png)
 
 
 
 ## Root - Via Cronjob
 1. Ran linpeas, did not find any vulnerabilities to exploit
 2. Ran `pspy64` to sniff root processes, found an interesting process that is executed periodically
-	![](Pasted%20image%2020220623015528.png)
+	![]({{ page.img_path }}Pasted%20image%2020220623015528.png)
 3. Our current user `dev01` has the git directory in his home directory, we are able to edit files in it
 4. Git has a [GTFO entry](https://gtfobins.github.io/gtfobins/git/)
 	- When git is run by a superuser, it does not drop elevated privileges
@@ -336,15 +336,15 @@ On the system, pspy64 revealed that there is a cronjob running as root executing
 	- `pre-commit` is executed everytime commit is run
 	- https://www.atlassian.com/git/tutorials/git-hooks
 6. Create `pre-commit` and make it executable 
-	![](Pasted%20image%2020220623011505.png)
+	![]({{ page.img_path }}Pasted%20image%2020220623011505.png)
 	``` 
 	dev01@opensource:~/.git/hooks$ chmod +x pre-commit
 
 	```
 7. Wait for cronjob to execute
-	![](Pasted%20image%2020220623015238.png)
+	![]({{ page.img_path }}Pasted%20image%2020220623015238.png)
 8. Root obtained
-	![](Pasted%20image%2020220623011747.png)
+	![]({{ page.img_path }}Pasted%20image%2020220623011747.png)
 
 9. Cronjob that was running
 

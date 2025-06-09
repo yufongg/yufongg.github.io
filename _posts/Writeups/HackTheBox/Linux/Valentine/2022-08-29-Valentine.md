@@ -4,9 +4,9 @@ author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-08-29
 tags: [linux-priv-esc/kernel-exploit]
-img_path: /Writeups/HackTheBox/Linux/Valentine/images/
+img_path: /_posts/Writeups/HackTheBox/Linux/Valentine/images/
 image:
-  src: Pasted%20image%2020220829043209.png
+  path: /_posts/Writeups/HackTheBox/Linux/Valentine/images/Pasted%20image%2020220829043209.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -142,7 +142,7 @@ The final way is via a kernel exploit called `dirtycow`
 
 ## TCP/443 (HTTPS) - Heartbleed
 1. Proceed to `http://valentine.htb`
-	 ![](Pasted%20image%2020220829030841.png)
+	 ![]({{ page.img_path }}Pasted%20image%2020220829030841.png)
 	 - Bleeding heart
 2. Search exploits named `bleed/heart`
 	
@@ -219,13 +219,13 @@ The final way is via a kernel exploit called `dirtycow`
 	```
 	e6710a5464769fd5fcd216e076961750
 	```
-	![](Pasted%20image%2020220829025828.png)
+	![]({{ page.img_path }}Pasted%20image%2020220829025828.png)
 
 # Privilege Escalation - 1 
 
 ## Root - Via CVE-2021-4034
 1. Found something interesting w/ `linpeas.sh`
-	![](Pasted%20image%2020220829035131.png)
+	![]({{ page.img_path }}Pasted%20image%2020220829035131.png)
 	- `CVE-2021-4034`
 1. Try `CVE-2021-4034.py`
 	1. How does the exploit work?
@@ -238,7 +238,7 @@ The final way is via a kernel exploit called `dirtycow`
 	```
 	f1bb6d759df1f272914ebbc9ed7765b2
 	```
-	![](Pasted%20image%2020220829035444.png)
+	![]({{ page.img_path }}Pasted%20image%2020220829035444.png)
 
 
 # Privilege Escalation - 2
@@ -246,7 +246,7 @@ The final way is via a kernel exploit called `dirtycow`
 ## Root - Via TMUX hijack
 
 1. Found something interesting w/ `linpeas.sh`
-	![](Pasted%20image%2020220829040229.png)
+	![]({{ page.img_path }}Pasted%20image%2020220829040229.png)
 	- `tmux` - process running as root
 	- `/.devs/dev_sess`
 2. Check file privileges for `/.devs/dev_sess`
@@ -283,7 +283,7 @@ The final way is via a kernel exploit called `dirtycow`
 		hype@Valentine:/tmp$ ./dirty password
 		hype@Valentine:/tmp$ su firefart
 		```
-		![](Pasted%20image%2020220829042936.png)
+		![]({{ page.img_path }}Pasted%20image%2020220829042936.png)
 
 
 

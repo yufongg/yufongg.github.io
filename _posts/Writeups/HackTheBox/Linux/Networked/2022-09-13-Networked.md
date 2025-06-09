@@ -4,9 +4,9 @@ author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-09-13
 tags: [exploit/file-upload-bypass, exploit/command-injection]
-img_path: /Writeups/HackTheBox/Linux/Networked/images/
+img_path: /_posts/Writeups/HackTheBox/Linux/Networked/images/
 image:
-  src: Pasted%20image%2020220913201610.png
+  path: /_posts/Writeups/HackTheBox/Linux/Networked/images/Pasted%20image%2020220913201610.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -58,7 +58,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 
 ## TCP/80 (HTTP) - File Upload Bypass
 1. After some testing at `http://10.10.10.146/upload.php`, 
-		![](Pasted%20image%2020220913004647.png)
+		![]({{ page.img_path }}Pasted%20image%2020220913004647.png)
 	- `.php` - unable to upload
 	- `.jpg, .png` - successfully uploaded
 	- Uploaded files go to `uploads/<IP Address>.ext`
@@ -73,13 +73,13 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 		<?php
 		...
 		```
-		![](Pasted%20image%2020220913020708.png)
+		![]({{ page.img_path }}Pasted%20image%2020220913020708.png)
 3. Invoke reverse shell
 	```
 	┌──(root💀kali)-[~/htb/networked]
 	└─# curl http://networked.htb/uploads/10_10_14_19.php.jpg
 	```
-	![](Pasted%20image%2020220913020924.png)
+	![]({{ page.img_path }}Pasted%20image%2020220913020924.png)
 4. If you want to practice this exact upload bypass, try Vulnhub Pwnlab
 
 # Privilege Escalation
@@ -103,7 +103,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	- `crontab.guly`
 	- `check_attack.php`
 2. View `check_attack.php`
-	![](Pasted%20image%2020220913021555.png)
+	![]({{ page.img_path }}Pasted%20image%2020220913021555.png)
 
 ## Guly - What is check_attack.php doing?
 1. What is check_attack.php doing? - TLDR
@@ -171,9 +171,9 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 		```
 	3. Start listener
 	4. Wait for cronjob to execute
-		![](Pasted%20image%2020220913050342.png)
+		![]({{ page.img_path }}Pasted%20image%2020220913050342.png)
 	5. `guly` shell obtained
-		![](Pasted%20image%2020220913050514.png)
+		![]({{ page.img_path }}Pasted%20image%2020220913050514.png)
 	6. Create our command injection file (2)
 		1. Encode Payload
 			```
@@ -186,7 +186,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 			```
 	7. Start listener
 	8. Wait for cronjob to execute
-		![](Pasted%20image%2020220913055843.png) 
+		![]({{ page.img_path }}Pasted%20image%2020220913055843.png) 
 4. Demo - `check_attack.php` Privilege Escalation
 	<html>
 	<head>
@@ -222,7 +222,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	```
 	- `/usr/local/sbin/changename.sh`
 2. View contents of `/usr/local/sbin/changename.sh`
-	![](Pasted%20image%2020220913190525.png)
+	![]({{ page.img_path }}Pasted%20image%2020220913190525.png)
 
 ## Root - What is changename.sh doing?
 1. What is changename.sh doing - TLDR
@@ -369,22 +369,22 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 		- for e.g. `10_10_14_19.png`
 		- `$pieces[0] = 10_10_14_19.png`
 		- `$pieces[1] = .png`
-			![](Pasted%20image%2020220913033835.png)
+			![]({{ page.img_path }}Pasted%20image%2020220913033835.png)
 	2. Remove first array in `$pieces` , store it in `$name`
 		- `$name = 10_10_14_19`
-		![](Pasted%20image%2020220913034200.png)
+		![]({{ page.img_path }}Pasted%20image%2020220913034200.png)
 	3. Replaces `_` in `$name` w/ `.` 
 		- `10_10_14_19 to 10.10.14.19`
-		![](Pasted%20image%2020220913033458.png)
+		![]({{ page.img_path }}Pasted%20image%2020220913033458.png)
 	4. Get file extension
 		- `$ext = png`
-		![](Pasted%20image%2020220913034649.png)
+		![]({{ page.img_path }}Pasted%20image%2020220913034649.png)
 	5. Return `array($name,$ext)`
 6. Store array into list
 	```
 	list ($name,$ext) = getnameCheck($value);	
 	```
-	![](Pasted%20image%2020220913041721.png)
+	![]({{ page.img_path }}Pasted%20image%2020220913041721.png)
 7. Pass `$name, $value` into `check_ip` function
 	```
 	# $name  = 10.10.14.19      = $prefix
@@ -405,11 +405,11 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	2. If IP Address is invalid, 
 		- `$ret = false`  
 		- `$msg=...not impt...`
-			![](Pasted%20image%2020220913042410.png)
+			![]({{ page.img_path }}Pasted%20image%2020220913042410.png)
 	3. If IP Address is Valid
 		- `$msg = 10_10_14_19.png`
 		- `$ret = true`
-			![](Pasted%20image%2020220913041225.png)
+			![]({{ page.img_path }}Pasted%20image%2020220913041225.png)
 	4. Return
 		- Valid IP: `array(1,"10_10_14_19.png")`
 		- Invalid IP: `array(false,"4tt4ck on file 10_10_14_19.png: prefix is not a valid ip")`
@@ -454,7 +454,7 @@ If you wish to practice boxes similar to this, try VulnHub PwnLab
 	7. The character '-' 
 	8. One or MORE times
 	```
-	![](Pasted%20image%2020220913192306.png)
+	![]({{ page.img_path }}Pasted%20image%2020220913192306.png)
 3. In every `for` loop,
 	1. Create variable `$var`, assign it to `NAME, PROXY_METHOD, BROWSER_ONLY, BOOTPROTO` in each loop
 		```

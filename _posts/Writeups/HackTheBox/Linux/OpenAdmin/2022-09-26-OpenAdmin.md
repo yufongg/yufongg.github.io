@@ -4,9 +4,9 @@ author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-09-26
 tags: [linux-priv-esc/sudo/gtfo-bin, tcp/80-http/web-app-cms-exploit, pivot]
-img_path: /Writeups/HackTheBox/Linux/OpenAdmin/images/
+img_path: /_posts/Writeups/HackTheBox/Linux/OpenAdmin/images/
 image:
-  src: Pasted%20image%2020220925180337.png
+  path: /_posts/Writeups/HackTheBox/Linux/OpenAdmin/images/Pasted%20image%2020220925180337.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -53,7 +53,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 
 ## TCP/80 (HTTP) - OpenNetAdmin v18.1.1 Remote Code Execution
 1. Found `OpenNetAdmin v18.1.1` running after clicking `Login` from `http://OpenAdmin.htb/music`
-	![](Pasted%20image%2020220925220041.png)
+	![]({{ page.img_path }}Pasted%20image%2020220925220041.png)
 2. Search exploits for `OpenNetAdmin v18.1.1`
 
 	| Exploit Title                                                | Path                 |
@@ -146,7 +146,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	   0   Automatic Target
 	```
 5. Exploit!
-	![](Pasted%20image%2020220926040313.png)
+	![]({{ page.img_path }}Pasted%20image%2020220926040313.png)
 
 
 
@@ -259,7 +259,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	```
 	- `internal`
 2. Found something interesting w/ `linpeas.sh`
-	![](Pasted%20image%2020220926011836.png)
+	![]({{ page.img_path }}Pasted%20image%2020220926011836.png)
 	>  - An internal port `TCP/52846`
 	 > - Virtual Host is running as user `joanna`, 
 	 > - Virtual Host web root directory: `/var/www/internal`
@@ -320,7 +320,7 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	└─# curl localhost:52846/webshell.php?c=id
 	uid=1001(joanna) gid=1001(joanna) groups=1001(joanna),1002(internal)
 	```
-	![](Pasted%20image%2020220926015451.png)
+	![]({{ page.img_path }}Pasted%20image%2020220926015451.png)
 3. Create a `joannabash`, bash w/ `joanna` setuid
 	```
 	┌──(root💀kali)-[~/htb/OpenAdmin/10.10.10.171/loot]
@@ -459,9 +459,9 @@ User `joanna` has a sudoers entry that allows `joanna` to execute `nano` as root
 	```
 	- Found hash
 3. Crack Hash w/ [dcode](https://www.dcode.fr/sha512-hash)
-	![](Pasted%20image%2020220926042206.png)
+	![]({{ page.img_path }}Pasted%20image%2020220926042206.png)
 4. Login w/ `jimmy:Revealed`, `joanna`'s SSH private key is displayed
-	![](Pasted%20image%2020220926042456.png)
+	![]({{ page.img_path }}Pasted%20image%2020220926042456.png)
 
 
 ## Fix main.php

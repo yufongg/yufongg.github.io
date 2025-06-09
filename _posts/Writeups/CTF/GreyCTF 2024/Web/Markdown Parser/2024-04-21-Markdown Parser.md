@@ -10,9 +10,9 @@ details: XSS in Markdown fenced code block
 difficulty: 2
 solved: yes
 solution: "https://github.com/NUSGreyhats/greyctf24-challs-public/tree/main/quals/web/markdown-parser"
-img_path: /Writeups/CTF/GreyCTF%202024/Web/Markdown%20Parser/attachments/
+img_path: /_posts/Writeups/CTF/GreyCTF%202024/Web/Markdown%20Parser/attachments/
 image:
-  src: ../../Beautiful%20Styles/attachments/Beautiful%20Styles-20240510000105525.png
+  path: /_posts/Writeups/CTF/GreyCTF%202024/Web/Markdown%20Parser/attachments/../../Beautiful%20Styles/attachments/Beautiful%20Styles-20240510000105525.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -53,5 +53,5 @@ image:
 # Solution
 
 <video muted autoplay controls style="width: 740px; height: 460px;">
-	<source src="{{site.img_cdn}}{{page.img_path}}fIpqfFcrFW.mp4" type="video/mp4">
+	<source src="{{site.cdn}}{{page.img_path}}fIpqfFcrFW.mp4" type="video/mp4">
 </video>

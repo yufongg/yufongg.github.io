@@ -4,9 +4,9 @@ author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-08-25
 tags: [jail]
-img_path: /Writeups/HackTheBox/Linux/SolidState/images/
+img_path: /_posts/Writeups/HackTheBox/Linux/SolidState/images/
 image:
-  src: Pasted%20image%2020220825061518.png
+  path: /_posts/Writeups/HackTheBox/Linux/SolidState/images/Pasted%20image%2020220825061518.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -102,11 +102,11 @@ Login id:
 	3. Lets enumerate `SMTP, POP3` before continuing w/ the exploit
 4. Before exploiting `James Server 2.3`, access it w/ default creds to do further enumeration
 	1. `HELP` to view commands
-		![](Pasted%20image%2020220825025553.png)
+		![]({{ page.img_path }}Pasted%20image%2020220825025553.png)
 		- `listusers`, we are able to list `users` in the system
 		- `setpassword`, we are able to change any `user`'s password, allowing us to access their account through SMTP and read mails.
 	2. View `users` on the system
-		![](Pasted%20image%2020220825031059.png)
+		![]({{ page.img_path }}Pasted%20image%2020220825031059.png)
 		- Users:
 			- `james`
 			- `thomas`
@@ -121,7 +121,7 @@ Login id:
 		setpassword mindy password
 		setpassword mailadmin password
 		```
-		![](Pasted%20image%2020220825031413.png)
+		![]({{ page.img_path }}Pasted%20image%2020220825031413.png)
 
 ## Accessing the SMTP Server
 1. Access SMTP server w/ `POP3`
@@ -147,7 +147,7 @@ Login id:
 	- `john` - No mails
 	- `mindy` - Found mails
 2. View mail w/ `thunderbird`
-	![](Pasted%20image%2020220825034752.png)
+	![]({{ page.img_path }}Pasted%20image%2020220825034752.png)
 	- `mindy:P@55W0rd1!2@`
 
 
@@ -157,7 +157,7 @@ Login id:
 	┌──(root💀kali)-[~/htb/solidstate/10.10.10.51/exploit]
 	└─# sshpass -p 'P@55W0rd1!2@' ssh mindy@10.10.10.51
 	```
-	![](Pasted%20image%2020220825040323.png)
+	![]({{ page.img_path }}Pasted%20image%2020220825040323.png)
 	- `rbash`
 		- We are in a jail shell
 		- [Escape it](https://www.hacknos.com/rbash-escape-rbash-restricted-shell-escape/)
@@ -187,23 +187,23 @@ Login id:
 		┌──(root💀kali)-[~/htb/solidstate/10.10.10.51/exploit]
 		└─# sshpass -p 'P@55W0rd1!2@' ssh mindy@10.10.10.51
 		```
-		![](Pasted%20image%2020220825041617.png)
+		![]({{ page.img_path }}Pasted%20image%2020220825041617.png)
 		- Jailshell escaped!
 2. User Flag
 	```
 	4d9a00315a76957167ef83161bd7abe9
 	```
-	![](Pasted%20image%2020220825041833.png)
+	![]({{ page.img_path }}Pasted%20image%2020220825041833.png)
 
 
 # Privilege Escalation
 
 ## Root - Via Cronjob
 1. Found something interesting w/ `linpeas.sh`
-	![](Pasted%20image%2020220825044822.png)
+	![]({{ page.img_path }}Pasted%20image%2020220825044822.png)
 	- We have `RWX` access to `/opt/tmp.py`
 2. Sniff processes w/ `pspy32`
-	![](Pasted%20image%2020220825044608.png)
+	![]({{ page.img_path }}Pasted%20image%2020220825044608.png)
 	- A cronjob running as `root` is executing `/opt/tmp.py` every 3 minutes
 3. Exploit
 	1. How does it work?
@@ -223,5 +223,5 @@ Login id:
 		```
 		fec122a2b91fc6cf33e0ad4276a685ad
 		```
-		![](Pasted%20image%2020220825045806.png)
+		![]({{ page.img_path }}Pasted%20image%2020220825045806.png)
 

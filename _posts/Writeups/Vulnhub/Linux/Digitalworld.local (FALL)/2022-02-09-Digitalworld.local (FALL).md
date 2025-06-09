@@ -4,9 +4,9 @@ author: yufong
 categories: [Vulnhub, Linux]
 date: 2022-02-09
 tags: [ exploit/file-inclusion/lfi, linux-priv-esc/linux-creds-found ]
-img_path: /Writeups/Vulnhub/Linux/Digitalworld.local (FALL)/images/
-image: 
-  src: fall.jpg
+img_path: /_posts/Writeups/Vulnhub/Linux/Digitalworld.local (FALL)/images/
+image:
+  path: /_posts/Writeups/Vulnhub/Linux/Digitalworld.local (FALL)/images/fall.jpg
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -294,21 +294,21 @@ PORT     STATE SERVICE REASON         VERSION
 ## TCP/80 (HTTP) - LFI (Include config.php, failed)
 1. View enumerated directories
 	- `admin`
-		![](Pasted%20image%2020220208175256.png)
+		![]({{ page.img_path }}Pasted%20image%2020220208175256.png)
 	- `assets`, `modules`
 		- Contains files for the CMS
 	- `index.php`
-		![](Pasted%20image%2020220208175534.png)
+		![]({{ page.img_path }}Pasted%20image%2020220208175534.png)
 		- `CMS Made Simple v2.2.15`
 		- There could be backdoors in the webserver
 	- `test.php`
-		![](Pasted%20image%2020220208174904.png)
+		![]({{ page.img_path }}Pasted%20image%2020220208174904.png)
 		- `GET` parameter missing
 	- `missing.html`
-		![](Pasted%20image%2020220208174506.png)
+		![]({{ page.img_path }}Pasted%20image%2020220208174506.png)
 		- `patrick`
 2. Intercept `test.php` w/ burp
-	![](Pasted%20image%2020220208180001.png)
+	![]({{ page.img_path }}Pasted%20image%2020220208180001.png)
 	- javascript `alert('Missing GET parameter')`
 3. Search exploits for `CMS Made Simple v2.2.15`
 	
@@ -367,7 +367,7 @@ PORT     STATE SERVICE REASON         VERSION
 
 	[WARN] Caught keyboard interrupt (Ctrl-C)
 	```
-	![](Pasted%20image%2020220208190041.png)
+	![]({{ page.img_path }}Pasted%20image%2020220208190041.png)
 6. Include files that can lead to RCE
 	1. Enumerate files that can lead to RCE
 		- Did not find any log files we can poison
@@ -517,7 +517,7 @@ PORT     STATE SERVICE REASON         VERSION
 
 ## TCP/22 (SSH)
 1. SSH w/ qiu's `id_rsa`
-![](Pasted%20image%2020220208200210.png)
+![]({{ page.img_path }}Pasted%20image%2020220208200210.png)
 2. Local Flag
 	```
 	[qiu@FALL ~]$ cat local.txt 
@@ -561,7 +561,7 @@ PORT     STATE SERVICE REASON         VERSION
 	```
 	- root:`remarkablyawesomE`
 3. Obtain root shell
-	![](Pasted%20image%2020220208204223.png)
+	![]({{ page.img_path }}Pasted%20image%2020220208204223.png)
 4. Root Flag
 	```
 	[root@FALL ~]# cat proof.txt 

@@ -4,9 +4,9 @@ author: yufong
 categories: [Vulnhub, Linux]
 date: 2022-02-08
 tags: [tcp/139-445-smb/fileshare,port-knocking,tcp/80-http/web-app-cms-exploit,tcp/80-http/cms/tomcat,linux-priv-esc/cronjob ]
-img_path: /Writeups/Vulnhub/Linux/Digitalworld.local (MERCY v2)/images/
+img_path: /_posts/Writeups/Vulnhub/Linux/Digitalworld.local (MERCY v2)/images/
 image:
-  src: Pasted%20image%2020220208040124.png
+  path: /_posts/Writeups/Vulnhub/Linux/Digitalworld.local (MERCY v2)/images/Pasted%20image%2020220208040124.png
   width: 1000   # in pixels
   height: 200   # in pixels
 ---
@@ -380,12 +380,12 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 ## TCP/8080 (HTTP) - Hidden Directory
 1. View enumerated directories
 	- `examples`
-		![](Pasted%20image%2020220207205610.png)
+		![]({{ page.img_path }}Pasted%20image%2020220207205610.png)
 		- contains example servlets and JSPs.
 	- `index.html`
-	![](Pasted%20image%2020220207200720.png)
+	![]({{ page.img_path }}Pasted%20image%2020220207200720.png)
 	- `host-manager`
-		![](Pasted%20image%2020220207205141.png)
+		![]({{ page.img_path }}Pasted%20image%2020220207205141.png)
 		- Basic Authentication
 	- `robots.txt`
 		```
@@ -413,7 +413,7 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 	- Weak passwords?
 3. Bruteforce `host-manager` w/ known tomcat default credentials
 	- Failed
-	![](Pasted%20image%2020220207211845.png)
+	![]({{ page.img_path }}Pasted%20image%2020220207211845.png)
 
 ## TCP/139,445 (SMB) SMB Fileshare Bruteforce
 1. [Bruteforce](https://github.com/yufongg/SMB-Fileshare-Bruteforce) SMB Fileshare
@@ -486,10 +486,10 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 	```
 5. View files
 	- `configprint`
-		![](Pasted%20image%2020220208001316.png)
+		![]({{ page.img_path }}Pasted%20image%2020220208001316.png)
 		- `knockd.conf`
 	- `config`
-		![](Pasted%20image%2020220208002615.png)
+		![]({{ page.img_path }}Pasted%20image%2020220208002615.png)
 		
 		- Knock Sequence:
 			- `159,27391,4`
@@ -615,7 +615,7 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 ## TCP/80 (HTTP) - RIPS 0.53 LFI Exploit
 1. View enumerated directories
 	- `time`
-		![](Pasted%20image%2020220208004832.png)
+		![]({{ page.img_path }}Pasted%20image%2020220208004832.png)
 	- `robots.txt`
 		```
 		┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/loot]
@@ -633,7 +633,7 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 		We hope you do not plead for mercy too much. If you do, please help us upgrade our website to allow our visitors to obtain more than just the local time of our system.
 		```
 	- `/nomercy`
-		![](Pasted%20image%2020220208005038.png)
+		![]({{ page.img_path }}Pasted%20image%2020220208005038.png)
 		- `RIPS 0.53`
 2. Search exploits for `RIPS 0.53`
 
@@ -648,7 +648,7 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 		http://localhost/rips/windows/code.php?file=../../../../../../etc/passwd
 		```
 	2. Check for vulnerability
-		![](Pasted%20image%2020220208010019.png)
+		![]({{ page.img_path }}Pasted%20image%2020220208010019.png)
 	3. Fuzz for files that can lead to RCE
 		```
 		┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2/192.168.110.19/exploit]
@@ -700,17 +700,17 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 		- `/etc/tomcat7/tomcat-users.xml`
 		- [Good explanation](https://askubuntu.com/a/314614) of tomcat directory structure
 	6. Visit `http://192.168.110.19:8080/index.html` again
-		![](Pasted%20image%2020220208020311.png)
+		![]({{ page.img_path }}Pasted%20image%2020220208020311.png)
 		- `/etc/tomcat7/tomcat-users.xml`
 	7. Include `/etc/tomcat7/tomcat-users.xml`  
-		![](Pasted%20image%2020220208024547.png)
+		![]({{ page.img_path }}Pasted%20image%2020220208024547.png)
 		- thisisasuperduperlonguser:heartbreakisinevitable
 		- fluffy:freakishfluffybunny
 
 ## TCP/8080 (HTTP) - Tomcat (Upload Reverse Shell)
 1. Proceed to `http://192.168.110.19:8080/manager/html` 
 2. Login w/ thisisasuperduperlonguser:heartbreakisinevitable 
-	![](Pasted%20image%2020220208023106.png)
+	![]({{ page.img_path }}Pasted%20image%2020220208023106.png)
 3. Create our WAR reverse shell payload
 	1. Create WAR reverse shell 
 		```
@@ -735,9 +735,9 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 		┌──(root💀kali)-[~/vulnHub/Digitalworld.local-Mercy-v2]
 		└─# curl http://192.168.110.19:8080/rev86/jfzomlykmswjkh.jsp
 		```
-		![](Pasted%20image%2020220208024203.png)
+		![]({{ page.img_path }}Pasted%20image%2020220208024203.png)
 4. Obtain `tomcat7` shell
-	![](Pasted%20image%2020220208023914.png)
+	![]({{ page.img_path }}Pasted%20image%2020220208023914.png)
 5. Local Flag
 	```
 	cd /   
@@ -869,7 +869,7 @@ SMB         192.168.110.19  445    MERCY            IPC$                        
 	```
 5. Wait for cronjob to execute
 6. Root shell obtained
-	![](Pasted%20image%2020220208034639.png)
+	![]({{ page.img_path }}Pasted%20image%2020220208034639.png)
 7. Root Flag
 	```
 	rootbash-4.3# cat author-secret.txt proof.txt 

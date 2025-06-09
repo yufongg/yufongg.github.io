@@ -4,9 +4,9 @@ author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-10-23
 tags: [pivot]
-img_path: /Writeups/HackTheBox/Linux/Ambassador/images/
-image: 
-  src: Pasted%20image%2020221024005325.png
+img_path: /_posts/Writeups/HackTheBox/Linux/Ambassador/images/
+image:
+  path: /_posts/Writeups/HackTheBox/Linux/Ambassador/images/Pasted%20image%2020221024005325.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -53,14 +53,14 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 
 ## TCP/80 (HTTP) 
 1. Found a post, revealing a username `developer`
-	 ![](Pasted%20image%2020221022123113.png)
+	 ![]({{ page.img_path }}Pasted%20image%2020221022123113.png)
 
 ## TCP/22 (SSH) - Bruteforce Developer User (Failed)
 1. Tried to bruteforce failed.
 
 ## TCP/3000 (HTTP) - CVE-2021-43798, Grafana 8.0.0-beta1- 8.3.0 (Arbitrary File Read) 
 1. Found a login page @ `http://ambassador.htb:3000/login`
-	![](Pasted%20image%2020221022130044.png)
+	![]({{ page.img_path }}Pasted%20image%2020221022130044.png)
 	> Grafana - is a multi-platform open source analytics and interactive visualization web application. It provides charts, graphs, and alerts for the web when connected to supported data sources.
 	{: .prompt-info}
 2. Search exploits for `Grafana`
@@ -418,7 +418,7 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 	id
 	uid=0(root) gid=0(root) groups=0(root)
 	```
-	![](Pasted%20image%2020221023145738.png)
+	![]({{ page.img_path }}Pasted%20image%2020221023145738.png)
 
 
 # Additional
@@ -477,7 +477,7 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 	Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2022-10-22 13:41:17
 	```
 5. Successfully login w/ `admin:messageInABottle685427`
-	![](Pasted%20image%2020221022133911.png)
+	![]({{ page.img_path }}Pasted%20image%2020221022133911.png)
 	> However, `grafana` is not susceptible to any RCE exploit, lets try to obtain another set of credential by reading `Grafana` database file.
 	{: .prompt-info}
 6. Download `/var/lib/grafana/grafana.db` 
@@ -497,7 +497,7 @@ After enumerating the system, `.git-config` is discovered on `developer` home di
 		# Query
 		SELECT user, password, secure_json_data FROM data_source;
 		```
-		![](Pasted%20image%2020221022145207.png)
+		![]({{ page.img_path }}Pasted%20image%2020221022145207.png)
 	>Valid Creds
 	>- `grafana:dontStandSoCloseToMe63221!`
 	{: .prompt-info}

@@ -12,9 +12,9 @@ difficulty: 3
 solved: no
 solution:
   - "https://github.com/NUSGreyhats/greyctf24-challs-public/tree/main/quals/web/fearless-concurrency/fearless-concurrency-solve"
-img_path: /Writeups/CTF/GreyCTF%202024/Web/Fearless%20Concurrency/attachments/
+img_path: /_posts/Writeups/CTF/GreyCTF%202024/Web/Fearless%20Concurrency/attachments/
 image:
-  src: ../../Beautiful%20Styles/attachments/Beautiful%20Styles-20240510000105525.png
+  path: /_posts/Writeups/CTF/GreyCTF%202024/Web/Fearless%20Concurrency/attachments/../../Beautiful%20Styles/attachments/Beautiful%20Styles-20240510000105525.png
   width: 1000   # in pixels
   height: 400   # in pixels
 ---
@@ -174,7 +174,7 @@ Line 27-47:
 - Demo 
 
 	<video muted autoplay controls style="width: 740px; height: 460px;">
-		<source src="{{site.img_cdn}}{{page.img_path}}2YHcR4CJY5.mp4" type="video/mp4">
+		<source src="{{site.cdn}}{{page.img_path}}2YHcR4CJY5.mp4" type="video/mp4">
 	</video>
 
 
@@ -197,7 +197,7 @@ Line 27-47:
 2. Demo 
 
 	<video muted autoplay controls style="width: 740px; height: 460px;">
-		<source src="{{site.img_cdn}}{{page.img_path}}C4uRasuuAF.mp4" type="video/mp4">
+		<source src="{{site.cdn}}{{page.img_path}}C4uRasuuAF.mp4" type="video/mp4">
 	</video>
 
 {% raw %}
@@ -288,5 +288,5 @@ After sleeping the MySQL db and then querying for all the tables, the new table 
 
 
 <video muted autoplay controls style="width: 740px; height: 460px;">
-	<source src="{{site.img_cdn}}{{page.img_path}}Y8CXOfOtng.mp4" type="video/mp4">
+	<source src="{{site.cdn}}{{page.img_path}}Y8CXOfOtng.mp4" type="video/mp4">
 </video>
