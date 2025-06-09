@@ -9,6 +9,7 @@ order: 4
 
 hi
 
+<style>
 
 #test {
   float: left;
