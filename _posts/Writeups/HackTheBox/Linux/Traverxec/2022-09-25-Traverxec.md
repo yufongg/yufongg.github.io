@@ -1,5 +1,6 @@
 ---
 title: HackTheBox - Traverxec
+author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-09-25
 tags: [linux-priv-esc/sudo/gtfo-bin]

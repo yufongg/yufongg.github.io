@@ -1,5 +1,6 @@
 ---
 title: Vulnhub - Digitalworld.local (JOY)
+author: yufong
 categories: [Vulnhub, Linux]
 date: 2022-02-11 
 tags: [tcp/22-ftp/exploit,  linux-priv-esc/linux-creds-found, linux-priv-esc/sudo/unknown-exec]

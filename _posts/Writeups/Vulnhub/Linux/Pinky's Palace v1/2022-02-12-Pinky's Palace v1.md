@@ -1,5 +1,6 @@
 ---
 title: Vulnhub - Pinky's Palace v1
+author: yufong
 categories: [Vulnhub, Linux]
 date: 2022-02-12
 tags: [pivot, exploit/sqli/database-enum, linux-priv-esc/linux-creds-found, bof/linux-bof]

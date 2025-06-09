@@ -1,5 +1,6 @@
 ---
 title: HackTheBox - Photobomb
+author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-10-16
 tags: [exploit/command-injection, path-hijacking]

@@ -1,5 +1,6 @@
 ---
 title: Vulnhub - Spydersec Challenge
+author: yufong
 categories: [Vulnhub, Linux]
 date: 2022-03-11 
 tags: [cryptography]

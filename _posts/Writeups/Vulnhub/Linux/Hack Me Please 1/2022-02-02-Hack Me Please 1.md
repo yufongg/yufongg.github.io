@@ -1,5 +1,6 @@
 ---
 title: Vulnhub - Hack Me Please 1
+author: yufong
 categories: [Vulnhub, Linux]
 tags: [tcp/80-http/web-app-cms-exploit,linux-priv-esc/sudo/misconfig ]
 img_path: /Writeups/Vulnhub/Linux/Hack Me Please 1

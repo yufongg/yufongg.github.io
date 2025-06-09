@@ -1,5 +1,6 @@
 ---
 title: HackTheBox - SolidState
+author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-08-25
 tags: [jail]

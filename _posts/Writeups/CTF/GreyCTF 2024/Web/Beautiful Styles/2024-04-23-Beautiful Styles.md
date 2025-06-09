@@ -1,5 +1,6 @@
 ---
 title: Beautiful Styles
+author: yufong
 categories: [GreyCTF 2024, Web]
 date: 2024-04-23
 date_time: 2024-04-23 19:50

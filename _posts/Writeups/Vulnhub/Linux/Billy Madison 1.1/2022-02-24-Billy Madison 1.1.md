@@ -1,5 +1,6 @@
 ---
 title: Vulnhub - Billy Madison 1.1
+author: yufong
 categories: [Vulnhub, Linux]
 date: 2022-02-24
 tags: [cryptography, wireshark, port-knocking, linux-priv-esc/suid/unknown-exec]

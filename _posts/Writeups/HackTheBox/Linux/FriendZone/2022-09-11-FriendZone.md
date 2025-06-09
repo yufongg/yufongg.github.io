@@ -1,5 +1,6 @@
 ---
 title: HackTheBox - FriendZone
+author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-09-11
 tags: [exploit/file-inclusion/lfi, linux-priv-esc/python-hijacking]

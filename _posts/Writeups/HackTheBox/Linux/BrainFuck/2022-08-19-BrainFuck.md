@@ -1,5 +1,6 @@
 ---
 title: HackTheBox - BrainFuck
+author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-08-19
 tags: [linux-priv-esc/lxd, cryptography]

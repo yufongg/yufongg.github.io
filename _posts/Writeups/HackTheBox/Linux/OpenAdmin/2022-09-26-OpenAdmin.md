@@ -1,5 +1,6 @@
 ---
 title: HackTheBox - OpenAdmin
+author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-09-26
 tags: [linux-priv-esc/sudo/gtfo-bin, tcp/80-http/web-app-cms-exploit, pivot]

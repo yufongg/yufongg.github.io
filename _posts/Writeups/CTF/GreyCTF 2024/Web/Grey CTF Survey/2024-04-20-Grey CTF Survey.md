@@ -1,5 +1,6 @@
 ---
 title: Grey CTF Survey
+author: yufong
 categories: [GreyCTF 2024, Web]
 date: 2024-04-20
 date_time: 2024-04-20 18:09

@@ -1,5 +1,6 @@
 ---
 title: Vulnhub - Healthcare 1 
+author: yufong
 categories: [Vulnhub, Linux]
 tags: [tcp/80-http/web-app-cms-exploit,linux-priv-esc/suid/path-hijacking]
 img_path: /Writeups/Vulnhub/Linux/Healthcare 1

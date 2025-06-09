@@ -1,5 +1,6 @@
 ---
 title: HackTheBox - Networked
+author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-09-13
 tags: [exploit/file-upload-bypass, exploit/command-injection]

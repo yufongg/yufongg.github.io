@@ -1,5 +1,6 @@
 ---
 title: HackTheBox - Ambassador
+author: yufong
 categories: [HackTheBox, HackTheBox - Linux]
 date: 2022-10-23
 tags: [pivot]
