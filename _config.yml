@@ -20,7 +20,7 @@ timezone: Asia/Singapore
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: Yufong                      # the main title
+title: 0xyf                      # the main title
 
 tagline: OSCP | Infosec Writeups   # it will display as the sub-title
 
@@ -34,12 +34,10 @@ url: 'https://yufongg.github.io'
 github:
   username: yufongg           # change to your github username
 
-twitter:
-  username: yufongg           # change to your twitter username
 
 social:
-  name: yufongg
-  email: yufongg            # change to your email address
+  name: yufong
+  email: yufongggg@gmail.com            # change to your email address
   links: 
     - https://github.com/yufongg      # change to your github homepage
     - https://www.linkedin.com/in/yufongg/
