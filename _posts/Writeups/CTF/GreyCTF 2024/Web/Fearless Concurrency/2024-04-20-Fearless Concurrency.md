@@ -84,14 +84,14 @@ async fn query(State(state): State<AppState>, Json(body): Json<Query>) -> axum::
 }
 ```
 
->Line 17-21:
+>**Line 17-21:**
 >- We can figure out the table name partially, `table_{<here>}_{}`, since its taken from `user_id` (plaintext) and the string `fearless_concurrency` (salt)
 >	- `user_id` is returned when a user is registered
 
->Line 37-40:
+>**Line 37-40:**
 >- Susceptible to SQLi due to lack of input sanitization
  
->Line 27-47:
+>**Line 27-47:**
 >1. A table (we know the name) is created and user secret is inserted, 
 >2. A query can be made (vulnerable to sqli), we are just retrieving `Hello World!`
 >3. Table is dropped
