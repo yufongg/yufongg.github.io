@@ -84,17 +84,17 @@ async fn query(State(state): State<AppState>, Json(body): Json<Query>) -> axum::
 }
 ```
 
-Line 17-21:
-- We can figure out the table name partially, `table_{<here>}_{}`, since its taken from `user_id` (plaintext) and the string `fearless_concurrency` (salt)
-	- `user_id` is returned when a user is registered
+>Line 17-21:
+>- We can figure out the table name partially, `table_{<here>}_{}`, since its taken from `user_id` (plaintext) and the string `fearless_concurrency` (salt)
+>	- `user_id` is returned when a user is registered
 
-Line 37-40:
- - Susceptible to SQLi due to lack of input sanitization
+>Line 37-40:
+>- Susceptible to SQLi due to lack of input sanitization
  
-Line 27-47:
-1. A table (we know the name) is created and user secret is inserted, 
-2. A pointless query can be made (vulnerable to sqli), pointless since we are just retrieving `Hello World!`
-3. Table is dropped
+>Line 27-47:
+>1. A table (we know the name) is created and user secret is inserted, 
+>2. A query can be made (vulnerable to sqli), we are just retrieving `Hello World!`
+>3. Table is dropped
 
 
 ## Solution
@@ -286,7 +286,7 @@ if __name__ == "__main__":
 
 {% endraw %}
 
-## Failed Attempts
+## Failed Attempt
 
 Instead of trying to extract the full name of the table, tried to exfiltrate all the tables, store them in a list and iterate through all of them to get their secrets and then the flags.
 
