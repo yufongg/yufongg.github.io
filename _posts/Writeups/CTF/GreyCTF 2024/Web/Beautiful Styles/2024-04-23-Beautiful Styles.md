@@ -5,7 +5,8 @@ categories: [GreyCTF 2024, Web]
 date: 2024-04-23
 date_time: 2024-04-23 19:50
 tags: 
-- web/css/injection
+  - greyctf-2024
+  - web/css/injection
 info:
   description: "I opened a contest to see who could create the most beautiful CSS styles. Feel free to submit your CSS styles to me and I will add them to my website to judge them. I'll even give you a sample of my site to get you started. Flag only consists of numbers and uppercase letters and the lowercase character `f` (the exception is the flag format of grey{.+})"
   difficulty: 2.5

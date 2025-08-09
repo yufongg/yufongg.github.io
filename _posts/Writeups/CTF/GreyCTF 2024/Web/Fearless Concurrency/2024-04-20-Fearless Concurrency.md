@@ -5,8 +5,8 @@ categories: [GreyCTF 2024, Web]
 date: 2024-04-20
 date_time: 2024-04-20 18:09
 tags:
-  - rust
-  - web/mysqli/union-based
+  - greyctf-2024
+  - writeup-winner
 info:
   description: "Rust is the most safest, fastest and bestest language to write web app! The code compiles, therefore it is impossible for bugs!"
   difficulty: 3

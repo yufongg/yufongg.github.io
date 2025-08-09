@@ -5,7 +5,8 @@ categories: [GreyCTF 2024, Web]
 date: 2024-04-21
 date_time: 2024-04-21 10:47
 tags: 
-- web/xss
+  - greyctf-2024
+  - web/xss
 info:
   description: XSS in Markdown fenced code block	
   difficulty: 2

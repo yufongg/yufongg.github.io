@@ -5,7 +5,8 @@ categories: [GreyCTF 2024, Web]
 date: 2024-04-20
 date_time: 2024-04-20 18:09
 tags: 
-- js/parseInt
+  - greyctf-2024
+  - js/parseInt
 info:
   description: "Improper use of `parseInt` leads to unexpected results"
   difficulty: 2
