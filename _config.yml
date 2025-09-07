@@ -22,7 +22,7 @@ timezone: Asia/Singapore
 
 title: 0xyf                      # the main title
 
-tagline: OSCP | Infosec Writeups   # it will display as the sub-title
+tagline: OSWE | OSCP | Infosec Writeups   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
   I post writeups on vulnerable machines from TryHackMe, Vulnhub and HackTheBox.
