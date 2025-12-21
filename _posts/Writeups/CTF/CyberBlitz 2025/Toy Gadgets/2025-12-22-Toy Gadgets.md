@@ -10,9 +10,10 @@ info:
   description: "I require help to read the flag. Help me please!"
   difficulty: 1
 img_path: /_posts/Writeups/CTF/CyberBlitz%202025/Pwn/Toy%20Gadgets/attachments/
-walkthrough:
-- ""
-solved: yes
+image:
+  path: /_posts/Writeups/CTF/CyberBlitz%202025/Pwn/Toy%20Gadgets/attachments/cyberblitz2025.png
+  width: 1000   # in pixels
+  height: 400   # in pixels
 ---
 
 ## Challenge Description
@@ -282,7 +283,7 @@ Unlike 32-bit binaries where we can just add the 2 arguments right after the ret
 
 ### Auto
 
-> [code](x)
+> [code](https://example.com)
 
 ```python
 from pwn import *
