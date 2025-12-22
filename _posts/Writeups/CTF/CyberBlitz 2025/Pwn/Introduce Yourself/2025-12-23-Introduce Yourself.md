@@ -403,7 +403,7 @@ intro: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically link
 
 	> To Note
 	>- Utilized for stack alignment.
-	>	- The `ret` gadget is used to adjust `RSP` by 8 bytes to restore 16-byte stack alignment on x64 before entering a real function.
+	>- The `ret` gadget is used to adjust `RSP` by 8 bytes to restore 16-byte stack alignment on x64 before entering a real function.
 	>- Address: `1016`
 	>- Little-Endian: `\x16\x10\x00\x00\x00\x00\x00\x00`
 
