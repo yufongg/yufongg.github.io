@@ -232,7 +232,7 @@ intro: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically link
 
 1. `fuzz.py`
 
-	```c
+	```python
 	from pwn import *
 	
 	
