@@ -1,5 +1,5 @@
 ---
-title: introduce_yourself
+title: Introduce Yourself
 author: yufong
 categories:  [CyberBlitz 2025, Pwn]
 date: 2025-12-23
@@ -102,58 +102,15 @@ intro: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically link
 	>- Address: `0x12a0`
 	>- Little-Endian: `\xa0\x12\x00\x00\x00\x00\x00\x00`
 
-2. Disassemble `welcome`
 
-	>- Showing Only String Format Vulnerability & Buffer Overflow
-
-	```
-	...SNIP...
-   0x000000000000122b <+107>:   mov    esi,0x64
-   0x0000000000001230 <+112>:   mov    rdi,rsp
-   0x0000000000001233 <+115>:   call   0x1080 <fgets@plt>
-   ...SNIP...
-   0x0000000000001246 <+134>:   mov    rdi,rsp
-   0x0000000000001249 <+137>:   xor    eax,eax
-   0x000000000000124b <+139>:   call   0x1070 <printf@plt>
-   ...SNIP...
-   0x0000000000001268 <+168>:   lea    rdi,[rsp+0x70]
-   0x000000000000126d <+173>:   call   0x1090 <gets@plt>
-	```
-
-	>String Format Vuln Breakdown
-	>- `mov esi, 0x64` 
-	>	- Stores `0x64 = 100` into `esi`
-	>	- This sets the maximum number of bytes that `fgets()` will read.
-	>	- So its safe from buffer overflow.
-	>- `mov rdi, rsp`
-	>	- Stores `rsp` into `rdi` 
-	>	- This is the buffer address where `fgets()` will be writing to.
-	>- `call 0x1080 <fgets@plt>`
-	>	- Calls `fgets(buffer=rsp, size=100, stdin)`
-	>	- So its safe from buffer overflow.
-	>- `mov rdi,rsp`
-	>	- Stores `rsp` into `rdi` again
-	>	- `rsp` points to user argument
-	>- `call 0x1070 <printf@plt>`
-	>	- Calls `printf(rsp)`
-	>	- This is where it is susceptible to string format exploit
-	>	- Able to use format specifiers (`%p`, `%x`, `%s`) to leak memory addresses
-
-	>BOF Vuln Breakdown
-	>- `lea rdi,[rsp+0x70]`
-	>	- Load effective address of `rsp+0x70` which is the buffer address where `gets()` is writing to.
-	>- `call 0x1090 <gets@plt>`
-	>	- Calls `gets(rdi)`
-	>	- Susceptible to buffer overflow.
-
-3. Decompiled `welcome` in ghidra for easier understanding
+2. Decompiled `welcome` in ghidra for easier understanding
 	![]({{ page.img_path }}introduce_yourself-1766426537248.png)
 
 	> Breakdown
 	>- Line 15–17: User input is read safely but printed via `printf(buffer)`, susceptbile to string format vulnerability.
 	>- Line 20: `gets()`, susceptible to buffer overflow.
 
-4. Disassemble `gift`
+3. Disassemble `gift`
 
 	```
 	pwndbg> disas gift
