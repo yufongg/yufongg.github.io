@@ -267,6 +267,7 @@ Unlike 32-bit binaries where we can just add the 2 arguments right after the ret
 ### Manual
 
 1. Steps
+
 	| Step | Purpose                 | Value        | Little-Endian                      |
 	| ---- | ----------------------- | ------------ | ---------------------------------- |
 	| 1    | Padding to RIP          | `72`         | -                                  |
