@@ -1,16 +1,7 @@
 #  The contact options.
 
--
-  type: github
+- type: github
   icon: 'fab fa-github'
-
-- type: youtube
-  icon: 'fab fa-youtube'
-  url: 'https://www.youtube.com/watch?v=7hjHZOc-e4w'
-- 
-  type: discord
-  icon: 'fab fa-discord'
-  url: 'https://discordapp.com/users/175250797578158080'
 
 - type: hackthebox
   icon: 'fa fa-cube'
