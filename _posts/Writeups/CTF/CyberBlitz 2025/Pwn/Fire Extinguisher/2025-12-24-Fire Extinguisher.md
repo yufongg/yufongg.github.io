@@ -3,7 +3,7 @@ title: Fire Extinguisher
 author: yufong
 event: CyberBlitz 2025
 categories:  [CyberBlitz 2025, Pwn]
-date: 2025-12-20
+date: 2025-12-24
 tags: 
   - ret2libc
   - 64-bit
