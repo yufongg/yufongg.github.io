@@ -195,7 +195,8 @@ There are two buffer overflow vulnerability in this program
 	        pass
 	
 	```
-
+	>- Remember to add 16 "A" padding.
+    
 2. Leak addresses with `fuzz.py`
 
 	```
