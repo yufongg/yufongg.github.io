@@ -159,6 +159,8 @@ There are two buffer overflow vulnerability in this program
 
 ### Leak Canary Address
 
+>[`fuzz.py`](https://github.com/yufongg/ctf/blob/main/cyberblitz/2025/pwn/fire_extinguisher/fuzz.py)
+
 1. `fuzz.py`
 
 	```python
@@ -196,7 +198,7 @@ There are two buffer overflow vulnerability in this program
 	
 	```
 	>- Remember to add 16 "A" padding.
-    
+
 2. Leak addresses with `fuzz.py`
 
 	```
@@ -373,6 +375,8 @@ Since the binary is PIE and its base address is unknown, gadgets in `fire-exting
 
 ### Manual
 
+> [`manual.py`](https://github.com/yufongg/ctf/blob/main/cyberblitz/2025/pwn/fire_extinguisher/manual.py)
+
 Steps
 
 | Step | Purpose                 | Value                     |
@@ -520,6 +524,8 @@ CyberBlitz2025{p0uring_w4ter_on_a_gr34S3_f1r3_ju5t_to_f33l_al1v3}$
 
 
 ### Auto
+
+> [`exploit.py`](https://github.com/yufongg/ctf/blob/main/cyberblitz/2025/pwn/fire_extinguisher/exploit.py)
 
 Mostly automated, make changes to "CHANGE ME" section.
 

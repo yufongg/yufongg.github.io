@@ -332,7 +332,7 @@ Unlike 32-bit binaries where we can just add the 2 arguments right after the ret
 
 ### Auto
 
-> [code](https://example.com)
+>[`exploit.py`](https://github.com/yufongg/ctf/blob/main/cyberblitz/2025/pwn/toy_gadgets/exploit.py)
 
 ```python
 from pwn import *

@@ -230,6 +230,8 @@ intro: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically link
 
 ### Leak Canary Address
 
+>[`fuzz.py`](https://github.com/yufongg/ctf/blob/main/cyberblitz/2025/pwn/introduce_yourself/fuzz.py)
+
 1. `fuzz.py`
 
 	```python
@@ -408,6 +410,8 @@ intro: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically link
 	>- Little-Endian: `\x16\x10\x00\x00\x00\x00\x00\x00`
 
 ### Exploit
+
+>[`exploit.py`](https://github.com/yufongg/ctf/blob/main/cyberblitz/2025/pwn/introduce_yourself/exploit.py)
 
 Steps
 
