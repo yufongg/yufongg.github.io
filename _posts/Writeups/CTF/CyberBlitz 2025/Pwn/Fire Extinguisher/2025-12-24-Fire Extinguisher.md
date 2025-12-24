@@ -334,7 +334,7 @@ There are two buffer overflow vulnerability in this program
 
 To build a ret2libc chain on 64-bit, we need a `pop rdi; ret` gadget to set up the first argument to `system`, and a standalone `ret` gadget to satisfy 16-byte stack alignment.  
 
-Since the binary is PIE and its base address is unknown, gadgets in `fire-extinguisher` cannot be used reliably, so all gadgets are taken from `libc`, whose base address is derived from the leak.
+Since the binary is PIE and its base address is unknown, gadgets in `fire-extinguisher` cannot be used, so all gadgets are taken from `libc`, whose base address is derived from the leak.
 
 1. Find `pop rdi` gadget
 
